@@ -1,22 +1,25 @@
-<!DOCTYPE html>
+    <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+        <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+        <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+        <c:if test="${user == null }">
+            <jsp:forward page="index.jsp"></jsp:forward>
+        </c:if>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <link rel="stylesheet" href="../css/bootstrap.min.css" />
-    <script src="../js/jquery-3.3.1.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/jquery.animate-colors-min.js"></script>
-    <script src="../js/easydialog.min.js"></script>
-    <script src="../js/autosize.min.js"></script>
-    <script src="../js/popup.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <link href="css/bootstrap.css" type="text/css">
+    <link href="css/bootstrap.css.map" type="text/css">
+    <link href="css/bootstrap.min.css" type="text/css">
+    <link href="css/bootstrap.min.css.map" type="text/css">
     <style type="text/css">
         body{
             width: 1349px;
             background-color: rgba(230,236,240,1.00);
             font-size: 14px;
             height: 680px;
-
         }
         #loader{
             width: 100%;
@@ -24,7 +27,150 @@
             /*border: 1px solid red;*/
             background-color: white;
             position: fixed;
-            z-index: 99;
+            z-index: 999;
+            margin-top: -45px;
+        }
+
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #body{
+            width: 1349px;
+            height: auto;
+            margin-top: 45px;
+            /*border: 1px solid red;*/
+        }
+        #littleloader{
+            width: 1349px;
+            height: 65px;
+            position: relative;
+        }
+        #twoloader{
+            background-color: rgba(255,255,255,1.00);
+            width: 1349px;
+            height: 50px;
+            position: relative;
+            box-shadow: 0 0 2px grey;
+
+        }
+        #first{
+            float: left;
+            margin-left: 80px;
+            height: auto;
+        }
+        #sousuo{
+            width: 265px;
+            height: 50px;
+            border-radius: 5px;
+            background-color: white;
+            margin-top: 15px;
+        }
+        #sousuo input{
+            width: 180px;
+            height: 30px;
+            padding: 5px 10px;
+            margin-left: 10px;
+            margin-top: 10px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        ol,ul{
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        li{
+            list-style: none;
+            display: list-item;
+        }
+        button,input,select,textarea{
+            font-family: inherit;
+            font-size: inherit;
+            line-height: inherit;
+        }
+        #submit{
+            margin-left: 5px;
+            border-radius: 5px;
+            padding: 1px 15px;
+            font-weight: bold;
+            background-color: white;
+
+
+        }
+        #xuanze{
+            width: 265px;
+            min-height: 50px;
+            border-radius: 5px;
+            background-color: white;
+            margin-top: 15px;
+        }
+        .guanzhu{
+            font-size: 18px;
+            padding-top: 10px;
+            padding-left: 10px;
+            margin-bottom: 20px;
+        }
+        #second{
+            width: 980px;
+            height: auto;
+            position: absolute;
+            left: 350px;
+        }
+        #content{
+            height: auto;
+        }
+        #bucunzai{
+            margin-top: 60px;
+            margin-left: 60px;
+        }
+        #nobody{
+            font-weight: bold;
+            font-size: 25px;
+            color: black;
+            width: 500px;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+        #cuowu{
+            font-size: 15px;
+            color: #657786;
+            margin-top: 20px;
+            display: none;
+        }
+        #fanwei{
+            width: 240px;
+            height: 30px;
+            font-size: 15px;
+            margin-left: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #657786;
+            color: black;
+
+        }
+        #weizhi{
+            width: 240px;
+            height: 30px;
+            font-size: 15px;
+            margin-left: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #657786;
+            color: black;
+        }
+    </style>
+    <style type="text/css">
+        body{
+            width: 1349px;
+            background-color: rgba(230,236,240,1.00);
+
+            height: 680px;
+        }
+        #loader{
+            width: 100%;
+            height: 46px;
+            /*border: 1px solid red;*/
+            background-color: white;
+            position: fixed;
+            z-index: 999;
             /*margin-top: -45px;*/
         }
 
@@ -32,7 +178,7 @@
             margin: 0;
             padding: 0;
         }
-        #nav{
+        #daohang{
             width: 300px;
             height: 38px;
             margin-left: 80px;
@@ -40,10 +186,10 @@
             /*border: 1px solid red;*/
         }
         ol , ul{
-            margin-top: 0;
+            margin-top: 0px;
             margin-bottom: 10px;
         }
-        #nav li{
+        #daohang li{
             width: 80px;
             height: 42px;
             padding: 0 15px;
@@ -67,7 +213,7 @@
             -webkit-font-smoothing: antialiased;
         }
         .bian{
-            /*margin-left: 5px;*/
+
             position: relative;
             top: -1px;
         }
@@ -136,7 +282,7 @@
         #souxianshishang{
             position: fixed;
             left: 905px;
-            z-index: 99;
+            z-index: 999999;
             margin-top: 1px;
             display: none;
         }
@@ -176,22 +322,17 @@
             border: 1px solid white;
             cursor: pointer;
         }
-
         #list{
             width: 120px;
             height: 270px;
             z-index: auto;
             display: none;
         }
-
         .ss{
             position: fixed;
             top: 41px;right: 200px;
             z-index: 6;
-
-
         }
-
         #listlist{
             width: 180px;
             height: 360px;
@@ -202,7 +343,6 @@
             box-shadow: 0 0 2.5px lightslategrey;
             z-index: auto;
             background-color: white;
-
         }
         .listd{
             padding: 4px 0 3px 20px;
@@ -275,7 +415,6 @@
             width: 600px;
             height: auto;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            border-radius: 10px;
         }
         #popup .title{
             position: absolute;
@@ -293,8 +432,8 @@
             font-size: 17px;
         }
 
-        #popup .title span:hover{
-            color: black;
+        p{
+            margin: 0 0 10px;
         }
         #popup .title span{
             position: absolute;
@@ -302,7 +441,7 @@
             right: 20px;
             width: 30px;
             height: 30px;
-            color: gray;
+            color: #000;
             opacity: 2;
             font-size: 21px;
             cursor: pointer;
@@ -314,6 +453,7 @@
             height: auto;
             background-color: rgba(232,245,251,1);
             min-height: 245px;
+            border-radius: 5px;
         }
         .ttt{
             position: relative;
@@ -327,6 +467,7 @@
             border-right: 5px;
             background-color: white;
             float: left;
+            border-radius: 5px;
         }
         .wen{
             width: 480px;
@@ -342,10 +483,11 @@
             width: 100%;
             min-height: 80px;
             border-style: hidden;
+
         }
         .add{
             position: relative;
-            top:20px;
+            top: 20px;
             left: 20px;
         }
         .thing{
@@ -353,7 +495,6 @@
             height: 30px;
             position: relative;
             z-index: 7;
-
         }
         .addx{
             position: relative;
@@ -403,7 +544,7 @@
             width: 80px;
             height: 40px;
             position: relative;
-            /*left: 235px;*/
+            left: 235px;
             top: 45px;
         }
         .glyphicon-send:before{
@@ -437,146 +578,11 @@
             background-color: rgba(0, 0, 0, .9);
         }
     </style>
-    <style type="text/css">
-
-
-        *{
-            margin: 0;
-            padding: 0;
-        }
-        #body{
-            width: 1180px;
-            height: auto;
-            margin: 60px 80px 40px;
-            float: left;
-        }
-        #tuijian{
-            width: 280px;
-            height: 280px;
-            background-color: white;
-            box-shadow: 0 0 0.5px #e6ecf0;
-            margin-left: 10px;
-        }
-        .guanzhu{
-            font-size: 20px;
-            position: absolute;
-            top: 70px;
-            left: 105px;
-        }
-        a{
-            text-decoration: none;
-            color: #337ab7;
-            background-color: transparent;
-        }
-
-        #second{
-            width: 590px;
-            height: auto;
-            position: absolute;
-            left: 380px;
-        }
-        #content{
-            width: 590px;
-            height: 599px;
-            position: absolute;
-            top: -290px;
-            /*border: 1px solid red;*/
-        }
-        #quanbu{
-            width: 590px;
-            height: 50px;
-            background-color: white;
-        }
-        ul{
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-        li{
-            list-style: none;
-        }
-        #quanbu li{
-            float: left;
-            height: 50px;
-            line-height: 50px;
-            font-size: 18px;
-            font-weight: bold;
-            margin-left: 20px;
-            margin-right: 20px;
-            cursor: pointer;
-        }
-        .notifications{
-            width: 590px;
-            height: 477px;
-            background-color: white;
-            margin-top: 1px;
-            font-size: 16px;
-        }
-        a{
-            text-decoration: none;
-        }
-        .event{
-            margin: 0;
-
-        }
-        #back{
-            width: 590px;
-            height: 60px;
-            background-color: white;
-            box-shadow: 0 0 0.5px #e6ecf0;
-            cursor: pointer;
-            margin-top: 1px;
-        }
-        #back img{
-            margin-left: 276px;
-            margin-top: 20px;
-            height: 24px;
-            width: 24px;
-        }
-        img{
-            vertical-align: middle;
-            border: 0;
-        }
-
-        #third{
-            width: 240px;
-            height: auto;
-            position: absolute;
-            left: 980px;
-        }
-        #link{
-            width: 280px;
-            height: 100px;
-            background-color: white;
-            position: absolute;
-            top: -280px;
-            box-shadow: 0 0 .5px #e6ecf0;
-        }
-        #lianjie{
-            width: 270px;
-            height: 60px;
-            margin: 20px 10px;
-            float: left;
-        }
-        #lianjie li{
-            float: left;
-            margin-right: 9px;
-            font-size: 13px;
-            cursor: pointer;
-            height: 20px;
-            letter-spacing:.3px;
-            color: gray;
-        }
-        #lianjie .lianjie:hover{
-           color: rgb(29,161,241);
-           text-decoration: underline;
-        }
-
-    </style>
 </head>
 <body>
 <div id="loader">
     <div>
-        <ul id="nav">
+        <ul id="daohang">
             <li style="color: rgb(102,107,117);">
                 <sapn class="glyphicon glyphicon-home">
 
@@ -584,10 +590,8 @@
                 <sapn class="bian">主页</sapn>
                 <div class="tishidian"></div>
             </li>
-            <li style="border-bottom: 5px solid rgb(29,161,241);color: rgb(29,161,241);">
-            <span class="glyphicon glyphicon-bell">
-
-            </span>
+            <li style="color: rgb(102,107,117);">
+            <span class="glyphicon glyphicon-bell"></span>
                 <span class="bian">通知</span>
                 <div class="tishidian"></div>
             </li>
@@ -602,17 +606,14 @@
     </div>
 
     <div>
-        <img id="logo" src="../img/index.ico" data-original-title title>
+        <img id="logo" src="img/index.ico" data-original-title title>
         <div id="search">
-            <input type="text" class="search" id="search_two" placeholder="搜索twitter用户">
+            <input type="text" class="search" id="search_two" placeholder="搜索Twitter用户">
             <span class="glyphicon glyphicon-search sea" id="chaxun" style="color:#657786;font-size: 15px;margin-top: 1px;"></span>
         </div>
         <div class="triangle shang" id="souxianshishang"></div>
         <div id="souxianshi"></div>
-
-        <div class="touxiang" id="touxiang" style="background: url(../img/header.jpg) 0 0 / 31px 31px;" data-original-title title>
-        </div>
-
+        <div class="touxiang" id="touxiang" style="background: url(img/header.jpg) 0 0 / 31px 31px;" data-original-title title></div>
         <div id="list">
             <div class="triangle shang ss"></div>
             <div id="listlist">
@@ -625,12 +626,14 @@
                     <div>
                         <span class="glyphicon glyphicon-user" style="margin-right: 10px"></span>
                         个人资料
+
                     </div>
                 </div>
                 <div class="listd">
                     <div>
                         <span class="glyphicon glyphicon-list-alt" style="margin-right: 10px"></span>
                         列表
+
                     </div>
                 </div>
                 <hr>
@@ -638,12 +641,14 @@
                     <div>
                         <span class="glyphicon glyphicon-share" style="margin-right: 10px"></span>
                         Twitter广告
+
                     </div>
                 </div>
                 <div class="listd">
                     <div>
                         <span class="glyphicon glyphicon-stats" style="margin-right: 10px"></span>
                         分析
+
                     </div>
                 </div>
                 <hr>
@@ -653,7 +658,6 @@
                 <div class="listd">登出</div>
             </div>
         </div>
-
         <button id="fatui" class="button btn btn-info" style="background-color: rgb(29,161,241);">
     <span class="glyphicon glyphicon-send edit">
     </span>
@@ -665,10 +669,10 @@
             <p style="color: black;font-weight: bold" data-original-title="撰写新推文">撰写新推文</p>
             <span class="guanguanguan">×</span>
         </div>
-        <form action="" method="post" id="mytweettwo" enctype="multipart/form-data">
+        <form action method="post" id="mytweettwo" enctype="multipart/form-data">
             <div class="cont" style="height: 200px;">
                 <div class="tweet ttt" id="tuiwen2" style="box-shadow: rgb(164,217,249) 0px 0px 1px;border: 2px solid rgb(164,217,249);">
-                    <textarea id="tweet2" class="wen xinxian" name="tuiwen" placeholder="有什么新鲜事？" style="max-height: 300px;border: 0 solid lightsalmon; color: rgb(29,161,241);overflow: hidden;word-wrap: break-word;width: 540px;height: 0;" autofocus="autofocus" data-autosize-on="true"></textarea>
+                    <textarea id="tweet2" class="wen xinxian" name="tuiwen" placeholder="有什么新鲜事？" style="max-height: 300px;border: 0 solid lightsalmon;border-radius: 10px;; color: rgb(29,161,241);overflow: hidden;word-wrap: break-word;width: 540px;height: 0;" autofocus="autofocus" data-autosize-on="true"></textarea>
                     <div class="bq bq2"></div>
                 </div>
                 <div class="thing add">
@@ -688,6 +692,74 @@
     <div id="mask_shadow" style="opacity: 0;display: none;"></div>
 
 </div>
+<div id="body">
+        <div id="littleloader" style="background-color: rgb(29,161,241);">
+            <div id="searchname" style="width: auto;line-height: 65px;margin-left: 95px;font-size: 25px;">
+                <input id="message" name="message" type="text"  style="width: 1200px;font-size: 25px;background-color:  rgb(29,161,241);color: white;border: none">
+            </div>
+        </div>
+        <div id="twoloader">
+            <ul style="height: 65px">
+                <li id="users" style="text-align: center;width: 60px;height: 50px;line-height: 50px;margin-left: 90px;font-size: 15px;font-weight: bold;cursor: pointer;color: rgb(29,161,241);border-bottom: 3px solid rgb(29,161,241)">
+                    用户
+                </li>
+            </ul>
+        </div>
+        <div id="first">
+            <div id="sousuo">
+                <input name="input1" id="input1" type="text" placeholder="搜索用户" style="font-size: 14px;border: 1px solid rgb(101,119,134);" oninput="search()">
+                <button  id="submit" style="font-size: 14px;width: 60px;height: 30px;color: rgb(29,161,241);border: 1px solid rgb(29,161,241);">
+                搜索</button>
+            </div>
+            <div id="xuanze" style="height: 160px">
+                <div class="guanzhu" style="color: black;">
+                    搜索筛选
+                    <span id="xianshi" style="font-size: 12px;font-weight: normal;cursor: pointer;color: rgb(29,161,241); ">
+                        <a> ·隐藏</a>
+                    </span>
+                </div>
+                <div>
+                    <select id="fanwei" style="display: block">
+                        <option value="all">来自任何人</option>
+                        <option value="follow" selected="selected">你关注的人</option>
+                        <option value="fans">关注你的人</option>
+                    </select>
+                </div>
+                <div>
+                    <select id="weizhi">
+                        <option value="loc">全部位置</option>
+                        <option value="next">附近位置</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="second">
+            <div id="content">
+                <div id="bucunzai">
+                    <div id="nobody">没有你关注 OR 关注你的人.</div>
+                    <div id="cuowu">你输入的词语查不到任何结果。你可能打错了。</div>
+                </div>
+            </div>
+            <div id="elliot">
+
+            </div>
+        </div>
+    </div>
+
+    <!--搜索-->
+    <script>
+        function search(){
+            $("#submit").click(function(){
+                var c = document.getElementById("input1").value;
+                document.getElementById("message").value = c;
+
+                document.getElementById("nobody").innerHTML = "没有关于 "+ c + " 的结果";
+                $("#cuowu").show();
+            });
+
+        }
+    </script>
+
 <!--发推文-->
 <script>
     $(document).ready(function(){
@@ -703,8 +775,7 @@
         }) ;
     });
 </script>
-
-<!--头像栏隐藏-->
+<!--头像栏显示隐藏-->
 <script>
     $(document).ready(function(){
         $("#touxiang").click(function () {
@@ -714,82 +785,5 @@
 
 
 </script>
-    <div id="body">
-        <div id="tuijian">
-            <div class="guanzhu" style="color: black">
-                推荐关注
-                <span style="font-size: 13px;font-weight: normal">
-                    <strong>·</strong>
-                    <a style="cursor: pointer;" id="shuaxin">刷新</a>
-                </span>
-            </div>
-            <div id="addtuijian" style="padding-top: 50px"></div>
-        </div>
-        <div id="second">
-            <div id="content">
-                <div id="quanbu">
-                    <ul>
-                        <li>全部</li>
-                        <li style="color: rgba(29,161,241,1.00)">提及</li>
-                    </ul>
-                </div>
-                <div id="notify">
-                    <div class="notifications">
-                        <div style="margin-left: 60px;padding-bottom: 30px;padding-top: 30px">
-                            <div style="font-size: 28px;font-weight: bold;color: black;width: 480px">看看大家是何时关注、提及你，收藏及转推你的推文的。</div>
-                            <div style="font-size: 15px;padding-top: 5px;color: #657786;width: 470px">从喜欢到转推等等等等，一切有关你的推文和关注者的活动都会在此发生。</div>
-                        </div>
-                        <div style="height: 290px;width: 480px;margin-left: 60px;padding-bottom: 10px;">
-                            <img src="../img/concern.png" class="concern"  style="width: 30px;height: 30px;float: left;margin-left: 5px;margin-top: 15px;border-radius:20px" >
-                            <div style="width: 410px;height: 70px;margin-left: 50px;padding-top: 10px; ">
-                                <div style="font-size: 15px;color:black;"><a href="#" class="event"><b>关注者</b></a></div>
-                                <div style="font-size: 12px;padding-top: 2px;color: #657786;">有新的关注者了？恭喜你！你会在此选项卡里面看到详情。</div>
-                            </div>
-                            <img class="like" src="../img/like.png" style="width: 30px;height: 30px;float: left;margin-left: 5px;margin-top: 20px;border-radius:20px" >
-                            <div style="width: 410px;height: 70px;margin-left: 50px;padding-top: 10px;">
-                                <div style="font-size: 15px;color:black;  "><a href="#" class="event"><b>喜欢</b></a></div>
-                                <div style="font-size: 12px;padding-top: 2px;color: #657786;">当有人在你的推文点按了心形图标时，这就意味着他们觉得这条推文很赞（甚至喜爱它）。</div>
-                            </div>
-                            <img class="transfer" src="../img/transfer.jpg" style="width: 30px;height: 30px;float: left;margin-left: 5px;margin-top: 25px;border-radius:20px" >
-                            <div style="width: 410px;height: 70px;margin-left: 50px;padding-top: 20px ">
-                                <div style="font-size: 15px;color:black; "><a href="#" class="event"><b>转推</b></a></div>
-                                <div style="font-size: 12px;padding-top: 2px;color: #657786;">有人分享你的推文时，你应当知道，所以，你将收到通知。</div>
-                            </div>
-                            <img class="reply" src="../img/reply.jpg" style="width: 30px;height: 30px;float: left;margin-left: 5px;margin-top: 25px;border-radius:20px" >
-                            <div style="width: 410px;height: 70px;margin-left: 50px;padding-top: 20px">
-                                <div style="font-size: 15px;color:black  "><a href="#" class="event"><b>回复</b></a></div>
-                                <div style="font-size: 12px;padding-top: 2px;color: #657786;">当有人想对你的推文畅所欲言时，回复将显示在这里。</div>
-                            </div>
-                        </div>
-                        <div id="back" style="display: block">
-                            <img src="../img/index.ico">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="third">
-            <div id="link">
-                <ul id="lianjie">
-                    <li class="lianjie">©2018Twitter</li>
-                    <li class="lianjie">关于</li>
-                    <li class="lianjie">帮助中心</li>
-                    <li class="lianjie">博客</li>
-                    <li class="lianjie">状态</li>
-                    <li class="lianjie">工作机会</li>
-                    <li class="lianjie">条款</li>
-                    <li class="lianjie">隐私政策</li>
-                    <li class="lianjie">Cookies</li>
-                    <li class="lianjie">广告信息</li>
-                    <li class="lianjie">商标</li>
-                    <li class="lianjie">广告</li>
-                    <li class="lianjie">企业</li>
-                    <li class="lianjie">开发者</li>
-
-                </ul>
-            </div>
-        </div>
-    </div>
-
 </body>
 </html>
