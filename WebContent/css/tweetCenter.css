@@ -1,0 +1,226 @@
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+input[type="button"]{
+	padding: 4px 15px;
+	margin: 10px;
+	background-color: #5BC0DE;
+	color: #fff;
+	border: 0;
+	border-radius: 5px;
+	cursor: pointer;
+}
+.bd{
+	min-width: 680px;
+	margin: 22px;
+	background-color: #f2f2f2;
+}
+
+/*头部搜索框、搜索按钮和排序按钮*/
+.header{
+	width: 100%;
+	height: 50px;
+}
+.header>div{
+	display: inline-block;
+}
+.search{
+	float: left;
+}
+.search>input[type="text"]{
+	width: 230px;
+	height: 30px;
+	font-size: 14px;
+	padding: 0 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;  
+}
+.sort{
+	float: right;
+}
+.sort>.sortBtn{
+	background-color: #D9534F;
+}
+
+/*内容部分*/
+.contentBox{
+	width: auto;
+	height: 440px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 10px; 
+	margin-bottom: 16px; 
+}
+.box{
+	margin: 10px;
+	display: block;
+}
+#table tr>th,
+#table tr>td{
+	font-size: 16px;
+	text-align: center;
+}
+.title>th{
+	padding: 5px 0;
+}
+.title>td{
+	margin: 5px 0;
+}
+tr:nth-child(even){
+	background-color: #f9f9f9;
+}
+
+/*选项*/
+.option{
+	width: 6%;
+	min-width: 60px;
+}
+/*用户*/
+.user{
+	width: 16%;
+}
+.images{
+	width: 35%;
+	height: 60px;
+	display: inline-block;
+	/*background-color: lightblue;*/
+	float: left;
+	padding:10px 0 0 20px; 
+}
+.images>img{
+	width: 40px;
+	height: 40px;
+	border-radius: 4px;
+}
+.name{
+	width: 65%;
+	height: 60px;
+	line-height: 28px;
+	float: left;
+	text-align: left;
+	padding-left: 20px; 
+}
+/*内容*/
+.content{
+	width: 54%;
+	padding: 3px 0;
+}
+td>.publishingContent{
+	width: 100%;
+	height: 60px;
+	text-align: left;
+	padding: 10px;
+}
+/*时间*/
+.time{
+	width: 16%;
+	min-width: 80px;
+}
+/*操作*/
+.operation{
+	width: 8%;
+	min-width: 60px;
+}
+td>.deleteBtn{
+	background-color: #D9534F;
+}
+
+/*分页*/
+.pagination{
+	width: 402px;
+	height: 40px;
+	margin: 0 auto;
+	/*background-color: lightblue;*/
+	margin-bottom: 46px; 
+}
+.pagination a{
+	color: #fff;
+}
+.pagination a>.prev,
+.pagination a>.next,
+.pages>a>li{
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	float: left;
+	background-color: #fff;
+}
+.pagination a>.prev,
+.pagination a>.next{
+	width: 80px;
+	margin: 0 30px;
+	border-radius: 5px;
+	background-color: #337AB7;
+}
+.pages>a>li{
+	color: #337AB7;
+}
+.li1{
+	border-radius: 5px 0 0 5px;
+}
+.li2{
+	border-left: 1px solid #ccc;
+	border-radius:0;
+	display: block;
+}
+.li3{
+	border-left: 1px solid #ccc;
+	border-radius: 0 5px 5px 0;
+	display: block;
+}
+.pages>a>.first{
+	background-color: #337AB7;
+	color: #fff;
+}
+.pages>a>li:hover{
+	-o-transition: .5s;
+	-webkit-transition: .5s;
+	-moz-transition: .5s;
+	transition: .5s;
+	background-color: #337AB7;
+	color: #fff;
+}
+/*没有内容时的样式*/
+.contentBox>.noContent{
+	width: auto;
+	height: 100%;
+	display: none;
+	text-align: center;
+	color: #DDD;
+	font-size: 55px;
+	position: relative;
+	top: 40%;
+}
+@media(max-width: 750px){
+	.contentBox{
+		height: 900px;
+		background-color: #fff;
+		border: 1px solid #ccc;
+		border-radius: 10px; 
+		margin-bottom: 16px; 
+	}
+	.row{
+		height: 140px;
+		padding: 0;
+		margin: 0;
+	}
+	.user{
+		width: 120px;
+		float: none;
+	}
+	.images{
+		display: none;
+		float: none;
+	}
+	.name{
+		float: none;
+		text-align: center;
+	}
+	.content{
+		width: 390px;
+	}
+
+}
