@@ -1,10 +1,8 @@
-*{
-	margin: 0;
-	padding: 0;
-	box-sizing: content-box;
+.bd{
+	background-color: #f2f2f2;
 }
-body{
-	background-color: #f2f2f2;	
+.bd::-webkit-scrollbar {
+    display: none;
 }
 #welcome{
 	width: 300px;

@@ -1,16 +1,21 @@
+*{
+    margin: 0;
+    padding: 0;
+}
 /** 布局风格样式 **/
 .layout-admin{
     margin: 0 auto;
 }
 .layout-header{      /* 头部部分主样式 */
-    position: relative;
-    border-bottom: 0;
+    position: fixed;
+    width: 100%;
     height: 45px;
+    border-bottom: 0;
     background-color: #4169E1;
     z-index: 100;
 }
 .layout-side{       /*侧栏部分主样式*/
-    position: absolute;
+    position: fixed;
     display: block;
     top: 45px;
     bottom: 0;
@@ -38,12 +43,13 @@
     z-index: 98;
 }
 .layout-main-tab{   /*标签栏部分主样式*/
+    position: fixed;
     height: 39px;
     line-height: 39px;
     overflow: hidden;
-    position: relative;
     background: #f2f2f2;
     border-bottom: 1px solid #1E9FFF;
+    z-index: 98;
 }
 .layout-main-body{
     position: absolute;
@@ -156,6 +162,7 @@
     position: relative;
     margin: 0;
     padding: 0;
+    cursor: pointer;
 }
 .side-menu .menu-header{
     color: #fff;

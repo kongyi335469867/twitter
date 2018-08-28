@@ -19,11 +19,11 @@ input,button,textarea,select,optgroup,option{font-family: inherit; font-size: in
 /** 图标字体 **/
 @font-face {
     font-family: 'iconfont';
-    src: url('../resource/images/backstage-iconfont/iconfont.eot');
-    src: url('../resource/images/backstage-iconfont/iconfont.eot?#iefix') format('embedded-opentype'),
-    url('../resource/images/backstage-iconfont/iconfont.woff') format('woff'),
-    url('../resource/images/backstage-iconfont/iconfont.ttf') format('truetype'),
-    url('../resource/images/backstage-iconfont/iconfont.svg#iconfont') format('svg');
+    src: url('../img/backstage-iconfont/iconfont.eot');
+    src: url('../img/backstage-iconfont/iconfont.eot?#iefix') format('embedded-opentype'),
+    url('../img/backstage-iconfont/iconfont.woff') format('woff'),
+    url('../img/backstage-iconfont/iconfont.ttf') format('truetype'),
+    url('../img/backstage-iconfont/iconfont.svg#iconfont') format('svg');
 }
 /** iconfont图标类样式 **/
 .iconfont{

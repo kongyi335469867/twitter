@@ -8,8 +8,8 @@
 	margin: 22px;
 	background-color: #f2f2f2;
 }
-.container{
-	
+.bd::-webkit-scrollbar {
+    display: none;
 }
 .contentBox{
 	width: auto;
@@ -20,13 +20,68 @@
 	margin-bottom: 16px; 
 }
 .box{
-	display: none;
+	width: 100%;
+	padding: 0 20px 0 0;
+	display: block;
 	margin: 10px;
+}
+.updateInf{
+	font-size: 14px;
+	padding: 12px 0;
+	color: #bbb;
+}
+.box>hr{  /*保证兼容性*/
+	color:#aaa;
+	background-color:#aaa;
+	height:1px;
+	line-height:1px;
+	font-size:0;
+	border:none;
+}
+
+.title{
+	font-size: 18px;
+	font-weight: bolder;
+	color: #4169E1;
+}
+.title>th{
+	text-align: left;
+	padding: 20px 0 20px 18px;
+}
+.updateContent>td{
+	padding: 0 10px;
+}
+.updateContent,.tips{
+	width: 100%;
+	height: 40px;
+	text-align: center;
+	color: #f00;
+	font-size: 16px;
+}
+input{
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	padding: 0 10px;
+	font-size: 16px;
+	border-radius: 10px;
+	border: 1px solid #ccc;
+}
+input[type="submit"]{
+	width: 60px;
+	height: 36px;
+	line-height: 36px;
+	font-size: 16px;
+	border: 0;
+	background-color: #5BC0DE;
+	border-radius: 8px;
+	color: #fff;
+	cursor: pointer;
 }
 
 /*没有内容时的样式*/
 .contentBox>.noContent{
-	display: block;
+	display: none;
 	width: auto;
 	height: 100%;
 	text-align: center;
