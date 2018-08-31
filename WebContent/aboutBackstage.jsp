@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE HTML>
 <html>
   <head>
@@ -8,10 +9,13 @@
     <link rel="stylesheet" type="text/css" href="css/aboutBackstage.css"><!--后台关于页面样式-->
   </head>
   <body class="bd">
+  	<!--%
+		String allow = (String)session.getAttribute("ALLOW");
+		if("allow".equals(allow)){
+	%-->
 	<div class="container">
 		<div class="header">
 		</div>
-
 		<div class="contentBox">
 			<div class="box">
 				<div class="updateInf">修改管理员信息 > ></div>
@@ -46,7 +50,11 @@
 			没有相关内容！
 			</div>
 		</div>
-		
 	</div>
+	<!--%
+		}else{
+			response.sendRedirect("backstageError.jsp");  //重定向到提示无权利访问页面
+		}
+	%-->	
   </body>
 </html>

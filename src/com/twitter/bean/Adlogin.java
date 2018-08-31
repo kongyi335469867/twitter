@@ -3,10 +3,10 @@ package com.twitter.bean;
 import java.sql.Timestamp;
 
 public class Adlogin {
-	private int adid;
-	private int aid;
-	private Timestamp aditime;
-	private Timestamp adotime;
+	private int adid;  /* 管理员登录状况id */
+	private int aid;   /* 管理员id */
+	private Timestamp aditime;  /* 管理员最近登录时间 */
+	private Timestamp adotime;  /* 管理员最近离开时间 */
 
 	public int getAdid() {
 		return adid;

@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE HTML>
 <html>
   <head>
@@ -8,6 +9,10 @@
     <link rel="stylesheet" type="text/css" href="css/memberCenter.css"><!--后台用户中心页面样式-->
   </head>
   <body class="bd">
+  	<!--%
+		String allow = (String)session.getAttribute("ALLOW");
+		if("allow".equals(allow)){
+	%-->
 	<div class="container">
 		<div class="header">
 			<div class="search">
@@ -21,6 +26,8 @@
 		</div>
 		<div class="box">
 			<ul id="lists">
+			
+				<!-- li元素创建模块 -->
 				<li class="list">
 					<div class="headPortrait"><img src="img/1.jpg"></div>
 					<div class="userName">邱奕辉</div>
@@ -29,34 +36,8 @@
 					<div class="shutdown">
 						<input type="button" value="停封" name="shutdownBtn" class="shutdownBtn">
 					</div>
-				</li>
-				<li class="list">
-					<div class="headPortrait"><img src="img/1.jpg"></div>
-					<div class="userName">邱奕辉</div>
-					<div class="registrationName">@kong</div>
-					<div class="loginTime">最近登录时间：2018-08-24 15:47:20</div>
-					<div class="shutdown">
-						<input type="button" value="停封" name="shutdownBtn" class="shutdownBtn">
-					</div>
-				</li>
-				<li class="list">
-					<div class="headPortrait"><img src="img/1.jpg"></div>
-					<div class="userName">邱奕辉</div>
-					<div class="registrationName">@kong</div>
-					<div class="loginTime">最近登录时间：2018-08-24 15:47:20</div>
-					<div class="shutdown">
-						<input type="button" value="停封" name="shutdownBtn" class="shutdownBtn">
-					</div>
-				</li>
-				<li class="list">
-					<div class="headPortrait"><img src="img/1.jpg"></div>
-					<div class="userName">邱奕辉</div>
-					<div class="registrationName">@kong</div>
-					<div class="loginTime">最近登录时间：2018-08-24 15:47:20</div>
-					<div class="shutdown">
-						<input type="button" value="停封" name="shutdownBtn" class="shutdownBtn">
-					</div>
-				</li>
+				</li>		
+						
 			</ul>
 			<div class="noContent">
 			没有相关内容！
@@ -79,5 +60,10 @@
 			<a href=""><div class="next">下一页</div></a>
 		</div>
 	</div>
+	<!--%
+		}else{
+			response.sendRedirect("backstageError.jsp");  //重定向到提示无权利访问页面
+		}
+	%-->
   </body>
 </html>

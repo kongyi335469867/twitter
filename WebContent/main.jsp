@@ -507,7 +507,7 @@
 		});
 	};
 	$(function() {
-		if(${info.uabout == null} || ${info.udate ==null} || ${info.ulogo == "default_profile_normal.png"}){
+		if($(info.uabout == null) || $(info.udate ==null) || $(info.ulogo == "default_profile_normal.png")){
 			$("#tongzhi").html("欢迎来到推特的世界！请尽情展示你的freestyle！").fadeIn(300).delay(1000).fadeOut(300);
 		}
 		$("#touxiang").popover({
@@ -589,39 +589,39 @@
 		location="selfdetail.jsp";
 	});
 	$(function(){
-		if(${info.ulogo == 'default_profile_normal.png'}){
+		if($(info.ulogo == 'default_profile_normal.png')){
 			$(".buchongziliao:eq(0)").show();
 			return;
 		}
-		if(${info.uabout == null}){
+		if($(info.uabout == null)){
 			$(".buchongziliao:eq(1)").show();
 			return;
 		}
-		if(${info.udate == null}){
+		if($(info.udate == null)){
 			$(".buchongziliao:eq(2)").show();
 			return;
 		}
 	});
 	$(".tiaoguo:eq(0)").click(function() {
 		$(this).parent().parent().parent().hide();
-		if(${info.uabout == null}){
+		if($(info.uabout == null)){
 			$(".buchongziliao:eq(1)").show();
 			return;
 		}
-		if(${info.udate == null}){
+		if($(info.udate == null)){
 			$(".buchongziliao:eq(2)").show();
 			return;
 		}
 	});
 	$(".tiaoguo:eq(1)").click(function() {
 		$(this).parent().parent().parent().hide();
-		if(${info.udate == null}){
+		if($(info.udate == null)){
 			$(".buchongziliao:eq(2)").show();
 		}
 	});
 	$(".tiaoguo:eq(2)").click(function() {
 		$(this).parent().parent().parent().hide();
-		if(${info.ulogo != 'default_profile_normal.png'} && ${info.uabout != null} && ${info.udate != null}){
+		if($(info.ulogo != 'default_profile_normal.png') && $(info.uabout != null) && $(info.udate != null)){
 			$(".buchongziliao:eq(3)").show();
 		}
 	});
@@ -706,7 +706,7 @@
 				if(response =="ok"){
 					$(".buchongziliao:eq(1)").hide();
 					$("#tongzhi").html("修改信息成功！").fadeIn(300).delay(500).fadeOut(300);
-					if(${info.udate == null}){
+					if($(info.udate == null)){
 						$(".buchongziliao:eq(2)").show();
 					}
 				}
@@ -1128,7 +1128,7 @@ function tweetsJs(){
 		click:function(){
 			var uid = $(this).parent().parent().find(".uuid").val();
 			var urealname = $(this).html().trim();
-			if (uid ==  ${user.uid}) {
+			if (uid ==  $(user.uid)) {
 				location="selfdetail.jsp";
 				return;
 			}
@@ -2128,10 +2128,10 @@ function tweetsJs(){
 						$("#touxiang").css("background", "url(" + img + ")");
 						$("#touxiang").css("backgroundSize", "31px 31px");
 						$(".buchongziliao:eq(0)").hide();
-						if(${info.uabout == null}){
+						if($(info.uabout == null)){
 							$(".buchongziliao:eq(1)").show();
 							return;
-						}else if(${info.udate == null}){
+						}else if($(info.udate == null)){
 							$(".buchongziliao:eq(2)").show();
 							return;
 						}else{
@@ -2210,7 +2210,7 @@ function tweetsJs(){
 		}
 		var uid = $(user).find(".uid").val();
 		var urealname = $(user).find(".soumingzi").html().trim();
-		if (uid ==  ${user.uid}) {
+		if (uid ==  $(user.uid)) {
 			location="selfdetail.jsp";
 			return;
 		}
