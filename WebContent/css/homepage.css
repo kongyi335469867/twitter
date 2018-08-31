@@ -67,7 +67,7 @@
 	float: left;
 	margin-left: 20px;  
 	padding: 10px 30px 10px 25px;
-	width: 215px;
+	width: 210px;
 	height: 100px;
 	position: relative;
 	border: 1px solid #ccc;
@@ -87,7 +87,7 @@
 }
 .counter{
 	color: #fff;
-	font-size: 46px;
+	font-size: 44px;
 	font-weight: bold;
 	display: inline-block;
 	position: absolute;

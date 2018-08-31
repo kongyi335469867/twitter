@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -9,9 +10,20 @@
     <link rel="shortcut icon" href="img/index.ico" />
     <title>twitter后台中心</title>
     <link rel="stylesheet" type="text/css" href="css/BasicStyle.css"><!--后台页面基本样式-->
-    <link rel="stylesheet" href="css/backstageIndex.css" /><!--后台页面主页样式-->
+    <link rel="stylesheet"  type="text/css" href="css/backstageIndex.css" /><!--后台页面主页样式-->
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/backstageIndex.js"></script>
 </head>
-<body scrolling="no">
+<body>
+	<!--%
+		String aLogin = (String)session.getAttribute("A_LOGIN");  //从登录界面正常登录进来才可以访问
+		Admins adminDB = (Admins)session.getAttribute("ADMINS_DB");   //获取传递的管理员信息
+	%-->
+	<!--% 
+		if("aLogin".equals(aLogin)){
+			/*设置只能通过后台的backstageIndex.jsp页面来访问子窗口的页面*/
+			session.setAttribute("ALLOW", "allow");
+	%-->
     <div class="layout-admin">
         <!--头部-->
         <header class="layout-header">
@@ -22,10 +34,10 @@
                     <a href="javascript:;">管理员，欢迎您！</a>
                 </li>
                 <li class="header-bar-nav">
-                    <a href="javascript:;">admin<i class="iconfont" style="margin-left:5px; font-size: 14px;">&#xe503;</i></a>
+                    <a href="javascript:;"><!--%=adminDB.getAname()%-->admin<i class="iconfont" style="margin-left:5px; font-size: 14px;">&#xe503;</i></a>
                     <ul class="header-dropdown-menu">
                         <!--li><a href="javascript:;">个人信息</a></li-->
-                        <li><a href="javascript:;">&nbsp;&nbsp;退&nbsp;&nbsp;出</a></li>
+                        <li><a href="BackstageExitCtrl">&nbsp;&nbsp;退&nbsp;&nbsp;出</a></li>
                     </ul>
                 </li>
             </ul>
@@ -35,25 +47,25 @@
             <ul class="side-menu">
                 <li class="menu-header menu-item"><i class="iconfont">&#xe613;</i></li>
                 <li class="menu-item" title="主页">
-                    <a id="homepage" href="homepage.html" target="iframe0">
+                    <a id="homepage" href="homepage.jsp" target="iframe0">
                         <i class="iconfont">&#xe65e;</i>
                         <span class="menu-item-word">主页</span>
                     </a>
                 </li>
                 <li class="menu-item" title="用户中心">
-                    <a id="memberCenter" href="memberCenter.html" target="iframe0">
+                    <a id="memberCenter" href="memberCenter.jsp" target="iframe0">
                         <i class="iconfont">&#xe6a3;</i>
                         <span class="menu-item-word">用户中心</span>
                     </a>
                 </li>
                 <li class="menu-item" title="推文中心">
-                    <a id="tweetCenter" href="tweetCenter.html" target="iframe0">
+                    <a id="tweetCenter" href="tweetCenter.jsp" target="iframe0">
                         <i class="iconfont">&#xe61f;</i>
                         <span class="menu-item-word">推文中心</span>
                     </a>
                 </li>
                 <li class="menu-item" title="关于">
-                    <a id="aboutBackstage" href="aboutBackstage.html" target="iframe0">
+                    <a id="aboutBackstage" href="aboutBackstage.jsp" target="iframe0">
                         <i class="iconfont">&#xe5be;</i>
                         <span class="menu-item-word">关于</span>
                     </a>
@@ -67,7 +79,7 @@
                 <button class="tab-btn btn-left"><i class="iconfont">&#xe628;</i></button>
                 <nav class="tab-nav">
                     <div class="tab-nav-content">
-                        <a href="javascript:;" class="content-tab active" id="index" data-id="homepage.html">主页<!--i class="iconfont">&#xe62a;</i--></a>
+                        <a href="javascript:;" class="content-tab active" id="index" >主页<!--i class="iconfont">&#xe62a;</i--></a>
                     </div>
                 </nav>
                 <!--右箭头图标-->
@@ -75,14 +87,18 @@
             </div>
             <div class="layout-main-body">
                 <!--子页面窗口显示位处-->
-                <iframe class="body-iframe" name="iframe0" src="homepage.html" width="100%" height="99%" frameborder="0" data-id="homepage.html" seamless></iframe>
+               
+                <iframe class="body-iframe" name="iframe0" src="homepage.jsp" width="100%" height="99%" frameborder="0" seamless></iframe>
                 <!--seamless规定了<iframe>看上去像是包含文档的一部分（无边框或滚动条）。-->
             </div>
         </section>
         <!--底部-->
         <footer class="layout-footer">Copyright© redis小组</footer>
     </div>
-    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="js/backstageIndex.js"></script>
+	<!--%
+		}else{
+			response.sendRedirect("backstageError.jsp");  //重定向到提示无权利访问页面
+		} 
+	%-->
 </body>
 </html>
