@@ -3,15 +3,15 @@ package com.twitter.bean;
 import java.sql.Timestamp;
 
 public class Replyall {
-	private int rid;
-	private int uid;
-	private int tid;
-	private String rcontent;
-	private String uname;
-	private String urealname;
-	private String uaite;
-	private String ulogo;
-	private Timestamp rtime;
+	private int rid;	//回复id
+	private int uid;	//用户id
+	private int tid;	//推文id
+	private String rcontent;	//回复内容
+	private String uname;		//e-mail
+	private String urealname;	//用户真实姓名
+	private String uaite;		//用户登录名
+	private String ulogo;		//用户头像
+	private Timestamp rtime;	//回复时间
 	private String time;
 
 	public String getTime() {

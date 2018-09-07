@@ -3,28 +3,28 @@ package com.twitter.bean;
 import java.sql.Timestamp;
 
 public class Utweets {
-	private int tid;
-	private int uid;
-	private String tcontent;
-	private Timestamp ttime;
-	private String tpic;
-	private String tvideo;
-	private int treply;
-	private int tforward;
-	private int tlike;
-	private String uname;
-	private String upwd;
-	private String urealname;
-	private String uaite;
-	private int uonline;
-	private String uabout;
-	private String ulogo;
-	private String ubg;
-	private int ufans;
-	private int utweet;
-	private int ufollow;
-	private String ucolor;
-	private String time;
+	private int tid;	//推文ID
+	private int uid;	//用户ID
+	private String tcontent;	//推文内容
+	private Timestamp ttime;	//推文时间
+	private String tpic;		//推文图片
+	private String tvideo;		//推文视频
+	private int treply;			//回复推文
+	private int tforward;		//转发推文数
+	private int tlike;			//推文点赞数
+	private String uname;		//e-mail
+	private String upwd;		//用户密码
+	private String urealname;	//用户真实姓名
+	private String uaite;		//用户登录名
+	private int uonline;		//用户在线状态
+	private String uabout;		//用户简介
+	private String ulogo;		//用户头像
+	private String ubg;			//用户背景图
+	private int ufans;			//用户关注者人数
+	private int utweet;			//用户推文数
+	private int ufollow;		//用户正关注的人数
+	private String ucolor;		//用户背景色
+	private String time;		//时间
 	private Utweets utweets;
 	private int tzhuan;
 	private int zaned;

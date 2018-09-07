@@ -4,12 +4,13 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.twitter.bean.Users;
+
 import com.twitter.bean.Usersall;
 import com.twitter.bean.Usersinfo;
 import com.twitter.util.DBUtil;
-
+@SuppressWarnings("unchecked")
 public class UsersinfoDao {
+
 	public List<Usersall> fenye(int page, int size, Object... objects) {
 		StringBuffer sql = new StringBuffer("select * from usersall ");
 		List<Usersall> usersalls = new ArrayList<Usersall>();
