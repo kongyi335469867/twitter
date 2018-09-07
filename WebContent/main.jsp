@@ -24,10 +24,28 @@
 <script src="js/select.js"></script>
 <link rel="stylesheet" href="css/main.css" />
 <style>
-*{
+/* *{
 	border:1px solid red;
 	box-sizing: border-box;
+} */
+.usersinfo {
+	width: 300px;
+	height: auto;
+	max-height: 350px;
+	min-height: 200px;
+	background-color: white;
+	border-radius: 5px;
+	position: absolute;
+	z-index: 999;
+	max-height: 350px;
+	background-color: white;
 }
+
+.usersinfotouxiang {
+	margin-top: 69px;
+	margin-left: -100px;
+}
+
 </style>
 </head>
 <body>
@@ -488,10 +506,12 @@
 		</div>
 	</div>
 </body>
+<!-- 所有通知提示信息未读信息的显示JavaScript -->
 <script type="text/javascript">
+	//私聊消息主页的提示点是否显示
 	window.setInterval(function() {
 		 siliao();
-	}, 10000);
+	}, 10000);   //每10秒刷新一下siliao()函数
 	function siliao() {
 	 	var url =  '/mytwitter/message.do?method=hasnew';
 		$.ajax({
@@ -506,10 +526,16 @@
 			}
 		});
 	};
+	
+	//主页弹出框显示
 	$(function() {
-		if($(info.uabout == null) || $(info.udate ==null) || $(info.ulogo == "default_profile_normal.png")){
+		//判断进入时是否显示通知框，如果简介，生日，头像没填就显示
+		if("${info.uabout == null}" || "${info.udate ==null}" || "${info.ulogo == 'default_profile_normal.png'}"){
+			//通知框淡入0.3秒，效果保持1秒，淡出0.3秒
 			$("#tongzhi").html("欢迎来到推特的世界！请尽情展示你的freestyle！").fadeIn(300).delay(1000).fadeOut(300);
+			
 		}
+		//弹出框效果
 		$("#touxiang").popover({
 			content : "修改个人信息和登出",
 			placement : 'bottom',
@@ -544,6 +570,7 @@
 			left : "-25px"
 		});
 	})
+	//未实现，使用session记录是否有账号被登录了，有则账号被迫退出
 	function catsession() {
 		$.ajax({
 			url : '/mytwitter/user.do?method=catsession',
@@ -565,7 +592,8 @@
 	window.setInterval(function() {
 		shishitongzhi();
 	}, 10000);
-	var tongzhishu = 0;
+	var tongzhishu = 0;  //刷新通知数
+	
 	function shishitongzhi() {
 		$.ajax({
 			url : '/mytwitter/notify.do?method=noread',
@@ -573,11 +601,11 @@
 			success : function(response, status) {
 				if (response > 0 && tongzhishu!=response) {
 					tongzhishu = response;
-					$("#tongzhigeshu").html(response);
-					$("#notification").show();
-					if (response * 1 > 9) {
-						var tongzhichang = $("#tongzhigeshu").css("width");
-						$("#notification").css("width", tongzhichang.substring(0, tongzhichang.indexOf("p")) * 1 + 8 + "px");
+					$("#tongzhigeshu").html(response);   //通知数
+					$("#notification").show();	//外框样式
+					if (response * 1 > 9) {//数量大于9时，提示点宽度增大
+						var tongzhichang = $("#tongzhigeshu").css("width"); //取得宽度值
+						$("#notification").css("width", tongzhichang.substring(0, tongzhichang.indexOf("p")) * 1 + 8 + "px");//tongzhichang.indexOf("p")取得第一个p出现的位置0开始，为了判断位数，
 					}
 				}
 			}
@@ -586,61 +614,71 @@
 </script>
 <script>
 	$("#chakangerenziliao").click(function(){
-		location="selfdetail.jsp";
+		location="selfdetail.jsp";   //页面跳转到个人信息页面
 	});
+	
+	//个人是否显示补充资料的显示框
 	$(function(){
-		if($(info.ulogo == 'default_profile_normal.png')){
-			$(".buchongziliao:eq(0)").show();
+		if("${info.ulogo == 'default_profile_normal.png'}"){//没有头像
+			$(".buchongziliao:eq(0)").show();	//补充个资料显示框
 			return;
 		}
-		if($(info.uabout == null)){
+		if("${info.uabout == null}"){//没有简介
 			$(".buchongziliao:eq(1)").show();
 			return;
 		}
-		if($(info.udate == null)){
+		if("${info.udate == null}"){//没有生日
 			$(".buchongziliao:eq(2)").show();
 			return;
 		}
 	});
+	
+	//跳过被点击后
 	$(".tiaoguo:eq(0)").click(function() {
 		$(this).parent().parent().parent().hide();
-		if($(info.uabout == null)){
+		if("${info.uabout == null}"){
 			$(".buchongziliao:eq(1)").show();
 			return;
 		}
-		if($(info.udate == null)){
+		if("${info.udate == null}"){
 			$(".buchongziliao:eq(2)").show();
 			return;
 		}
 	});
 	$(".tiaoguo:eq(1)").click(function() {
 		$(this).parent().parent().parent().hide();
-		if($(info.udate == null)){
+		if("${info.udate == null}"){
 			$(".buchongziliao:eq(2)").show();
 		}
 	});
 	$(".tiaoguo:eq(2)").click(function() {
 		$(this).parent().parent().parent().hide();
-		if($(info.ulogo != 'default_profile_normal.png') && $(info.uabout != null) && $(info.udate != null)){
+		if("${info.ulogo != 'default_profile_normal.png'}" && "${info.uabout != null}" && "${info.udate != null}"){
 			$(".buchongziliao:eq(3)").show();
 		}
 	});
+	
+	//添加照片》头像被点击
 	$("#tianjiazhaopian").click(function() {
 		$("#user_tou_xiang").click();
 	});
+	
+	//时间选择
 	$(function() {
 		$("#date").selectDate();
 		$("#days").focusout(function() {
-			var year = $("#year option:selected").html()
-			var month = $("#month option:selected").html()
-			var day = $("#days option:selected").html()
-			console.log(year + month + day)
+			var year = $("#year option:selected").html()	//年
+			var month = $("#month option:selected").html()	//月
+			var day = $("#days option:selected").html()		//日
+			console.log(year + month + day)					//年，月，日
 		})
 	})
+	
+	//上传生日被点击
 	$("#shangchuanshengri").click(function() {
-		var year = $("#year option:selected").html()
-		var month = $("#month option:selected").html()
-		var day = $("#days option:selected").html()
+		var year = $("#year option:selected").html()	//年
+		var month = $("#month option:selected").html()	//月
+		var day = $("#days option:selected").html()		//日
 		if (year == "年") {
 			$("#tongzhi").html("请选择年份！").fadeIn(300).delay(500).fadeOut(300);
 			return;
@@ -654,16 +692,16 @@
 			return;
 		}
 		if (year != "年" && month != "月" && day != "日") {
-			xiugaishengri(year + month + day);
+			xiugaishengri(year + month + day);    //运行函数，传送用户生日到数据库
 		}
 	});
-	
+	//修改生日
 	function xiugaishengri(data) {
 		$.ajax({
 			url : '/mytwitter/user.do?method=updatebrithday',
 			type : 'POST',
 			data : {
-				date : data
+				date : data   //生日:数据
 			},
 			success : function(response, status) {
 				if(response =="ok"){
@@ -706,7 +744,7 @@
 				if(response =="ok"){
 					$(".buchongziliao:eq(1)").hide();
 					$("#tongzhi").html("修改信息成功！").fadeIn(300).delay(500).fadeOut(300);
-					if($(info.udate == null)){
+					if("${info.udate == null}"){
 						$(".buchongziliao:eq(2)").show();
 					}
 				}
@@ -767,11 +805,11 @@
 		$("#xiugaitouxiang").hide();
 		$("#xiugaishang").hide();		
 	});
-	var touxiang = "${pageContext.request.contextPath}/img/${user.uname }/${info.ulogo}";
+	var touxiang = "'${pageContext.request.contextPath}'/img/'${user.uname }'/'${info.ulogo}''";
 	var mytwitter  =' ${pageContext.request.contextPath}';
 	$(".tuijian_touxiang").css("background","url('"+touxiang+"')");
 	$(".tuijian_touxiang").css("backgroundSize","50px 50px");
-	var number = ${info.utweet}+"";
+	var number = "${info.utweet}"+"";
 	var one = "1";
 	var zero = "0";
 	var tuiwenshu = 0;
@@ -1128,7 +1166,7 @@ function tweetsJs(){
 		click:function(){
 			var uid = $(this).parent().parent().find(".uuid").val();
 			var urealname = $(this).html().trim();
-			if (uid ==  $(user.uid)) {
+			if (uid ==  "${user.uid}") {
 				location="selfdetail.jsp";
 				return;
 			}
@@ -1273,7 +1311,7 @@ function tweetsJs(){
 		
 	}
 	var color = "${info.ucolor}";
-	var touxiang = "${pageContext.request.contextPath}/img/${user.uname }/${info.ulogo}";
+	var touxiang = "'${pageContext.request.contextPath}'/img/'${user.uname }'/'${info.ulogo}'";
 	var bg = "${pageContext.request.contextPath}/img/${user.uname }/${info.ubg}";
 
 	$(".touxiang").css("background", "url(" + touxiang + ")");
@@ -2128,10 +2166,10 @@ function tweetsJs(){
 						$("#touxiang").css("background", "url(" + img + ")");
 						$("#touxiang").css("backgroundSize", "31px 31px");
 						$(".buchongziliao:eq(0)").hide();
-						if($(info.uabout == null)){
+						if("${info.uabout == null}"){
 							$(".buchongziliao:eq(1)").show();
 							return;
-						}else if($(info.udate == null)){
+						}else if("${info.udate == null}"){
 							$(".buchongziliao:eq(2)").show();
 							return;
 						}else{
@@ -2210,7 +2248,7 @@ function tweetsJs(){
 		}
 		var uid = $(user).find(".uid").val();
 		var urealname = $(user).find(".soumingzi").html().trim();
-		if (uid ==  $(user.uid)) {
+		if (uid ==  "${user.uid}") {
 			location="selfdetail.jsp";
 			return;
 		}
@@ -2249,8 +2287,8 @@ function tweetsJs(){
 							canvas = document.createElement("canvas"),
 							dim = el.css('background-position').split(' '),
 							size = el.css('background-size').split(' '),
-							dx = parseInt(dim[0]) - el.width() / 2 + width / 2,
-							dy = parseInt(dim[1]) - el.height() / 2 + height / 2,
+							dx = parseInt(dim[0]) - (el.width()/2) + (width/2),
+							dy = parseInt(dim[1]) - (el.height()/2) + (height/2),
 							dw = parseInt(size[0]),
 							dh = parseInt(size[1]),
 							sh = parseInt(this.image.height),
@@ -2356,3 +2394,4 @@ function tweetsJs(){
 	}));
 </script>
 </html>
+

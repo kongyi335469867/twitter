@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
 <meta charset="utf-8">
@@ -9,446 +9,9 @@
 <script src="js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css" />
+<link rel="stylesheet" href="css/message.css">
 <script src="js/jquery.mCustomScrollbar.min.js"></script>
-<style>
-* {
-	margin: 0;
-	padding: 0;
-}
 
-html, body {
-	background-image: url("img/body_bg.jpg");
-	background-size: 105% 100%;
-	text-align: center;
-	width: 100%;
-	height: 100%;
-}
-
-#message {
-	width: 70%;
-	height: 100%;
-	min-height: 400px;
-	min-width: 800px;
-	margin: 0px auto;
-	border-radius: 5px;
-}
-
-#liebiao {
-	background-color: rgba(51, 53, 46, 1.00);
-	height: 100%;
-	width: 290px;
-	min-height: 400px;
-	border-top-left-radius: 5px;
-	border-bottom-left-radius: 5px;
-	float: left;
-	min-height: 400px;
-}
-
-#xiaoxi {
-	background-color: rgb(238, 238, 238);
-	height: 100%;
-	width: 70%;
-	min-height: 400px;
-	margin-left: 30%;
-	border-top-right-radius: 5px;
-	border-bottom-right-radius: 5px;
-}
-
-#info {
-	background-color: rgba(41, 43, 46, 1.00);
-	border-top-left-radius: 5px;
-	height: 70px;
-	width: 100%;
-}
-
-#touxiang {
-	width: 54px;
-	height: 54px;
-	margin-left: 20px;
-	float: left;
-}
-
-#touxiang img {
-	width: 54px;
-	height: 54px;
-	border-radius: 25px;
-	margin-top: 8px;
-}
-
-#uname {
-	max-width: 120px;
-	width: auto;
-	height: 25px;
-	color: white;
-	position: relative;
-	top: 25px;
-	left: 10px;
-	font-size: 16px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	text-align: left;
-}
-
-#search {
-	height: 40px;
-}
-
-#search input {
-	width: 100%;
-	height: 40px;
-	background-color: rgba(51, 53, 58, 1.00);
-	border: 0px solid white;
-	color: white;
-	border-bottom: 0.01px solid darkgrey;
-	padding-left: 35px;
-	position: relative;
-	top: -40px;
-}
-
-.xiangqing {
-	width: 100%;
-	height: 80px;
-	background-color: rgba(51, 53, 58, 1.00);
-	cursor: pointer;
-	margin-bottom: 1px;
-	color: white;
-	border-left: 3px solid rgba(51, 53, 58, 1.00);
-}
-
-#friend {
-	width: 100%;
-	max-height: 83%;
-	OVERFLOW-Y: -webkit-paged-x;
-	OVERFLOW-X: hidden;
-}
-
-.touxiang {
-	width: 54px;
-	height: 54px;
-	margin-left: 20px;
-	float: left;
-}
-
-.touxiang img {
-	width: 54px;
-	height: 54px;
-	border-radius: 25px;
-	margin-top: 10px;
-}
-
-.liaotianxinxi {
-	width: 70%;
-	margin-left: 80px;
-	text-align: left;
-	padding-top: 15px;
-	padding-left: 10px;
-}
-
-.liaotianname {
-	font-size: 16px;
-	margin-bottom: 5px;
-	overflow: hidden;
-	width: 70%;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	float: left;
-}
-
-.liaotianneirong {
-	font-size: 13px;
-	color: #ccc;
-	width: 80%;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	float: left;
-}
-
-.newmsg {
-	width: 10px;
-	height: 10px;
-	border-radius: 25px;
-	background-color: orangered;
-	position: relative;
-	top: 15px;
-	left: 160px;
-}
-
-.liaotiantime {
-	font-size: 12px;
-	color: #ccc;
-	position: relative;
-	right: -15px;
-}
-
-#xiaoxitop {
-	width: 94%;
-	margin-left: 3%;
-	height: 50px;
-	line-height: 50px;
-	border-bottom: 1px solid #ccc;
-	color: #666;
-	font-size: 18px;
-	margin-bottom: 10px;
-}
-
-#xiaoxinall {
-	padding-top: 20px;;
-	background-color: rgb(238, 238, 238);
-	min-height: 65%;
-	max-height: 75%;
-	height: 65%;
-	width: 94%;
-	margin-left: 3%;
-	margin-bottom: 10px;
-	overflow: auto;
-}
-
-#addpic {
-	border-top: 1px solid #ccc;
-	width: 100%;
-	height: 20px;
-	margin-bottom: 10px;
-}
-
-#xiaoxikuang {
-	background-color: rgb(238, 238, 238);
-	width: 94%;
-	margin-left: 3%;
-	height: 15%;
-	text-align: left;
-	overflow: auto;
-	z-index: 9;
-	padding: 5px;
-	border: 0px;
-	resize: none;
-}
-
-#tip {
-	width: 100%;
-	background-color: rgb(238, 238, 238);
-	font-size: 12px;
-	color: #666;
-	text-align: right;
-	padding-right: 20px;
-	border-bottom-right-radius: 5px;
-}
-
-#xiaoxitwo {
-	font-size: 18px;
-	color: #ccc;
-	padding-top: 40%;
-	height: 100%;
-}
-
-#xiaoxione {
-	height: 100%;
-}
-
-.getxiaoxi {
-	height: auto;
-	text-align: left;
-	margin-right: 10px;
-}
-
-.sendxiaoxi {
-	height: auto;
-	width: 100%;
-	text-align: right;
-}
-
-.gettouxiang {
-	height: auto;
-	width: 40px;
-	height: 40px;
-}
-
-.gettouxiang img {
-	width: 40px;
-	height: 40px;
-	border-radius: 25px;
-}
-
-.getneirong {
-	position: relative;
-	left: 45px;
-	top: -38px;
-	width: auto;
-	background-color: white;
-	max-width: 300px;
-	min-height: 20px;
-	padding: 10px;
-	float: left;
-	border-radius: 10px;
-	color: black;
-	text-align: left;
-	line-height: 20px;
-}
-
-.sendtouxiang img {
-	width: 40px;
-	height: 40px;
-	border-radius: 25px;
-}
-
-.sendneirong {
-	position: relative;
-	right: 45px;
-	top: -38px;
-	background-color: limegreen;
-	width: auto;
-	max-width: 300px;
-	min-height: 20px;
-	padding: 10px;
-	float: right;
-	border-radius: 10px;
-	color: black;
-	text-align: left;
-	line-height: 20px;
-}
-
-#addfriend {
-	font-size: 16px;
-	color: grey;
-	cursor: pointer;
-	margin-left: 130px;
-	margin-top: 5px;
-}
-
-#myModal {
-	margin-top: 5%;
-	margin-left: 5%;
-}
-
-.modal-body {
-	max-height: 350px;
-	overflow: auto;
-}
-
-.pengyou {
-	width: 100%;
-	height: 40px;
-	line-height: 40px
-}
-
-.pengyoudanxuan {
-	float: left;
-	width: 50px;
-}
-
-.pengyoutouxiang {
-	width: 25px;
-	float: left;
-	margin-top: 7px;
-}
-
-.pengyoutouxiang img {
-	width: 25px;
-	height: 25px;
-	border-radius: 25px
-}
-
-.pengyouname {
-	max-width: 100px;
-	float: left;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	margin-left: 25px;
-	font-weight: bold;
-}
-
-.pengyouaite {
-	max-width: 100px;
-	float: left;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	margin-left: 10px;
-	float: left;
-}
-
-.online {
-	width: 10px;
-}
-
-.popup_menu ul, li {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	font-size: 12px;
-	color: black;
-}
-
-.popup_menu {
-	position: absolute;
-	z-index: 90;
-	border: 1px solid #AEAEAE;
-	background-color: white;
-	padding: 2px;
-	width: 100px;
-	border-radius: 5px;
-}
-
-.popup_menu a {
-	display: block;
-	color: #325B8E;
-	text-indent: 12px;
-	text-decoration: none;
-	height: 30px;
-	line-height: 30px;
-	padding-right: 5px;
-}
-
-.popup_menu a:hover {
-	background: #57B4E4;
-	color: #fff;
-	border-radius: 5px;
-}
-
-.mCSB_inside>.mCSB_container {
-	margin-right: 0px;
-}
-
-.mCSB_scrollTools {
-	width: 8px;
-}
-
-.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
-	width: 100%;
-	background-color: rgba(207, 207, 207, 1);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#E5cfcfcf,
-		endColorstr=#E5cfcfcf);
-}
-
-.mCSB_scrollTools .mCSB_draggerRail {
-	background-color: rgba(255, 255, 255, .4);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#66ffffff,
-		endColorstr=#66ffffff);
-}
-
-.mCSB_scrollTools .mCSB_dragger:hover .mCSB_dragger_bar {
-	background-color: rgba(207, 207, 207, 1);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#E5cfcfcf,
-		endColorstr=#E5cfcfcf);
-}
-
-.mCSB_scrollTools .mCSB_dragger.mCSB_dragger_onDrag .mCSB_dragger_bar,
-	.mCSB_scrollTools .mCSB_dragger:active .mCSB_dragger_bar {
-	background-color: rgba(207, 207, 207, 1);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#E5cfcfcf,
-		endColorstr=#E5cfcfcf);
-}
-
-.mCSB_scrollTools .mCSB_draggerRail {
-	width: 0;
-}
-
-.mCSB_container.mCS_no_scrollbar_y.mCS_y_hidden {
-	margin-right: 0px;
-}
-</style>
 </head>
 
 <body style="height: 100%;">
@@ -456,22 +19,26 @@ html, body {
 		<div id="liebiao">
 			<div id="info">
 				<div id="touxiang">
+				<!-- //发送头像 -->
 					<img
-						src="${pageContext.request.contextPath}/img/${user.uname }/${info.ulogo} " />
-				</div>
-
-				<div id="uname">${user.urealname }</div>
-				<span class="glyphicon glyphicon-comment" id="addfriend"
+						src="${pageContext.request.contextPath}/img/${user.uname }/${info.ulogo}" />
+       </div>
+<!-- //获得用户的真实姓名 -->
+   <div id="uname">${user.urealname } </div>
+	<span class="glyphicon glyphicon-comment" id="addfriend"
 					data-toggle="modal" data-target="#myModal"></span>
 			</div>
+			<!-- //查找联系人 -->
 			<div id="search">
 				<span class="glyphicon glyphicon-search"
 					style="padding-top:12px;z-index: 9;float:left;color:#657786;font-size: 16px;width: 40px;height: 40px;position: relative;"></span>
 				<input type="text" placeholder="查找联系人">
 			</div>
+			
 			<div id="friend"></div>
 		</div>
 		<div id="xiaoxi">
+		<!-- 发送消息显示出来 -->
 			<div id="xiaoxione" style="display: none;">
 				<div id="xiaoxitop"></div>
 				<input class="uid" type="hidden">
@@ -506,12 +73,14 @@ html, body {
 	</div>
 </body>
 <script>
+/* 选择好友  */
 	$("#xuanze").on({
 		click:function(){
 			xqnum = 0;
 			$("input[name='haoyou']").each(function(){
 				   if($(this).get(0).checked){
-				   		var haoyou = $(this).get(0);
+				   		var haoyou = $(this).get(0);0
+				   		
 				   		$(".xiangqing").each(function(){
 					   		if($(this).find(".uuid").val() == $(haoyou).parent().find(".uid").val()){
 					   			if($("#xiaoxione").css("display") == "block"){
@@ -529,10 +98,13 @@ html, body {
 					   			xqnum++;
 					   		}
 					 	});
+				   		/* 消息内容 */
 					 	if(xqnum == $(".xiangqing").length){
 					 		var html = '<div class="xiangqing" onclick="getMessage(this)"><div class="touxiang"><img src="'
 								+$(haoyou).parent().find(".pengyoutouxiang img").attr("src")+ '" /></div><div class="liaotianxinxi">'
-								+ '<input type="hidden" class="uuid" value="' + $(haoyou).parent().find(".uid").val()+ '"><div class="liaotianname">' + $(haoyou).parent().find(".pengyouname").html().trim() + '</div><div class="liaotiantime"></div>'
+								+ '<input type="hidden" class="uuid" value="' + $(haoyou).parent().find(".uid").val()+ '">
+								/* 添加聊天姓名和聊天的内容 */
+								<div class="liaotianname">' + $(haoyou).parent().find(".pengyouname").html().trim() + '</div><div class="liaotiantime"></div>'
 								+ '<div class="liaotianneirong"></div></div></div></div>';
 							$("#friend").prepend(html);
 							$(".xiangqing:eq(0)").click();
@@ -544,6 +116,7 @@ html, body {
 			   $("#guanbi").click();
 		}
 	})
+	/* 添加好友 */
 	$("#addfriend").on({
 		mouseover : function() {
 			$(this).css("color", "white");
@@ -555,6 +128,8 @@ html, body {
 			addFriends();
 		}
 	});
+	/* xiaoxione代表的是整个消息内容	xiaoxitwo代表的是没有消息是的提示 */
+	/* 获取消息/在没有消息的时候xioaxione隐藏，xiaoxitwo显示 */
 	function getMessage(user) {
 		if ($(user).css("backgroundColor") == "rgb(41, 43, 46)") {
 			$(user).css("backgroundColor", "rgba(51, 53, 58, 1.00)");
@@ -572,6 +147,7 @@ html, body {
 		$(user).siblings().css("backgroundColor", "rgba(51, 53, 58, 1.00)");
 		$(user).siblings().css("borderLeft", "");
 		$(this).find(".newmsg").hide();
+		/* 在顶部添加你需要聊天的名字 */
 		$("#xiaoxitop").html($(user).find(".liaotianname").html().trim());
 		var uid = $(user).find(".uuid").val();
 		$("#xiaoxione").find(".uid").val(uid);
@@ -580,6 +156,8 @@ html, body {
 			shuaxin()
 		}, 1000);
 	}
+	
+	/* 添加朋友，利用ajax */
 	function addFriends(){
 		$.ajax({
 			url : "/mytwitter/message.do?method=addfriend",
@@ -592,15 +170,18 @@ html, body {
 				}
 				var pengyou = $.parseJSON(response);
 				var html = addPengyou(pengyou);
+				/* 将相应的添加好友在modal-body这个类中显示出来*/
 				$(".modal-body").html(html);
 			}
 		})
 	}
+	/* 生成添加朋友，获取头像等等 */
 	function addPengyou(pengyou){
 		var html = '';
 		for(var i = 0; i < pengyou.length; i++){
 			html+='<div class="pengyou"><input type="hidden" class="uid" value="'
-			+pengyou[i].uid+'"><input type="radio" name="haoyou" class="pengyoudanxuan" style="margin-top: 13px;margin-left: 30px;" /><div class="pengyoutouxiang"	><img src="'
+			+pengyou[i].uid+'"><input type="radio" name="haoyou" class="pengyoudanxuan" style="margin-top: 13px;margin-left: 30px;" />
+			<div class="pengyoutouxiang"	><img src="'
 			+'${pageContext.request.contextPath}/img/'+pengyou[i].uname+'/'+pengyou[i].ulogo+'" /></div><div class="pengyouname">'
 			+pengyou[i].urealname+'</div><div class="pengyouaite">@'+pengyou[i].uaite+'</div>';
 			
@@ -608,6 +189,8 @@ html, body {
 		}
 		return html;
 	}
+	
+	/* 获取消息 */
 	function getMsg(uid) {
 		$.ajax({
 			url : "/mytwitter/message.do?method=msg&uid=" + uid,
@@ -615,6 +198,8 @@ html, body {
 			asyn : true,
 			success : function(response) {
 				var msg = $.parseJSON(response);
+				/* 在xiaoxiall存放着消息的内容 */
+				/* scrollTop的目的是为了设置消息的滚动条 */
 				var html = addMessage(msg);
 				$("#xiaoxinall").html(html);	
 				$('#xiaoxinall').scrollTop($('#xiaoxinall')[0].scrollHeight);
@@ -622,6 +207,7 @@ html, body {
 		})
 	}
 	
+	/* 刷新信息 */
 	function shuaxin(){
 		var url =  "/mytwitter/message.do?method=shuaxin&uid=" +$("#xiaoxione").find(".uid").val() +"&mid=" +$(".xiaoxixiaoxi:last").find(".mid").val();
 		$.ajax({
@@ -637,6 +223,9 @@ html, body {
 			}
 		})
 	}
+	
+	
+	/* 删除聊天 */
 	function delliaotian(uid){
 		var url =  "/mytwitter/message.do?method=del&uid="+ uid ;
 		$.ajax({
@@ -646,6 +235,8 @@ html, body {
 			}
 		})
 	}
+	
+	/* 设置鼠标设置事件，xiangqing代表用户列表 */
 	function friendJs() {
 	var kyoPopupMenu={};  
     kyoPopupMenu = (function(){  
@@ -667,7 +258,7 @@ html, body {
     $('html').on('contextmenu', function (){return false;}).click(function(){  
         $('.popup_menu').hide();  
     });  
-    //桌面点击右击  
+    //桌面点击右击  ，且可选择删除聊天
 	    $('.xiangqing').on('contextmenu',function (e){  
 	        var popupmenu = kyoPopupMenu.sys(this);  
 	        l = ($(document).width() - e.clientX) < popupmenu.width() ? (e.clientX - popupmenu.width()) : e.clientX;  
@@ -686,7 +277,7 @@ html, body {
 			}
 		});
 	}
-	
+	/* keyCode==13表示点击inter发送 */
 	$("#xiaoxikuang").keyup(function(e) {
 		if (e.keyCode == 13 && e.ctrlKey) {
 			$(this).val($(this).val() + "\n");
@@ -723,6 +314,8 @@ html, body {
 	
 	}
 	var message;
+	
+	
 	function getFriend() {
 		$.ajax({
 			url : "/mytwitter/message.do?method=liebiao",
@@ -746,6 +339,7 @@ html, body {
 			}
 		})
 	}
+	/* 发送消息以及接收消息 */
 	function addMessage(msg) {
 		var html = "";
 		for (var i = 0; i < msg.length; i++) {
@@ -775,7 +369,7 @@ html, body {
 					+ '${pageContext.request.contextPath}/img/' + msg[i].uname2 + '/' + msg[i].ulogo2 + '" /></div><div class="liaotianxinxi">'
 					+ '<input type="hidden" class="uuid" value="' + msg[i].uid2 + '"><div class="liaotianname">' + msg[i].urealname2 + '</div>	<div class="liaotiantime">' + msg[i].time + '</div>'
 					+ '<div class="liaotianneirong">' + msg[i].mcontent + '</div></div></div></div>'
-         }else{
+			}else{
 				html += '	<div class="xiangqing" onclick="getMessage(this)"><div class="touxiang"><img src="'
 					+ '${pageContext.request.contextPath}/img/' + msg[i].uname + '/' + msg[i].ulogo + '" /></div><div class="liaotianxinxi">'
 					+ '<input type="hidden" class="uuid" value="' + msg[i].fuid + '"><div class="liaotianname">' + msg[i].urealname + '</div>	<div class="liaotiantime">' + msg[i].time + '</div>'

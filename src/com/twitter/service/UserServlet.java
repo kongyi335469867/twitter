@@ -1,4 +1,4 @@
-package com.twitter.servlet;
+package com.twitter.service;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,10 +24,10 @@ import com.twitter.dao.ConcernDao;
 import com.twitter.dao.SigninDao;
 import com.twitter.dao.UsersDao;
 import com.twitter.dao.UsersinfoDao;
-import com.twitter.pojo.Concern;
-import com.twitter.pojo.Users;
-import com.twitter.pojo.Usersall;
-import com.twitter.pojo.Usersinfo;
+import com.twitter.bean.Concern;
+import com.twitter.bean.Users;
+import com.twitter.bean.Usersall;
+import com.twitter.bean.Usersinfo;
 import com.twitter.util.Md5Util;
 import com.twitter.util.Times;
 import com.twitter.util.Upload;
@@ -54,6 +54,23 @@ public class UserServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		String method = request.getParameter("method");
+
+		if ("checklogin".equals(method)) {
+			checkLogin(request, response);
+		}
+
+		if ("register".equals(method)) {
+			toRegister(request, response);
+		}
+
+		if ("checkuser".equals(method)) {
+			checkUser(request, response);
+		}
+
+		if ("signup".equals(method)) {
+			signUp(request, response);
+		}
+
 		if ("checkaite".equals(method)) {
 			checkAite(request, response);
 		}
@@ -110,7 +127,7 @@ public class UserServlet extends HttpServlet {
 		}
 
 	}
-//修改个人资料toUpdateDate
+
 	private void toUpdateData(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String urealname = request.getParameter("urealname");
 		String uaite = request.getParameter("uaite");
@@ -130,7 +147,7 @@ public class UserServlet extends HttpServlet {
 			response.getWriter().print("ok");
 		}
 	}
-//获得背景图片
+
 	private void toUpdateBg(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
 		Users user = (Users) session.getAttribute("user");
@@ -147,9 +164,19 @@ public class UserServlet extends HttpServlet {
 		}
 	}
 
+	//使用session记录是否有账号被登录了，有则账号被迫退出
 	private void toCatSession(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	
+		  /*HttpSession session = request.getSession(); 
+		  Users user = (Users)session.getAttribute("user");
+		  if (user == null) {
+			  response.getWriter().print("exit");   //session中用户是空，则退出
+			  return; 
+		  }
+		  response.getWriter().print("have");*/
 	}
-
+	
+	
 	private void toGengXinInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String neirong = request.getParameter("neirong");
 		HttpSession session = request.getSession();
@@ -164,13 +191,13 @@ public class UserServlet extends HttpServlet {
 			return;
 		}
 	}
-//获得个人信息
+	
+	//修改用户简介
 	private void toUpdateAbout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String uabout = request.getParameter("about");
 		HttpSession session = request.getSession();
 		Users user = (Users) session.getAttribute("user");
 		int uid = user.getUid();
-		//修改个人简介
 		int n = usersinfoDao.updateAbout(uid, uabout);
 		if (n > 0) {
 			Usersinfo info = usersinfoDao.getInfos(uid);
@@ -178,7 +205,8 @@ public class UserServlet extends HttpServlet {
 			response.getWriter().print("ok");
 		}
 	}
-//获得左下角的生日时间
+
+	//修改用户生日
 	private void toUpdateBrithday(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String date = request.getParameter("date");
 		String brithy = date.substring(0, date.indexOf("日")).replaceAll("[\u4e00-\u9fa5]", "-") + " 00:00:00";
@@ -193,7 +221,7 @@ public class UserServlet extends HttpServlet {
 			response.getWriter().print("ok");
 		}
 	}
-//查询用户
+
 	private void toChaUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		JSONArray js = new JSONArray();
 		String name = request.getParameter("name");
@@ -209,7 +237,7 @@ public class UserServlet extends HttpServlet {
 		}
 		response.getWriter().write(js.toString());
 	}
-//修改头像
+
 	private void toChangeLogo(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String ulogo = request.getParameter("touxiang");
 		HttpSession session = request.getSession();
@@ -263,7 +291,7 @@ public class UserServlet extends HttpServlet {
 				users.getUfollow(), users.getUcolor(), users.getUaddress(), users.getGuanzhu()));
 		response.getWriter().write(js.toString());
 	}
-//刷新推荐，在右方
+
 	private void toShuaXinTuiJian(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		JSONArray js = new JSONArray();
 		HttpSession session = request.getSession();
@@ -528,6 +556,141 @@ public class UserServlet extends HttpServlet {
 			response.getWriter().print("yes");
 		}
 	}
+
+	// 注册
+	private void signUp(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+
+		String name = (String) session.getAttribute("name");
+		String uname = (String) session.getAttribute("uname");
+		String pwd = (String) session.getAttribute("pwd");
+		String aite = request.getParameter("aite");
+		Timestamp utime = Times.getSystemTime();
+
+		int n = usersDao.addUser(uname, pwd, name, aite, utime);
+		if (n > 0) {
+			ServletContext application = session.getServletContext();
+			Integer zhuceNum = (Integer) application.getAttribute("zhuceNum");
+			if (zhuceNum == null) {
+				zhuceNum = 1;
+			} else {
+				zhuceNum += 1;
+			}
+			application.setAttribute("newTweetNum", zhuceNum);
+			Users user = usersDao.checkLogin(uname, pwd);
+
+			int m = usersinfoDao.addUserinfo(user.getUid());
+			if (m > 0) {
+				Usersinfo info = usersinfoDao.getInfos(user.getUid());
+
+				String folder = request.getSession().getServletContext().getRealPath("/img/" + user.getUname());
+				String img = request.getSession().getServletContext().getRealPath("/img");
+				File file = new File(folder);
+				file.mkdir();
+
+				InputStream is = new FileInputStream(img + "/" + info.getUlogo());
+				OutputStream os = new FileOutputStream(folder + "/" + info.getUlogo(), true);
+				byte[] b = new byte[1024];
+				int a = is.read(b); // 实际读到的文件的长度
+
+				while (a > 0) {
+					os.write(b, 0, a);
+					a = is.read(b);
+				}
+
+				os.close();
+				is.close();
+
+				session.setAttribute("info", info);
+				session.setAttribute("user", user);
+				response.sendRedirect("start.jsp");
+			}
+		}
+
+	}
+
+	// 验证用户
+	private void checkUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		String username = request.getParameter("username");
+		boolean success = usersDao.checkUsername(username);
+
+		if (success) {
+			response.getWriter().print("no");
+		} else {
+			response.getWriter().print("yes");
+		}
+	}
+
+	private void toRegister(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String name = request.getParameter("name");
+		String uname = request.getParameter("uname");
+		String pwd = request.getParameter("pwd");
+		String order = request.getParameter("order");
+		pwd = Md5Util.getMd5(pwd);
+		request.setAttribute("name", name);
+		request.setAttribute("uname", uname);
+		request.setAttribute("pwd", pwd);
+
+		if ("first".equals(order)) {
+			request.getRequestDispatcher("register.jsp").forward(request, response);
+			return;
+		}
+
+		HttpSession session = request.getSession();
+		session.setAttribute("name", name);
+		session.setAttribute("uname", uname);
+		session.setAttribute("pwd", pwd);
+		request.getRequestDispatcher("next.jsp").forward(request, response);
+	}
+
+	// 验证登录信息
+	private void checkLogin(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		if (username == "" && password == "") {
+			request.setAttribute("display", "show");
+			request.getRequestDispatcher("login.jsp?display=show").forward(request, response);
+			return;
+		}
+		password = Md5Util.getMd5(password);
+		Users user = usersDao.checkLogin(username, password);
+		if (user == null) {
+			request.setAttribute("display", "show");
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+			return;
+		}
+
+		if (user.getUstate() == 0) {
+			request.setAttribute("display", "stop");
+			request.getRequestDispatcher("login.jsp").forward(request, response);
+			return;
+		}
+		Usersinfo info = usersinfoDao.getInfos(user.getUid());
+		ServletContext application = request.getSession().getServletContext();
+		HttpSession oldSession = (HttpSession) application.getAttribute(user.getUname());
+
+		if (oldSession != null) {
+			oldSession.invalidate();
+		}
+		HttpSession session = request.getSession();
+		session.setAttribute("user", user);
+		session.setAttribute("info", info);
+
+		application.setAttribute(user.getUname(), session);
+		Integer onlineNum = (Integer) application.getAttribute("onlineNum");
+		if (onlineNum == null) {
+			onlineNum = new Integer(1);
+		} else {
+			int count = onlineNum.intValue();
+			onlineNum = count + 1;
+		}
+
+		application.setAttribute("onlineNum", onlineNum);
+		request.getRequestDispatcher("signin.do?method=online").forward(request, response);
+		// response.sendRedirect("main.jsp");
+	}
 }
-
-
