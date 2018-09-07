@@ -4,9 +4,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.twitter.bean.Users;
-import com.twitter.bean.Usersall;
-import com.twitter.bean.Usersinfo;
+import com.twitter.pojo.Users;
+import com.twitter.pojo.Usersall;
+import com.twitter.pojo.Usersinfo;
 import com.twitter.util.DBUtil;
 
 public class UsersinfoDao {
@@ -102,25 +102,25 @@ public class UsersinfoDao {
 		}
 		return null;
 	}
-
+//添加用户id
 	public int addUserinfo(int uid) {
 		String sql = "insert into usersinfo(uid) values(?)";
 		int n = DBUtil.update(sql, uid);
 		return n;
 	}
-
+//添加完推文，将数量+1；
 	public int addTweetsNum(int uid) {
 		String sql = "update usersinfo set utweet = (utweet + 1) where uid = ?";
 		int n = DBUtil.update(sql, uid);
 		return n;
 	}
-
+//删除推文，将数量-1
 	public int delTweetsNum(int uid) {
 		String sql = "update usersinfo set utweet = (utweet - 1) where uid = ?";
 		int n = DBUtil.update(sql, uid);
 		return n;
 	}
-
+//添加粉丝数量
 	public int addFansNum(int uid, int state) {
 		String sql = null;
 		if (state == 1)
@@ -131,7 +131,7 @@ public class UsersinfoDao {
 		int n = DBUtil.update(sql, uid);
 		return n;
 	}
-
+//添加用户正在关注数
 	public int addFollowNum(int uid, int state) {
 		String sql = null;
 		if (state == 1)
@@ -150,7 +150,7 @@ public class UsersinfoDao {
 		}
 		return null;
 	}
-
+//搜索词汇
 	public List<Usersall> searchWord(String word, List uidList, int pagenum) {
 		List<Usersall> list = new ArrayList<Usersall>();
 		String sql = "select uid, uname, urealname, uaite, ustate, utime, uonline, uaddress,  uabout, udate, ubg,ulogo, ufans, utweet,ufollow ,ucolor  from usersall where (urealname like ? or uaite like ?)";

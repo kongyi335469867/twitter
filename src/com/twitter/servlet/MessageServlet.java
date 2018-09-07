@@ -16,9 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.twitter.dao.MessageDao;
-import com.twitter.bean.Messageall;
-import com.twitter.bean.Users;
-import com.twitter.bean.Usersall;
+import com.twitter.pojo.Messageall;
+import com.twitter.pojo.Users;
+import com.twitter.pojo.Usersall;
 import com.twitter.util.Times;
 
 import net.sf.json.JSONArray;
@@ -31,18 +31,13 @@ import net.sf.json.JsonConfig;
 public class MessageServlet extends HttpServlet {
 	static MessageDao messageDao = new MessageDao();
 
-	
-	/**
-	 *通过POST/GET主页页面传输method变量到MessageServlet页面,
-	 */
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		request.setCharacterEncoding("UTF-8");  //统一服务器主页页面的编码
-		response.setContentType("text/html;charset=UTF-8"); //统一浏览器上显示的编码
-		
-		String method = request.getParameter("method");//通过request.getParameter("method")获取method的值
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+
+		String method = request.getParameter("method");
 		if ("liebiao".equals(method)) {
 			toGetLieBiao(request, response);
 		}
@@ -69,7 +64,7 @@ public class MessageServlet extends HttpServlet {
 			request.getRequestDispatcher("message.jsp").forward(request, response);
 		}
 	}
-	
+//删除好友或者信息
 	private void toDel(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
 		Users user = (Users) session.getAttribute("user");
@@ -78,7 +73,9 @@ public class MessageServlet extends HttpServlet {
 		messageDao.delFriend(fuid, suid);
 		response.getWriter().print("success");
 	}
-
+//添加好友
+	//setExcludes()这个方法，简单的说，这个就是过滤掉不需要的属性，
+	
 	private void toAddFriend(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
 		Users user = (Users) session.getAttribute("user");
@@ -89,22 +86,15 @@ public class MessageServlet extends HttpServlet {
 		JSONArray array = JSONArray.fromObject(usersalls, config);
 		response.getWriter().print(array.toString());
 	}
-
-	
-	/**
-	 * 有新消息提示函数
-	 * @param request
-	 * @param response
-	 * @throws IOException
-	 */
+//发送新消息
 	private void toHasNew(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
-		Users user = (Users) session.getAttribute("user"); //获取session的user对象
-		int fuid = user.getUid();//获取接收者id
-		int n = messageDao.hasNew(fuid);//查询数据库
-		response.getWriter().print(n);//响应向浏览器返回查询的未读私聊信息
+		Users user = (Users) session.getAttribute("user");
+		int fuid = user.getUid();
+		int n = messageDao.hasNew(fuid);
+		response.getWriter().print(n);
 	}
-
+//刷新
 	private void toShuaxinMsg(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String suid = request.getParameter("uid");
 		String mid = request.getParameter("mid");
@@ -120,7 +110,7 @@ public class MessageServlet extends HttpServlet {
 			response.getWriter().print(jsonArray.toString());
 		}
 	}
-
+//添加消息
 	private void toAddMsg(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String mcontent = request.getParameter("mcontent");
 		String suid = request.getParameter("uid");
@@ -136,7 +126,7 @@ public class MessageServlet extends HttpServlet {
 			response.getWriter().print("ok");
 		}
 	}
-
+//获取消息
 	private void toGetMsg(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String suid = request.getParameter("uid");
 		HttpSession session = request.getSession();
@@ -151,6 +141,7 @@ public class MessageServlet extends HttpServlet {
 			response.getWriter().print(jsonArray.toString());
 		}
 	}
+	//获取列表信息，并且按照发送以及接收信息的时间排序
 
 	private void toGetLieBiao(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
