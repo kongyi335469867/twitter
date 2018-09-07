@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE HTML>
 <html>
   <head>
@@ -9,18 +10,27 @@
     <link rel="stylesheet" type="text/css" href="css/tweetCenter.css"><!--后台推文中心页面样式-->
   </head>
   <body class="bd">
+  	<%
+  		List<String[]> tweetsList = (List<String[]>)request.getAttribute("TWEETS_LIST");  /*推文内容*/
+  		int tweetsPageCount = (Integer)request.getAttribute("TWEETS_PAGE_COUNT");   /*推文总数*/
+  		int tweetsPageNow = (Integer)request.getAttribute("TWEETS_CURRENT_PAGE");  /*当前页面*/
+  		String deleteResult = (String)request.getAttribute("DELETE_RESULT");  /*推文删除结果*/
+  		String noContent = (String)request.getAttribute("T_NOCONTENT"); //暂无推文相关内容提示
+  	%>
   	<!--%
 		String allow = (String)session.getAttribute("ALLOW");
 		if("allow".equals(allow)){
 	%-->
 	<div class="container">
 		<div class="header">
+			<form action="BackstagePageCtrl?str=tweetCenter&tsearch=tsearch" method="post">
 			<div class="search">
-				<input type="text" id="searchBar" placeholder="输入搜索内容..."/>
-				<input type="button" value="搜索" name="searchBtn" class="searchBtn"/>
+				<input type="text" id="searchBar" name="tsearchUrealname" placeholder="输入用户名进行搜索内容..." />
+				<input type="submit" value="搜索" class="searchBtn" />
 			</div>
-			<div class="sort">
-				<input type="button" value="批量删除" name="sortBtn" class="sortBtn"/>
+			</form>
+			<div class="deleteBatches">
+				<input type="button" value="批量删除" id="deleteBatchesBtn" class="deleteBatchesBtn" />
 			</div>
 			<div class="clear"></div>
 		</div>
@@ -35,48 +45,174 @@
 						<th class="operation">操作</th>
 					</tr>
 					<!-- 推文内容tr模块 -->
+					<%
+						for(String[] tweet : tweetsList){
+					%>
 					<tr bgcolor="#F9F9F9" class="row">
-						<td><input type="checkbox" name="checkitem" value="checkitem"></td>
+						<td><input type="checkbox" name="checkitem" value="<%=tweet[4] %>"></td>
 						<td>
-							<div class="images"><img src="img/1.jpg"/></div>
+							<div class="images"><img src="img/1.jpg"/><!--img src="<!--%=tweet[3] %>"--></div>
 							<div class="name">
-								<div class="userName">邱奕辉</div>
-								<div class="registrationName">@kong</div>
+								<div class="userName"><%=tweet[1] %></div>
+								<div class="registrationName">@<%=tweet[2] %></div>
 							</div>
 							<div class="clear"></div>
 						</td>
 						<td>
-							<div class="publishingContent">布时间的英文翻译,发布时间英文怎么说,怎么用英语翻译发布时间,发布时间的英文意思,發布時間的英文,发布时间 meaning in English,發布時間的</div>
+							<div class="publishingContent"><%=tweet[5] %></div>
 						</td>
 						<td>
-							<div class="publishedTime">2018-08-23 21:01:39</div>
+							<div class="publishedTime"><%=tweet[6] %></div>
 						</td>
-						<td><input type="button" value="删除" name="deleteBtn" class="deleteBtn" /></td>
+						<td><input type="button" value="删除" name="deleteBtn" class="deleteBtn" 
+							onclick="javascript:window.location.href='BackstagePageCtrl?str=tweetCenter&deleteTid=<%=tweet[4] %>'"/></td>
 					</tr>
+					<%
+					}
+					%>
 				</table>
 			</div>
+			<%
+				if("1".equals(deleteResult)){
+			%>
+				<script type="text/javascript">
+					alert("删除此条推文成功！"); 
+				</script> 
+			<%
+				}else if("0".equals(deleteResult)){
+			%>
+				<script type="text/javascript">
+					alert("删除此条推文失败！");
+				</script> 
+			<%
+				}
+			%>
 			<div class="noContent">
-				没有相关内容！
+				<p>o(╥﹏╥) o </p>
+				<p>暂无相关内容！</p>
 			</div>
+			<%
+				if("[]".equals(noContent)){
+			%>
+				<script type="text/javascript">
+					document.getElementsByClassName("box")[0].style.cssText = "display:none;";
+					document.getElementsByClassName("noContent")[0].style.cssText = "display:block;";
+				</script> 
+			<% 		
+				}else{
+			%>
+				<script type="text/javascript">
+					document.getElementsByclassName("box")[0].style.cssText = "display:block;";
+					document.getElementsByClassName("noContent")[0].style.cssText = "display:none;";
+				</script> 
+			<% 	
+				}
+			%>
 		</div>
 		<div class="pagination">
-			<a href=""><div class="prev">上一页</div></a>
-			<ul class="pages">
-				<a href="">
-					<li class="li1 first">1</li>
-				</a>
-				<a href="">
-					<li class="li2">2</li>
-				</a>
-				<a href="">
-					<li class="li3">3</li>
-				</a>
-			</ul>
-			<a href=""><div class="next">下一页</div></a>
+		<%
+		if(tweetsPageCount == 0){
+		%>
+			<div class="empty"></div>
+		<%
+		}else if(tweetsPageCount == 1){
+		%>		
+			<div class="pages pages1">
+				<a href="BackstagePageCtrl?tweetsCurrentPage=1" class="page page1">1</a>
+			</div>
+		<%
+			}else if(tweetsPageCount == 2){
+		%>
+			<a href="BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=1" class="prev">上一页</a>
+			<div class="pages pages2">
+				<a href="BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=1" class="page page1">1</a>
+				<a href="BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=2" class="page page2">2</a>
+			</div>
+			<a href="BackstagePageCtrl?tweetsCurrentPage=2" class="next">下一页</a>
+		<%
+			}else {
+				if(tweetsPageNow != 1){
+		%>
+					<a href="BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=<%=tweetsPageNow-1 %>" class="prev">上一页</a>
+			<%
+				}
+			%>
+					<div class="pages pages3">
+			<%
+				if(tweetsPageNow <= tweetsPageCount - 3 ){
+					for(int i = tweetsPageNow; i < tweetsPageNow + 3; i++){
+			%>
+						<a href="BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=<%=i %>" class="page"><%=i %></a>
+			<%
+					}
+				}else{
+					for(int i = tweetsPageCount-(3-1); i <= tweetsPageCount; i++ ){
+			%>
+						<a href="BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=<%=i %>" class="page"><%=i %></a>
+			<%
+					}
+				}
+			%>
+					</div>
+			<%
+				if(tweetsPageNow != tweetsPageCount){
+			%>
+					<a href="BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=<%=tweetsPageNow+1 %>" class="next">下一页</a>
+		<%
+				}
+			}
+		%>
 		</div>
 	</div>
 	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
-	<script type="text/javascript" src="js/tweetCenter.js"></script><!--后台推文中心JS控制-->
+	<script type="text/javascript">
+		$(document).ready(function(){
+			/*全选或全不选*/
+		    $("#checkAll").click(function () {
+		        if ($("#checkAll").prop('checked')) {
+		            $("#checkAll").prop("checked", true);
+		            $("input[name=checkitem]:checkbox").prop("checked", true);
+		        } else {
+		            $("#checkAll").prop("checked", false);
+		            $("input[name=checkitem]:checkbox").prop("checked", false);
+		        }
+		    });
+	
+		    //当其中不勾选某一个选项的时候,则去掉全选复选框
+		   $(":checkbox[name=checkitem]").click(function () {
+		       $("#checkAll").prop('checked',
+		           $(":checkbox[name='checkitem']").length == $(":checkbox[name='checkitem']:checked").length);
+		   });
+		   
+		   // 批量选择 
+		   $("#deleteBatchesBtn").click(function() { 
+		       // 判断是否至少选择一项 
+		       var checkedNum = $(":checkbox[name='checkitem']:checked").length; 
+		       if(checkedNum == 0){
+		           alert("批量删除内容提示：请选择至少一项！"); 
+		           return;
+		       }else{
+		           if(confirm("确定要删除所选项目？")) { 
+		               var checkedList = new Array(); 
+		               $("input[name='checkitem']:checked").each(function() { 
+		                   checkedList.push($(this).val()); 
+		               });
+		               // alert("checkedList: " + checkedList);
+		           }
+		            $.ajax({ 
+		                type: "POST", 
+		                url: "BackstagePageCtrl?str=ajaxDeleteBatches", 
+		                data: {'tids':checkedList.toString()}, 
+		                success: function(result) { 
+		                    ///alert("回调成功:" + result);
+		                    $("[name ='checkitem']:checkbox").attr("checked", false); 
+		                    window.location.reload(); 
+		                } 
+		            }); 
+		       }
+		   });
+		});
+	</script>
 	<!--%
 		}else{
 			response.sendRedirect("backstageError.jsp");  //重定向到提示无权利访问页面
