@@ -712,19 +712,20 @@
 			}
 		});
 	}
-		
+	//更新信息
 	function gengxininfo(data) {
 		$.ajax({
 			url : '/mytwitter/user.do?method=gengxininfo&neirong='+data,
 			type : 'POST',
 			success : function(response, status) {
 				if(response == 'ok'){
-					$(".buchongziliao:eq(3)").show();
+					$(".buchongziliao:eq(3)").show();  //显示补充资料
 				}
 			}
 		});
 	}
 	
+	// 保存简介
 	$("#baocunjianjie").click(function() {
 		var jianjie = $("#shangchuanabout").val().trim();
 		if(jianjie == ""){
@@ -733,6 +734,7 @@
 		}
 		xiugaijianjie(jianjie);
 	});
+	
 	function xiugaijianjie(data) {
 		$.ajax({
 			url : '/mytwitter/user.do?method=updateabout',

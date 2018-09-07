@@ -176,7 +176,7 @@ public class UserServlet extends HttpServlet {
 		  response.getWriter().print("have");*/
 	}
 	
-	
+	//更新资料内容
 	private void toGengXinInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String neirong = request.getParameter("neirong");
 		HttpSession session = request.getSession();

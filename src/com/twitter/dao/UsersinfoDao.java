@@ -84,16 +84,16 @@ public class UsersinfoDao {
 		}
 		return null;
 	}
-
+	//通过用户Id获取用户的相关个人信息
 	public Usersinfo getInfos(int uid) {
-		String sql = "select id, uid, uaddress,  uabout, udate, ubg,ulogo, ufans, utweet,ufollow ,ucolor  from usersinfo where uid=?  limit 1";
+		String sql = "select id, uid, uaddress,  uabout, udate, ubg,ulogo, ufans, utweet,ufollow ,ucolor  from usersinfo where uid=?  limit 1";   //加上LIMIT 1，只要找到了对应的一条记录，就不会继续向下扫描了，效率会大大提高。
 		List<Usersinfo> list = DBUtil.query(Usersinfo.class, sql, uid);
 		if (list.size() > 0) {
 			return list.get(0);
 		}
 		return null;
 	}
-
+	
 	public Usersall searchWho(String uid) {
 		String sql = "select uid, uname,   urealname, uaite, ustate, utime, uonline, uaddress,  uabout, udate, ubg,ulogo, ufans, utweet,ufollow ,ucolor  from usersall where uid=? limit 1";
 		List<Usersall> list = DBUtil.query(Usersall.class, sql, uid);
