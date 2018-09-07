@@ -53,19 +53,19 @@
                     </a>
                 </li>
                 <li class="menu-item" title="用户中心">
-                    <a id="memberCenter" href="memberCenter.jsp" target="iframe0">
+                    <a id="memberCenter" href="BackstagePageCtrl?str=memberCenter" target="iframe0">
                         <i class="iconfont">&#xe6a3;</i>
                         <span class="menu-item-word">用户中心</span>
                     </a>
                 </li>
                 <li class="menu-item" title="推文中心">
-                    <a id="tweetCenter" href="tweetCenter.jsp" target="iframe0">
+                    <a id="tweetCenter" href="BackstagePageCtrl?str=tweetCenter" target="iframe0">
                         <i class="iconfont">&#xe61f;</i>
                         <span class="menu-item-word">推文中心</span>
                     </a>
                 </li>
                 <li class="menu-item" title="关于">
-                    <a id="aboutBackstage" href="aboutBackstage.jsp" target="iframe0">
+                    <a id="aboutBackstage" href="BackstagePageCtrl?str=aboutBackstage" target="iframe0">
                         <i class="iconfont">&#xe5be;</i>
                         <span class="menu-item-word">关于</span>
                     </a>

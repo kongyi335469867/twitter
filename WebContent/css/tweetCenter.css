@@ -3,7 +3,8 @@
 	padding: 0;
 	box-sizing: border-box;
 }
-input[type="button"]{
+input[type="button"],
+input[type="submit"]{
 	padding: 4px 15px;
 	margin: 10px;
 	background-color: #5BC0DE;
@@ -28,7 +29,7 @@ input[type="checkbox"]{
 	width: 100%;
 	height: 50px;
 }
-.header>div{
+.header>form>div{
 	display: inline-block;
 }
 .search{
@@ -42,11 +43,41 @@ input[type="checkbox"]{
 	border: 1px solid #ccc;
 	border-radius: 5px;  
 }
-.sort{
+.searchBtn{
+	cursor: pointer;
+	-o-transition: .3s;
+	-webkit-transition: .3s;
+	-moz-transition: .3s;
+	transition: .3s;
+	box-shadow: 0 4px 2px 0 rgba(0,0,0,0.24), 0 6px 14px 0 rgba(0,0,0,0.19);
+}
+.searchBtn:hover{
+	cursor: pointer;
+	-o-transition: .3s;
+	-webkit-transition: .3s;
+	-moz-transition: .3s;
+	transition: .3s;
+	background-color: #337AB7;
+	box-shadow: 0 2px 1px 0 rgba(0,0,0,0.24), 0 3px 7px 0 rgba(0,0,0,0.19);
+}
+.deleteBatches{
 	float: right;
 }
-.sort>.sortBtn{
+.deleteBatches>.deleteBatchesBtn{
+	-o-transition: .3s;
+	-webkit-transition: .3s;
+	-moz-transition: .3s;
+	transition: .3s;
 	background-color: #D9534F;
+	box-shadow: 0 4px 2px 0 rgba(0,0,0,0.24), 0 6px 14px 0 rgba(0,0,0,0.19);
+}
+.deleteBatches>.deleteBatchesBtn:hover{
+	-o-transition: .3s;
+	-webkit-transition: .3s;
+	-moz-transition: .3s;
+	transition: .3s;
+	background-color: #666;
+	box-shadow: 0 2px 1px 0 rgba(0,0,0,0.24), 0 3px 7px 0 rgba(0,0,0,0.19);
 }
 
 /*内容部分*/
@@ -84,7 +115,8 @@ tr:nth-child(even){
 }
 /*用户*/
 .user{
-	width: 16%;
+	/*width: 16%;*/
+	width: 182px;
 }
 .images{
 	width: 35%;
@@ -109,7 +141,8 @@ tr:nth-child(even){
 }
 /*内容*/
 .content{
-	width: 54%;
+	/*width: 54%;*/
+	width: 612px;
 	padding: 3px 0;
 }
 td>.publishingContent{
@@ -120,67 +153,91 @@ td>.publishingContent{
 }
 /*时间*/
 .time{
-	width: 16%;
+	/*width: 16%;*/
+	width: 182px;
 	min-width: 80px;
 }
 /*操作*/
 .operation{
-	width: 8%;
+	/*width: 8%;*/
+	width: 92px;
 	min-width: 60px;
 }
 td>.deleteBtn{
+	-o-transition: .3s;
+	-webkit-transition: .3s;
+	-moz-transition: .3s;
+	transition: .3s;
 	background-color: #D9534F;
+	box-shadow: 0 4px 2px 0 rgba(0,0,0,0.24), 0 6px 14px 0 rgba(0,0,0,0.19);
+}
+td>.deleteBtn:hover{
+	-o-transition: .3s;
+	-webkit-transition: .3s;
+	-moz-transition: .3s;
+	transition: .3s;
+	background-color: #666;
+	box-shadow: 0 2px 1px 0 rgba(0,0,0,0.24), 0 3px 7px 0 rgba(0,0,0,0.19);
 }
 
 /*分页*/
 .pagination{
-	width: 402px;
+	width: 298px;
 	height: 40px;
 	margin: 0 auto;
 	/*background-color: lightblue;*/
 	margin-bottom: 46px; 
+	position: relative;
 }
 .pagination a{
 	color: #fff;
 }
-.pagination a>.prev,
-.pagination a>.next,
-.pages>a>li{
+.pagination>.prev,
+.pagination>.next,
+.pages>.page{
 	width: 40px;
 	height: 40px;
+	margin: 0;
+	padding: 0;
 	text-align: center;
 	line-height: 40px;
 	float: left;
 	background-color: #fff;
+	color: #337AB7;
+	display: block;
+	-o-transition: .5s;
+	-webkit-transition: .5s;
+	-moz-transition: .5s;
+	transition: .5s;
+	box-shadow: 0 4px 2px 0 rgba(0,0,0,0.24), 0 6px 14px 0 rgba(0,0,0,0.19);
 }
-.pagination a>.prev,
-.pagination a>.next{
-	width: 80px;
-	margin: 0 30px;
-	border-radius: 5px;
+.pagination>.prev,
+.pagination>.next{
+	width: 64px;
+	margin-right: 24px;
+	border-radius: 8px;
+	color: #fff;
 	background-color: #337AB7;
 }
-.pages>a>li{
-	color: #337AB7;
+.pagination>.next{
+	margin: 0 0 0 24px;
 }
-.li1{
-	border-radius: 5px 0 0 5px;
+.pages>.page:nth-child(1){
+	border-radius: 8px 0 0 8px;
 }
-.li2{
+.pages>.page:nth-child(2){
 	border-left: 1px solid #ccc;
 	border-radius:0;
-	display: block;
 }
-.li3{
+.pages>.page:nth-child(3){
 	border-left: 1px solid #ccc;
-	border-radius: 0 5px 5px 0;
-	display: block;
+	border-radius: 0 8px 8px 0;
 }
-.pages>a>.first{
+.pages>.page:nth-child(1){
 	background-color: #337AB7;
 	color: #fff;
 }
-.pages>a>li:hover{
+.pages>.page:hover{
 	-o-transition: .5s;
 	-webkit-transition: .5s;
 	-moz-transition: .5s;
@@ -188,17 +245,28 @@ td>.deleteBtn{
 	background-color: #337AB7;
 	color: #fff;
 }
+.pages1{   /*页码只有一页时显示样式*/
+	position: absolute;
+	left: 45%;
+}
+.pages1>.page1{
+	border-radius: 8px !important
+}
+.pages2>.page2{   /*页码只有两页时显示样式*/
+	border-radius: 0 8px 8px 0 !important
+}
 /*没有内容时的样式*/
 .contentBox>.noContent{
 	width: auto;
 	height: 100%;
-	display: none;
 	text-align: center;
 	color: #DDD;
 	font-size: 55px;
 	position: relative;
-	top: 40%;
+	top: 28%;
+	display: none;
 }
+/*响应式*/
 @media(max-width: 750px){
 	.contentBox{
 		height: 900px;
@@ -217,15 +285,23 @@ td>.deleteBtn{
 		float: none;
 	}
 	.images{
+		width: 0;
 		display: none;
 		float: none;
 	}
 	.name{
+		width: 100%;
 		float: none;
 		text-align: center;
 	}
 	.content{
-		width: 390px;
+		width: 300px;
+		height: auto;
 	}
-
+	.time{
+		width: 104px;
+	}
+	.operation{
+		width: 82px;
+	}
 }

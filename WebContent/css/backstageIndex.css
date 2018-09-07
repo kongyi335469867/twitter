@@ -187,7 +187,8 @@
     margin-left: 16px;
 }
 .side-menu .menu-item:hover>a,
-.side-menu .menu-item.active>a{
+.side-menu .menu-item.active>a,
+.side-menu .menu-item.item_active>a{
     color: #fff;
     background: #4E5465;
     border-left-color: #33AECC;
