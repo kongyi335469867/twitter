@@ -1,4 +1,4 @@
-    <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
         <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
         <c:if test="${user == null }">
@@ -37,7 +37,7 @@
             margin: 0;
             padding: 0;
         }
-        #nav{
+        #daohang{
             width: 300px;
             height: 38px;
             margin-left: 80px;
@@ -48,7 +48,7 @@
             margin-top: 0;
             margin-bottom: 10px;
         }
-        #nav li{
+        #daohang li{
             width: 80px;
             height: 42px;
             padding: 0 15px;
@@ -214,6 +214,9 @@
             font-size: 15px;
             margin: 5px 0;
             cursor: pointer;
+        }
+        hr{
+            margin:0;
         }
         .glyphicon-user:before{
             content: "\e008";
@@ -581,7 +584,7 @@
 <body>
 <div id="loader">
     <div>
-        <ul id="nav">
+        <ul id="daohang">
             <li style="color: rgb(102,107,117);">
                 <sapn class="glyphicon glyphicon-home">
 
@@ -655,9 +658,12 @@
                 <div class="listd">设置与隐私</div>
                 <div class="listd">帮助中心</div>
                 <div class="listd" id="kuaijiejian">键盘快捷键</div>
-                <div class="listd">登出</div>
+	            <div class="listd">登出</div>
             </div>
         </div>
+				
+
+
 
         <button id="fatui" class="button btn btn-info" style="background-color: rgb(29,161,241);">
     <span class="glyphicon glyphicon-send edit">
@@ -730,6 +736,21 @@
             </div>
             <div id="addtuijian" style="padding-top: 50px"></div>
         </div>
+        <!--刷新推荐关注页面-->
+            <script>
+                $(document).ready(function(){
+                    fresh();
+
+                   function fresh(){
+                      $("#tuijian").load(location.href+" #autore");
+
+                    }
+                },8000);
+
+            </script>
+
+
+
         <div id="second">
             <div id="content">
                 <div id="quanbu">
@@ -739,40 +760,140 @@
                     </ul>
                 </div>
                 <div id="notify">
-                    <div class="notifications">
-                        <div style="margin-left: 60px;padding-bottom: 30px;padding-top: 30px">
-                            <div style="font-size: 28px;font-weight: bold;color: black;width: 480px">看看大家是何时关注、提及你，收藏及转推你的推文的。</div>
-                            <div style="font-size: 15px;padding-top: 5px;color: #657786;width: 470px">从喜欢到转推等等等等，一切有关你的推文和关注者的活动都会在此发生。</div>
-                        </div>
-                        <div style="height: 290px;width: 480px;margin-left: 60px;padding-bottom: 10px;">
-                            <img src="img/concern.png" class="concern"  style="width: 30px;height: 30px;float: left;margin-left: 5px;margin-top: 15px;border-radius:20px" >
-                            <div style="width: 410px;height: 70px;margin-left: 50px;padding-top: 10px; ">
-                                <div style="font-size: 15px;color:black;"><a href="#" class="event"><b>关注者</b></a></div>
-                                <div style="font-size: 12px;padding-top: 2px;color: #657786;">有新的关注者了？恭喜你！你会在此选项卡里面看到详情。</div>
-                            </div>
-                            <img class="like" src="img/like.png" style="width: 30px;height: 30px;float: left;margin-left: 5px;margin-top: 20px;border-radius:20px" >
-                            <div style="width: 410px;height: 70px;margin-left: 50px;padding-top: 10px;">
-                                <div style="font-size: 15px;color:black;  "><a href="#" class="event"><b>喜欢</b></a></div>
-                                <div style="font-size: 12px;padding-top: 2px;color: #657786;">当有人在你的推文点按了心形图标时，这就意味着他们觉得这条推文很赞（甚至喜爱它）。</div>
-                            </div>
-                            <img class="transfer" src="img/transfer.jpg" style="width: 30px;height: 30px;float: left;margin-left: 5px;margin-top: 25px;border-radius:20px" >
-                            <div style="width: 410px;height: 70px;margin-left: 50px;padding-top: 20px ">
-                                <div style="font-size: 15px;color:black; "><a href="#" class="event"><b>转推</b></a></div>
-                                <div style="font-size: 12px;padding-top: 2px;color: #657786;">有人分享你的推文时，你应当知道，所以，你将收到通知。</div>
-                            </div>
-                            <img class="reply" src="img/reply.jpg" style="width: 30px;height: 30px;float: left;margin-left: 5px;margin-top: 25px;border-radius:20px" >
-                            <div style="width: 410px;height: 70px;margin-left: 50px;padding-top: 20px">
-                                <div style="font-size: 15px;color:black  "><a href="#" class="event"><b>回复</b></a></div>
-                                <div style="font-size: 12px;padding-top: 2px;color: #657786;">当有人想对你的推文畅所欲言时，回复将显示在这里。</div>
-                            </div>
-                        </div>
-                        <div id="back" style="display: block">
-                            <img src="img/index.ico">
-                        </div>
-                    </div>
+      
+		            <!-- 查询通知     -->    
+					<script>
+						function chaxuntongzhi(){
+							//page是通知的数量
+							page = $(".notifications").length;
+							if(page > 0){
+								page += 1;
+							}
+							$.ajax({
+								url: '/mytwitter/notify.do?method=all&page='+page,
+								type: 'POST',
+								success: function(response , status){
+									if(response == 'none' && $(".notifications").length <1){
+										var html = '<div class="notifications"><div style="margin-left: 60px;padding-bottom: 30px;padding-top: 30px">'
+											+'  <div style="font-size: 28px;font-weight: bold;color: black;width: 480px">看看大家是何时关注、提及你，收藏及转推你的推文的。</div>'
+											+' <div style="font-size: 15px;padding-top: 5px;color: #657786;width: 470px">从喜欢到转推等等等等，一切有关你的推文和关注者的活动都会在此发生。</div></div>'
+											+' <div style="height: 290px;width: 480px;margin-left: 60px;padding-bottom: 10px;"><img src="img/concern.png" class="concern"  style="width: 30px;height: 30px;float: left;margin-left: 5px;margin-top: 15px;border-radius:20px" >'
+											+'<div style="width: 410px;height: 70px;margin-left: 50px;padding-top: 10px; "><div style="font-size: 15px;color:black;"><a href="#" class="event"><b>关注者</b></a></div>'
+											+'<div style="font-size: 12px;padding-top: 2px;color: #657786;">有新的关注者了？恭喜你！你会在此选项卡里面看到详情。</div></div>'
+											+' <img class="like" src="img/like.png" style="width: 30px;height: 30px;float: left;margin-left: 5px;margin-top: 20px;border-radius:20px" ><div style="width: 410px;height: 70px;margin-left: 50px;padding-top: 10px;">'
+											+'<div style="font-size: 15px;color:black;  "><a href="#" class="event"><b>喜欢</b></a></div><div style="font-size: 12px;padding-top: 2px;color: #657786;">当有人在你的推文点按了心形图标时，这就意味着他们觉得这条推文很赞（甚至喜爱它）。</div></div>'
+											+' <img class="transfer" src="img/transfer.jpg" style="width: 30px;height: 30px;float: left;margin-left: 5px;margin-top: 25px;border-radius:20px" ><div style="width: 410px;height: 70px;margin-left: 50px;padding-top: 20px ">'
+											+'<div style="font-size: 15px;color:black; "><a href="#" class="event"><b>转推</b></a></div><div style="font-size: 12px;padding-top: 2px;color: #657786;">有人分享你的推文时，你应当知道，所以，你将收到通知。</div></div>'
+											+' <img class="reply" src="img/reply.jpg" style="width: 30px;height: 30px;float: left;margin-left: 5px;margin-top: 25px;border-radius:20px" ><div style="width: 410px;height: 70px;margin-left: 50px;padding-top: 20px">'
+											+'<div style="font-size: 15px;color:black  "><a href="#" class="event"><b>回复</b></a></div><div style="font-size: 12px;padding-top: 2px;color: #657786;">当有人想对你的推文畅所欲言时，回复将显示在这里。</div></div></div>';
+										$("#notify").append(html);
+										return;
+									}
+									var notification = $.parseJSON(response);
+									var html = addNotify(notification);
+									
+									$("#notify").append(html);
+									notifyJS();
+								}			
+							});						
+						}
+						//显示通知信息
+						var mytwitter = '${pageContext.request.contextPath}';
+						function addNotify(notification){
+							var html = ""
+							for(var i=0;i<notification.length;i++){
+								//有人关注你通知
+								if(notification[i].ntype == 1){
+									html += '<div class="notifications"><div	style="margin-left: 55px;padding-top: 20px;height: 26px;line-height: 26px">	<span class=" glyphicon glyphicon-user"'
+										+ '	style="color:rgba(29, 161, 242, 1);font-size: 16px;margin-right: 10px"></span><img style="width: 31px;height: 31px;border-radius: 50px;background-color: white;margin-top: -10px"'
+										+ ' src="' + mytwitter + '/img/' + notification[i].usersall.uname + '/' + notification[i].usersall.ulogo + '" /></div><div style="margin-left: 85px;margin-top: 20px;color: black;padding-bottom: 20px">'
+										+ '<span class="guanzhurenming" style="font-weight: bold;margin-right: 5px;cursor: pointer;"	onclick=chakanwho(this)>'
+										+ notification[i].usersall.urealname + '</span> <input type="hidden" class="uuid" value="'
+										+ notification[i].usersall.uid + '" />关注了你<span style="margin: 0px 5px;color:#657786">·</span><span'
+										+ ' class="guanzhudetime" style="color:#657786">' + notification[i].time + '</span></div></div>';
+								}
+								//有人点赞推文通知
+								if (notification[i].ntype == 2) {
+									if (notification[i].utweets.tcontent == null || notification[i].utweets.tcontent == "") {
+										continue;
+									}
+									html += '<div class="notifications"><div style="margin-left: 55px;padding-top: 10px;height: 26px;line-height: 26px">'
+									+ '<span class=" glyphicon glyphicon-heart"	style="color:rgba(224, 36, 94, 1);font-size: 16px;margin-right: 15px;"></span><span class="guanzhurenming"'
+									+ '	 style="font-size:16px;font-weight: bold;margin-right: 5px;cursor: pointer;"	onclick=chakanwho(this)>'
+									+ notification[i].usersall.urealname + '</span> <input type="hidden"	class="uuid" value="'
+									+ notification[i].nuid + '" />喜欢了你的推文<span	style="margin: 0px 5px;color:#657786">·</span><span'
+									+ ' class="dianzandetime" style="color:#657786">' + notification[i].time + '</span></div><div style="margin-left: 85px;margin-top: 20px;color: black;padding-bottom: 20px">'
+									+ '<div class="dianzantweet"><div class="dianzantweetname" onclick=chakanwho(this)>' + notification[i].utweets.urealname + '</div><input type="hidden" class="uuid" value="'
+									+ notification[i].utweets.uid + '" /><div class="dianzantweetaite">@' + notification[i].utweets.uaite + '</div><div class="dianzantweetneirong">'
+									+ notification[i].utweets.tcontent;
+									if (notification[i].utweets.tpic != null) {
+										html += '<a style="margin-left:10px;" target="view_window" href="' + mytwitter + '/img/' + notification[i].utweets.uname + '/' + notification[i].utweets.tpic + '">图片</a>';
+									}
+									html += '</div></div></div></div>';
+								}
+								//有人转发推文通知
+								if (notification[i].ntype == 3) {
+									if (notification[i].utweets.tcontent == null || notification[i].utweets.tcontent == "") {
+										continue;
+									}
+									html += '<div class="notifications"><div	style="margin-left: 55px;padding-top: 20px;height: 26px;line-height: 26px"><span class=" glyphicon glyphicon-retweet" style="color:rgba(23, 191, 99, 1);font-size: 16px;margin-right: 10px"></span>'
+									+ '<img style="width: 31px;height: 31px;border-radius: 50px;background-color: white;margin-top: -10px" src="'
+									+ mytwitter + '/img/' + notification[i].utweets.uname + '/' + notification[i].utweets.ulogo + '" />	</div><div style="margin-left: 85px;margin-top: 20px;color: black;padding-bottom: 20px">'
+									+ '<span class="guanzhurenming" style="font-weight: bold;margin-right: 5px;cursor: pointer;" onclick=chakanwho(this)>'
+									+ notification[i].utweets.urealname + '</span> <input type="hidden" class="uuid" value="'
+									+ notification[i].utweets.uid + '" />转发了你的推文<span	style="margin: 0px 5px;color:#657786">·</span><span class="guanzhudetime" style="color:#657786">'
+									+ notification[i].time + '</span><div class="dianzantweetneirong" style="margin-left: 0px;max-width:480px">'
+									+ notification[i].utweets.tcontent + '</div><div class="dianzantweet" style="margin-top: 10px;"><div class="dianzantweetname" onclick=chakanwho(this)>'
+									+ notification[i].utweetstwo.urealname + '</div><input type="hidden" class="uuid" value="'
+									+ notification[i].utweetstwo.uid + '" /><div class="dianzantweetaite">@'
+									+ notification[i].utweetstwo.uaite + '</div><div class="dianzantweetneirong">'
+									+ notification[i].utweetstwo.tcontent;
+									if (notification[i].utweetstwo.tpic != null) {
+										html += '<a style="margin-left:10px;" target="view_window" href="' + mytwitter + '/img/' + notification[i].utweetstwo.uname + '/' + notification[i].utweetstwo.tpic + '">图片</a>';
+									}
+									html += '</div></div></div></div>';
+								}
+								//有人回复推文通知
+								if (notification[i].ntype == 4) {
+									if (notification[i].utweets.tcontent == null || notification[i].utweets.tcontent == "") {
+										continue;
+									}
+									html += '<div class="notifications"><div	style="margin-left: 55px;padding-top: 20px;height: 26px;line-height: 26px"><span class=" glyphicon glyphicon-share-alt" style="color:rgb(29, 161, 242);font-size: 16px;margin-right: 10px"></span>'
+									+ '<img style="width: 31px;height: 31px;border-radius: 50px;background-color: white;margin-top: -10px" src="'
+									+ mytwitter + '/img/' + notification[i].usersall.uname + '/' + notification[i].usersall.ulogo + '" />	</div><div style="margin-left: 85px;margin-top: 20px;color: black;padding-bottom: 20px">'
+									+ '<span class="guanzhurenming" style="font-weight: bold;margin-right: 5px;cursor: pointer;" onclick=chakanwho(this)>'
+									+ notification[i].usersall.urealname + '</span> <input type="hidden" class="uuid" value="'
+									+ notification[i].usersall.uid + '" />回复了你的推文<span	style="margin: 0px 5px;color:#657786">·</span><span class="guanzhudetime" style="color:#657786">'
+									+ notification[i].time + '</span><div class="dianzantweetneirong" style="margin-left: 0px;max-width:480px">'
+									+ notification[i].nrcontent + '</div><div class="dianzantweet" style="margin-top: 10px;"><div class="dianzantweetname" onclick=chakanwho(this)>'
+									+ notification[i].utweets.urealname + '</div><input type="hidden" class="uuid" value="'
+									+ notification[i].utweets.uid + '" /><div class="dianzantweetaite">@'
+									+ notification[i].utweets.uaite + '</div><div class="dianzantweetneirong">'
+									+ notification[i].utweets.tcontent;
+									if (notification[i].utweets.tpic != null) {
+										html += '<a style="margin-left:10px;" target="view_window" href="' + mytwitter + '/img/' + notification[i].utweets.uname + '/' + notification[i].utweets.tpic + '">图片</a>';
+									}
+									html += '</div></div></div></div>';
+								}							
+							}
+							return html;
+						}			
+					</script>
+
+
+
                 </div>
+            	
+            	<div id="jiazai">
+					<img src="img/loader.gif" />
+				</div>
+				<div id="back" style="display: block">
+					<img src="img/index.ico" />
+				</div>	
+            
             </div>
         </div>
+        
         <div id="third">
             <div id="link">
                 <ul id="lianjie">
@@ -795,6 +916,489 @@
             </div>
         </div>
     </div>
+
+<script>
+	$("#kuaijiejian").click(function(){
+		alert("按T编辑新推文，\n\n按Ctrl+Enter发推文");
+	});
+	//当同时按下CTRL键和Enter键时
+	$("#tweet2").keyup(function(){
+		if(event.ctrlKey && event.keyCode == 13){
+			//判断是否有输入字符或语句
+			if($(this).val().trim() >0){
+				$("#submittwo").click();
+			}else{
+				$("#tongzhi").html("推文内容为空！").fadeIn(300).delay(500).fadeOut(300);
+			}
+		}
+	});
+	
+	$(document).keyup(function(event){
+		switch (event.keyCode) {
+			//按T：84
+			case 84:
+				$("#fatui").click();
+				return;
+			//按ESC：27
+			case 27:
+				$("#guanguanguan").click();
+				return;
+		}	
+	});
+	
+	var touxiang = "${pageContext.request.contextPath}/img/${user.uname }/${info.ulogo}";
+	var mytwitter = ' ${pageContext.request.contextPath}';
+	$(".tuijian_touxiang").css("background", "url('" + touxiang + "')");
+	$(".tuijian_touxiang").css("backgroundSize", "50px 50px");
+	var one = "1";
+	var zero = "0";
+	var tuiwenshu = 0;
+	//关注别人出现的按钮效果
+	function guanzhuta(button) {
+		var uid = $(button).parent().next().next().next().next().val();
+		if ($(button).html() == '关注') {
+			updateFollow(uid, "add");
+			$(button).css("backgroundColor", color);
+			$(button).html("正在关注");
+			$(button).css("color", "white");
+			$(button).css("border", "0px solid red");
+			return;
+		}
+		if ($(button).html() == '取消关注') {
+			updateFollow(uid, "del");
+			$(button).css("backgroundColor", "white");
+			$(button).html("关注");
+			$(button).css("color", color);
+			$(button).css("border", "1px solid " + color);
+			return;
+		}
+	}
+	
+	function updateFollow(uid, method) {
+		$.ajax({
+			type : "POST",
+			url : "concern.do?method=" + method + "&suid=" + uid,
+			async : false,
+			success : function(data) {
+				//Ok
+			}
+		});
+	}
+	var color = "${info.ucolor}";
+	var touxiang = "${pageContext.request.contextPath}/img/${user.uname}/${info.ulogo}";
+	var bg = "${pageContext.request.contextPath}/img/${user.uname}/${info.ubg}";
+	
+	$(".touxiang").css({"background":"url("+touxiang+")","backgroundSize":"31px 31px"});
+	$("#user_tou_xiang").css("backgroundSize","80px 80px");
+	if($("#user_tou_xiang img").css("display")=="inline"){
+		$("#user_tou_xiang").css("background",color);
+	}
+	
+	$(".button").css("background",color);
+	$("#daohang li:eq(1)").css("borderBottom","5px solid" + color);
+	$("#daohang li:eq(1)").css("color",color);
+	$(".wen").css("border","0px solid lightsalmon");
+	$(".wen").css("color",color);
+	$(".tweet").css("border","2px solid rgb(164,217,249)");
+	
+	//搜索语句
+	$(".search").on({
+		//获得焦点
+		focus:function(){
+			$(".search").css("background","rgba(255,255,255,1.00)");
+			$(".sear").css("background","rgba(255,255,255,1.00)");
+			$("#chaxun").css("backgroundColor","white");
+		},
+		//失去焦点
+		blur:function(){
+			$(".search").css("background","rgba(245,248,250,1.00)");
+			$(".sear").css("background","rgba(245,248,250,1.00)");
+			$("#chaxun").css("backgroundColor","rgba(245,248,250,1.00)");
+		}
+	});
+	
+	//图表样式
+	$("#logo").click(function(e){
+		e.preventDefault();
+		$(document.documentElement).animate({
+			scrollTop:0						
+		},500);
+	});
+	//导航的li标签样式 通知
+	$("#daohang li").on({
+		mouseover:function(){
+			$(this).css({"borderBottom":"5px solid "+color,"color":color});
+		},
+		mouseout:function(){
+			$(this).css({"borderBottom":"","color":"rgba(102,107,117,1.00)"});
+			$("#daohang li:eq(1)").css("borderBottom","5px solid "+ color);
+			$("#daohang li:eq(1)").css("color",color);
+		}
+	});
+	
+	//0-主页 1-通知 2-聊天,设置点赞跳转页面
+	$("#daohang li:eq(0)").click(function(){
+		location = "main.jsp";
+	});
+	
+	$("#daohang li:eq(1)").click(function(){
+		location = "notify.jsp";
+	});
+	
+	$("#daohang li:eq(2)").click(function(){
+		window.open("message.jsp");
+	});
+
+	$(".button").on({
+		mouseover:function(){
+			$(this).css("backgroundColor","rgb(0,109,191,1.00)");
+		},
+		mouseout:function(){
+			$(this).css("backgroundColor","rgba(29,161,241,1.00)");
+		}
+	});
+	//点击头像实现渐入渐出
+	$("#touxiang").click(function(){
+		$("#list").fadeToggle(10);
+	});
+	
+	$(document).click(function(e){
+		e=window.event || e; //兼容IE7
+		obj = $(e.srcElement || e.target);
+		if($(obj).is("#touxiang")|| ((e.pageX>=970&&e.pageX<=1165)&&(e.pageY>=50&&e.pageY<=401))){
+			
+		}else{
+			$("#list").fadeOut(10);
+		}
+	})
+	
+	$("#lianjie li").on({
+		mouseover:function(){
+			$(this).css("color",color);
+			$(this).css("borderBottom","1px solid "+ color);
+		},
+		mouseout:function(){
+			$(this).css("color","gray");
+			$(this).css("borderBottom","0px solid "+ color);
+		}		
+	});
+	
+	$(".listd").on({
+		mouseover:function(){
+			$(this).css("backgroundColor", color);
+			$(this).css("color", "white");
+		},
+		mouseout:function(){
+			$(this).css("backgroundColor", "white");
+			$(this).css("color", "black");
+		}
+	});
+	//第一个：个人资料
+	$(".listd:first").click(function() {
+		location = "selfdetail.jsp";
+	});
+
+	$("#self").click(function() {
+		location = "selfdetail.jsp";
+	});
+	//最后一个：退出
+	$(".listd:last").click(function() {
+		location = "user.do?method=exit";
+	});
+	
+	//推文的样式
+	$(".wen").on({
+		focus:function(){
+			if($(this).trim().val() == "" || $(this).val() == null){
+			$(".wen").css("color","black");
+			$(".but").attr("disable","true");
+			}else{
+				$(".but").removeAttr("disabled");
+			}
+			$(".tweet").css("border","1px solid " + color);
+		},
+		blur : function() {
+			if ($(this).val() == "" || $(this).val() == null) {
+				$(".wen").css("color", color);
+				$(".but").attr("disabled", "true");
+			} else {
+				$(".but").removeAttr("disabled");
+			}
+			$(".tweet").css("border", "2px solid rgb(164, 217, 249)");
+		}
+	});
+	//将推文设置为自动尺寸
+	autosize(document.querySelectorAll('textarea'));
+	
+	if($(".wen").val() == ""){
+		$(".but").attr("disabled","true");
+	}
+	$("#tuiwen2").bind('input oninput',function(){
+		$(".cont").css("height", $(this).height() + 100 + "px");
+	});
+	$(".cont").css("height","200px");
+	$$(".wen").bind('input oninput',function(){
+		var zishu = 140 - $(this).val().length;
+		$(".zishu").html(zishu);
+		
+		if(zishu < 0){
+			$(".zishu").css("color","lightcoral");
+			$(".zishu").css("fontWeight","bold");
+			$(".wen").css("color","lightcoral");
+			$(".but").css("disable","true");
+		}else{
+			$(".zishu").css("color", "#657786");
+			$(".zishu").css("fontWeight", "");
+			$(".wen").css("color", "black");
+			$(".but").removeAttr("disabled");
+			if ($(this).val() == "") {
+				$(".but").attr("disabled", "true");
+			} else {
+				$(".but").removeAttr("disabled");
+			}
+		}
+	});
+	
+	$(".wen").on({
+		blur:function(){
+			if($(this).val() =="" || $(this).val().length > 140){
+				$(".but").attr("disabled","true");'
+			}else{
+				$(".but").removeAttr("disabled");
+			}
+		}
+	});
+	
+	$(".but").click(function(){
+		$("#logo").attr("src","img/spinner-rosetta-blue-26x26.gif");
+	});
+	//搜索
+	$("#search_two").bind('input propertychange ',function(){
+		if ($(this).val().trim() != "") {
+			$(this).css("color", "black");
+		} else {
+			$(this).css("color", "#657786");
+		}
+	});
+	
+	var dtNum = "${info.utweet}" *1;
+	function tijiao(formData){
+		$.ajax({
+			type:"POST",
+			url:"tweettwo.do?method=newt",
+			data:formData,
+			async:false,
+			cache:false,
+			contentType:false,
+			processData:false,
+			error:function(request){
+				alert("Connection error");
+			},
+			success :function(data){
+				$("#logo").attr("src","img/index.ico");
+				$("#tweet1").val("");
+				$("#pics").fadeOut();
+				$("#picha").fadeOut();
+				$("#ts1").fadeOut();
+				$("#pic").val("");
+				$(".zishu").html(140);
+				$("#tweet2").val("");
+				if($(".meiyou").css("display") == "block"){
+					$("#content").html("");
+				}
+				dtNum += 1 ;
+				$(".dt:eq(0)").html(dtNum);
+				var tweets = $.parseJSON(data);
+				var html = addTweet(tweets);
+				$("#content").prepend(html);
+				$("#tongzhi").html("发布推文成功！").fadeIn(300).delay(2000).fadeOut(300);
+				tweetsJs();				
+			}
+		});
+	}
+	
+	$("#subminttwo").click(function(){
+		var url = '/mytwitter/tweettwo.do?method=getnewtweets&td=down&nowid=' + $(".tuiern:eq(0)").find(".idid").val();
+		$.ajax({
+			url : url,
+			type : 'POST',
+			success : function(response , status){
+				if(response.length > 1){
+					var tweets = $.parseJSON(response);
+					var html = addTweet(tweets);
+					$("#content").prepend(html);
+					tweetsJs();
+					$("#tixing").fadeOut();
+					window.document.title = "Twitter";
+					$(".glyphicon-home").css("color","#655786");					
+				}
+				var formData = new FormData($("#mytweettwo")[0]);
+				tijiao(formData);
+			},
+			error : function(XMLHttpRequest , textStatus , errorThrown){
+				alert(errorThrown);
+			}
+		});	
+	});
+	
+	$(function(){
+		$('#popup').popup({
+			ifDrag : true,
+			dragLimit : true
+		});
+	});
+	//查询点击效果
+	$("#chaxun").on({
+		click : function(){
+			$("#logo").attr("src","img/spinner-rosetta-blue-26x26.gif");
+			var word = $(".search").val();
+			location = "search.jsp?word=" + word;
+		}
+	});	
+</script>
+
+<script>
+
+	shuaXinTuiJian();
+	function shuaXinTuiJian(){
+		$.ajax({
+			url:'/mytwitter/user.do?method=shuaxintuijian&suiji=' + Math.random(),
+			type : 'POST',
+			success : function(response,status){
+				var length = response.length;
+				var users = $.parseJSON(response.substring(response.indexOf("["),response.length));
+				var html = changeTuiJian(users);
+				$("#addtuijian").append(html);
+				$(".guanzhuta").on({
+					mouseover : function() {
+						if ($(this).html() == '关注') {
+							var yanse = color.substring(0, color.indexOf("1.00"));
+							$(this).css("backgroundColor", yanse + "0.1)");
+						}
+						if ($(this).html() == '正在关注') {
+							$(this).html("取消关注");
+							$(this).css("backgroundColor", "rgba(172,0,43,1.00)");
+						}
+					},
+					mouseout : function() {
+						if ($(this).html() == '关注'){
+							$(this).css("backgroundColor", "white");
+						}
+						if ($(this).html() == '取消关注') {
+							$(this).css("backgroundColor", color);
+							$(this).html("正在关注");
+							$(this).css("color", "white");
+							$(this).css("border", "0px solid red");
+						}
+					}
+				});
+		
+				$(".tuijian_name").on({
+					mouseover : function() {
+						$(this).css("color", color);
+					},
+					mouseout : function() {
+						$(this).css("color", "black");
+					}
+				});
+			}
+		});	
+	}
+	//刷新推荐
+	$("#shuaxintj").on({
+		clicl:function(){
+			$("#addtuijian").html('');
+			shuaXinTuiJian();
+		}
+	});
+
+	//关注名字按钮
+	function guanzhuname(button){
+		var uid = $(button).parent().find(".uid").val();
+		var name = $(button).html();
+		location = "user.do?method=iswho&who="+name+"&id="+uid;
+	}
+	//改变推荐
+	function changeTuiJian(users){
+		var html = "";
+		for (var i = 0; i < users.length; i++) {
+			html += '<div class="tuijian_info"><div class="tuijian_touxiang" style="background: url(' + mytwitter + '/img/'
+				+ users[i].uname + "/" + users[i].ulogo + ');background-size: 50px 50px;"></div><div class="tuijian_name" onclick="guanzhuname(this)">'
+				+ users[i].urealname + '</div><div class="tuijian_aite" style="color:#657786">@' + users[i].uaite
+				+ '</div><div><button  onclick="guanzhuta(this)" class=" guanzhuta" style="color:${info.ucolor};margin-top:8px;margin-left:8px;border:1px solid ${info.ucolor}">关注</button></div>'
+				+ '<input class="uid" type="hidden" value="' + users[i].uid + '"/><input class="uid" type="hidden" value="'
+				+ users[i].uid + '"/><input class="uid" type="hidden" value="'
+				+ users[i].uid + '"/><input class="uid" type="hidden" value="' + users[i].uid + '"/></div><hr>';
+		}
+
+		return html;
+	}
+	
+	$("#search_two").bind("input change",function(){
+		
+		var name = $(this).val();
+		if ($(this).val() == "") {
+			$("#souxianshi").hide();
+			$("#souxianshishang").hide();
+		}
+		var url = '/mytwitter/user.do?method=chayonghu';
+		if ($(this).val() != "") {
+			$.ajax({
+				url : url,
+				data : {
+					"name" : name
+				},
+				type : 'POST',
+				success : function(response, status) {
+					$("#souxianshi").html("");
+					$("#souxianshi").show();
+					$("#souxianshishang").show();
+					if (response == "kong") {
+						var html = '<div class="souneirong"><span style="margin-left:20px;font-size:15px;">没有与<b><span style="margin:0 3px;">' + name + '</span></b>相关用户！</span></div>';
+						$("#souxianshi").append(html);
+						return;
+					}
+					var length = response.length;
+					var users = $.parseJSON(response.substring(response.indexOf("["), response.length));
+					var html = "";
+					for (var i = 0; i < users.length; i++) {
+						html += '<div class="souneirong" onclick="chaxunuser(0,this)"><div class="soutouxiang"><img src="'
+							+ mytwitter + '/img/' + users[i].uname + "/" + users[i].ulogo + '" /></div><div class="soumingzi">'
+							+ users[i].urealname + '</div><div class="sousouaite">@' + users[i].uaite + '</div><input class="uid" type="hidden" value="'
+							+ users[i].uid + '"/></div>';
+					}
+					html += '<div class="souneirong" onclick="chaxunuser(1,this)"><span style="margin-left:20px;font-size:15px">搜索与<span style="margin:0 3px"><b>' + name + '</b></span>相关的所有用户</span></div>';
+					$("#souxianshi").append(html);
+					$(".souneirong").on({
+						mouseover : function() {
+							$(this).css("backgroundColor", color);
+						},
+						mouseout : function() {
+							$(this).css("backgroundColor", "white");
+						}
+					});
+				}
+			});
+		}
+	});
+	
+	function chaxunuser(num, user) {
+		if (num == 1) {
+			var word = $(user).find("b").html();
+			location = "search.jsp?word=" + word;
+			return;
+		}
+		var uid = $(user).find(".uid").val();
+		var urealname = $(user).find(".soumingzi").html().trim();
+		if (uid == ${user.uid}) {
+			location = "selfdetail.jsp";
+			return;
+		}
+		location = "user.do?method=iswho&who=" + urealname + "&id=" + uid;
+	}
+
+</script>
+
 
 </body>
 </html>

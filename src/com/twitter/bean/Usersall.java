@@ -3,24 +3,24 @@ package com.twitter.bean;
 import java.sql.Timestamp;
 
 public class Usersall {
-	private int uid;
-	private String uname;
-	private String upwd;
-	private String urealname;
-	private String uaite;
-	private int ustate;
-	private Timestamp utime;
-	private int uonline;
-	private String uaddress;
-	private String uabout;
-	private Timestamp udate;
-	private String ulogo;
-	private String ubg;
-	private int ufans;
-	private int utweet;
-	private int ufollow;
-	private String ucolor;
-	private int guanzhu;
+	private int uid;	//用户id
+	private String uname;	//e-mail
+	private String upwd;	//用户密码
+	private String urealname;	//用户真实姓名
+	private String uaite;		//用户登录名
+	private int ustate;			//用户状态
+	private Timestamp utime;	//注册时间
+	private int uonline;		//在线状态
+	private String uaddress;	//用户地址
+	private String uabout;		//用户简介
+	private Timestamp udate;	//用户出生日期
+	private String ulogo;		//用户头像
+	private String ubg;			//用户背景图
+	private int ufans;			//用户关注者人数
+	private int utweet;			//用户推文数
+	private int ufollow;		//用户正在关注的人数
+	private String ucolor;		//用户背景色
+	private int guanzhu;		//关注ע
 	private Timestamp lastTime;
 
 	public Timestamp getLastTime() {

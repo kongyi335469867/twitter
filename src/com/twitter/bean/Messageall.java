@@ -3,15 +3,15 @@ package com.twitter.bean;
 import java.sql.Timestamp;
 
 public class Messageall {
-	private int mid;
-	private int fuid;
-	private int suid;
-	private String mcontent;
-	private Timestamp mtime;
-	private int mread;
-	private String uname;
-	private String urealname;
-	private String ulogo;
+	private int mid;	//私信id
+	private int fuid;	//发信用户id	
+	private int suid;	//收信用户id	
+	private String mcontent;	//发信内容	
+	private Timestamp mtime;	//发信时间	
+	private int mread;		//读信状态	
+	private String uname;	//e-mail	
+	private String urealname;	//用户真实姓名	
+	private String ulogo;		//用户头像	
 	private String uname2;
 	private String urealname2;
 	private String ulogo2;
