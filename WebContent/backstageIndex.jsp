@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="com.twitter.bean.Admins" %>
 <!DOCTYPE html>
-<html>
-<head lang="en">
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
     <meta name="renderer" content="webkit|ie-comp|ie-stand" />
@@ -15,15 +16,13 @@
     <script type="text/javascript" src="js/backstageIndex.js"></script>
 </head>
 <body>
-	<!--%
-		String aLogin = (String)session.getAttribute("A_LOGIN");  //从登录界面正常登录进来才可以访问
-		Admins adminDB = (Admins)session.getAttribute("ADMINS_DB");   //获取传递的管理员信息
-	%-->
-	<!--% 
-		if("aLogin".equals(aLogin)){
+	<%
+		String aLogin = (String)session.getAttribute("LOGIN_ALLOW");  //从登录界面正常登录进来才可以访问
+		Admins adminDB = (Admins)session.getAttribute("ADMIN_DB");   //获取传递的管理员信息
+		if("adminAllow".equals(aLogin)){
 			/*设置只能通过后台的backstageIndex.jsp页面来访问子窗口的页面*/
 			session.setAttribute("ALLOW", "allow");
-	%-->
+	%>
     <div class="layout-admin">
         <!--头部-->
         <header class="layout-header">
@@ -34,14 +33,15 @@
                     <a href="javascript:;">管理员，欢迎您！</a>
                 </li>
                 <li class="header-bar-nav">
-                    <a href="javascript:;"><!--%=adminDB.getAname()%-->admin<i class="iconfont" style="margin-left:5px; font-size: 14px;">&#xe503;</i></a>
+                    <a href="javascript:;"><%=adminDB.getAname() %><i class="iconfont" style="margin-left:5px; font-size: 14px;">&#xe503;</i></a>
                     <ul class="header-dropdown-menu">
                         <!--li><a href="javascript:;">个人信息</a></li-->
-                        <li><a href="BackstageExitCtrl">&nbsp;&nbsp;退&nbsp;&nbsp;出</a></li>
+                        <li><a href="BackstageExitCtrl?adminId=<%=adminDB.getAid() %>">&nbsp;注&nbsp;&nbsp;销&nbsp;&nbsp;</a></li>
                     </ul>
                 </li>
             </ul>
         </header>
+       
         <!--侧栏：栏目的跳转-->
         <aside class="layout-side">
             <ul class="side-menu">
@@ -95,10 +95,10 @@
         <!--底部-->
         <footer class="layout-footer">Copyright© redis小组</footer>
     </div>
-	<!--%
+	<%
 		}else{
-			response.sendRedirect("backstageError.jsp");  //重定向到提示无权利访问页面
+			response.sendRedirect("./backstageError.jsp");  //重定向到提示无权利访问页面
 		} 
-	%-->
+	%>
 </body>
 </html>

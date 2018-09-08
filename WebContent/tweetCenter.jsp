@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
   <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
@@ -16,11 +16,10 @@
   		int tweetsPageNow = (Integer)request.getAttribute("TWEETS_CURRENT_PAGE");  /*当前页面*/
   		String deleteResult = (String)request.getAttribute("DELETE_RESULT");  /*推文删除结果*/
   		String noContent = (String)request.getAttribute("T_NOCONTENT"); //暂无推文相关内容提示
-  	%>
-  	<!--%
-		String allow = (String)session.getAttribute("ALLOW");
+
+  		String allow = (String)session.getAttribute("ALLOW");
 		if("allow".equals(allow)){
-	%-->
+	%>
 	<div class="container">
 		<div class="header">
 			<form action="BackstagePageCtrl?str=tweetCenter&tsearch=tsearch" method="post">
@@ -51,7 +50,7 @@
 					<tr bgcolor="#F9F9F9" class="row">
 						<td><input type="checkbox" name="checkitem" value="<%=tweet[4] %>"></td>
 						<td>
-							<div class="images"><img src="img/1.jpg"/><!--img src="<!--%=tweet[3] %>"--></div>
+							<div class="images"><img src="${pageContext.request.contextPath}/img/<%=tweet[3] %>" alt="头像" style="font-size: 6px;"></div>
 							<div class="name">
 								<div class="userName"><%=tweet[1] %></div>
 								<div class="registrationName">@<%=tweet[2] %></div>
@@ -213,10 +212,10 @@
 		   });
 		});
 	</script>
-	<!--%
+	<%
 		}else{
-			response.sendRedirect("backstageError.jsp");  //重定向到提示无权利访问页面
+			response.sendRedirect("./backstageError.jsp");  //重定向到提示无权利访问页面
 		}
-	%-->
+	%>
   </body>
 </html>

@@ -1,6 +1,7 @@
 package com.twitter.servlet;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -8,7 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.twitter.bean.Admins;
 import com.twitter.dao.BackstageDaoImpl;
 
 @WebServlet("/BackstagePageCtrl")
@@ -27,8 +30,11 @@ public class BackstagePageCtrl extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//HttpSession session = request.getSession(true);
+		HttpSession session = request.getSession(true);
 		String option = request.getParameter("str");  //接收后台主页面的页面跳转操作
+		
+		String adminname = request.getParameter("adminname");  //接收登录界面的管理员登录名
+		String adminpw = request.getParameter("adminpw");  //接收登录界面的管理员密码
 		
 		String memberCenterSearch = request.getParameter("usearchUrealname");  //接收“用户中心”页面的搜索输入
 		String memberCenterSearchState = request.getParameter("usearch");  //进行搜索
@@ -43,13 +49,33 @@ public class BackstagePageCtrl extends HttpServlet {
 		String tweetsCurrentPage = request.getParameter("tweetsCurrentPage");  //接收“推文中心”页面当前页码
 		String deleteTid = request.getParameter("deleteTid");  //接收“推文中心”页面的删除推文id
 		
-		/*主页*/
+		/* 管理员登录界面进入 */
+		if("checklogin".equals(option)){  
+			Boolean loginResult = BackstageDaoImpl.getBackstageDaoImpl().adminLogin(adminname, adminpw);
+			if(loginResult){  //登录成功，跳转到后台主界面,传session值
+				Admins adminDB = BackstageDaoImpl.getBackstageDaoImpl().queryAdminDB(adminname);
+				session.setAttribute("ADMIN_DB", adminDB);    //获取到管理员信息，用session保存
+				
+				java.util.Date date = new java.util.Date();       
+				Timestamp aditime = new Timestamp(date.getTime());  //管理员登入时间使用session保存，传至BackstageExitCtrl
+				session.setAttribute("ADITIME", aditime);
+				
+				session.setAttribute("LOGIN_ALLOW", "adminAllow");
+				response.sendRedirect("./backstageIndex.jsp");
+			}else{  //登录失败，登录界面弹出提示框
+				System.out.println("管理员登录失败...");
+				session.setAttribute("LOGIN_ERROR", "loginError");
+				response.sendRedirect("./backstageLogin.jsp");
+			}
+		}
+		
+		/* 主页页面进入 */
     	if("ajaxRefresh".equals(option)){     /* AJAX实现自动刷新后台主页数据 */
     		int onlineNum = BackstageDaoImpl.getBackstageDaoImpl().queryOnline();  //onlineNum 在线人数
     		int visitsNum = BackstageDaoImpl.getBackstageDaoImpl().queryVisits();  //visitsNum 今日访问量
     		int tweetsNum = BackstageDaoImpl.getBackstageDaoImpl().queryTweets();  //tweetsNum 推文数
     		int overallNum = BackstageDaoImpl.getBackstageDaoImpl().queryOverAll();  //overallNum 总人数
-    		System.out.println(" > > ctrl层 主页页面实时监测在线数据：" + onlineNum + "-" + visitsNum + "-" + tweetsNum + "-" + overallNum);
+    		System.out.println(" > > ctrl层 主页 实时监测在线数据：" + onlineNum + "-" + visitsNum + "-" + tweetsNum + "-" + overallNum);
 			response.getWriter().print(onlineNum + "-" + visitsNum + "-" + tweetsNum + "-" + overallNum);
     	}
     	
@@ -135,7 +161,7 @@ public class BackstagePageCtrl extends HttpServlet {
         	request.setAttribute("DELETE_RESULT", String.valueOf(deleteResult));   /*删除结果*/
     		request.getRequestDispatcher("tweetCenter.jsp").forward(request,response);
     	}
-    	/* AJAX实现“推文中心”推文内容的批量删除 */
+    	//AJAX实现“推文中心”推文内容的批量删除
     	if("ajaxDeleteBatches".equals(option)){  
     		String tidsInfo = request.getParameter("tids"); 
     		String[] tidsArr = tidsInfo.split(",");
