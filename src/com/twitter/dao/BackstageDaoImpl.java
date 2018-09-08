@@ -176,9 +176,6 @@ public class BackstageDaoImpl {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-//		for(String[] user : usersallList){
-//			System.out.println(user[0]+"  "+user[1]+"  "+user[2]+"  "+user[3]+"  "+user[4]+"  "+user[5]);
-//		}
 		return usersallList;
 	}
 	
@@ -217,11 +214,11 @@ public class BackstageDaoImpl {
 	/*Dao层实现根据用户名查询后台页面“用户中心”所需的 用户信息 */
 	public List<String[]> queryUserall(String urealname){
 		List<String[]> userInfoList = new ArrayList<String[]>();
-//		String sql = "select uid, urealname, uaite, ustate, ulogo from usersall where urealname = ?";
+		//String sql = "select uid, urealname, uaite, ustate, ulogo from usersall where urealname = ?";
 		//模糊搜索方式1：
 		String fuzzySearchSQL = "select uid, urealname, uaite, ustate, ulogo from usersall where urealname like '%" + urealname + "%'";
 		//模糊搜索方式2：
-//		String fuzzySearchSQL = "select uid, urealname, uaite, ustate, ulogo from usersall where urealname >= '"+urealname+"' and urealname < CONCAT('"+urealname+"', x'EFBFBF')"; 
+		//String fuzzySearchSQL = "select uid, urealname, uaite, ustate, ulogo from usersall where urealname >= '"+urealname+"' and urealname < CONCAT('"+urealname+"', x'EFBFBF')"; 
 		Object[] os = null;
 		try {
 			ResultSet rs = BackstageDBUtil.executeQuery(fuzzySearchSQL, os);
@@ -304,9 +301,6 @@ public class BackstageDaoImpl {
 				str[6] = rsPage.getString("ttime");  //推文发布时间
 				utweetsList.add(str);
 			}
-//			for(String[] tweet : utweetsList){
-//				System.out.println(tweet[0] + "  "+tweet[1] + "  "+tweet[2] + "  "+tweet[3] + "  "+tweet[4] + "  "+tweet[5] + "  "+tweet[6] + "  ");
-//			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
