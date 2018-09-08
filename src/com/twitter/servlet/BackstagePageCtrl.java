@@ -10,11 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.twitter.dao.BackstageDaoImpl;
-import com.twitter.service.BackstageServiceImpl;
 
-/**
- * Servlet implementation class BackstageCtrl
- */
 @WebServlet("/BackstagePageCtrl")
 public class BackstagePageCtrl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -49,16 +45,17 @@ public class BackstagePageCtrl extends HttpServlet {
 		
 		/*主页*/
     	if("ajaxRefresh".equals(option)){     /* AJAX实现自动刷新后台主页数据 */
-    		int onlineNum = BackstageServiceImpl.getBackstageServiceImpl().queryOnline();  //onlineNum 在线人数
-    		int visitsNum = BackstageServiceImpl.getBackstageServiceImpl().queryVisits();  //visitsNum 今日访问量
-    		int tweetsNum = BackstageServiceImpl.getBackstageServiceImpl().queryTweets();  //tweetsNum 推文数
-    		int overallNum = BackstageServiceImpl.getBackstageServiceImpl().queryOverAll();  //overallNum 总人数
+    		int onlineNum = BackstageDaoImpl.getBackstageDaoImpl().queryOnline();  //onlineNum 在线人数
+    		int visitsNum = BackstageDaoImpl.getBackstageDaoImpl().queryVisits();  //visitsNum 今日访问量
+    		int tweetsNum = BackstageDaoImpl.getBackstageDaoImpl().queryTweets();  //tweetsNum 推文数
+    		int overallNum = BackstageDaoImpl.getBackstageDaoImpl().queryOverAll();  //overallNum 总人数
     		System.out.println(" > > ctrl层 主页页面实时监测在线数据：" + onlineNum + "-" + visitsNum + "-" + tweetsNum + "-" + overallNum);
 			response.getWriter().print(onlineNum + "-" + visitsNum + "-" + tweetsNum + "-" + overallNum);
     	}
     	
     	/*用户中心*/
     	if("memberCenter".equals(option)){
+    		List<String[]> usersList;
     		/* 修改用户账号的解封状态 */
     		if("shutdown".equals(shutdownState)){
     			if("停封".equals(Ustate)){
@@ -66,33 +63,34 @@ public class BackstagePageCtrl extends HttpServlet {
     			}else if("解封".equals(Ustate)){
     				Ustate = "1";
     			}
-        		BackstageServiceImpl.getBackstageServiceImpl().updateUstate(Ustate, Uid);
+    			boolean updateResult = BackstageDaoImpl.getBackstageDaoImpl().updateUstate(Ustate, Uid);
+    			if(updateResult){   //账号本身停封状态，页面点击后将其修改为解封状态显示，故返回状态ustate要为0
+    				updateResult = true;
+    			}else {
+    				updateResult = false;
+    			}
         	}
-//    		/*未分页时的查询用户*/
-//    		List<String[]> usersallList = new ArrayList<String[]>();
-//    		usersallList = BackstageServiceImpl.getBackstageServiceImpl().queryUsersall();
-//    		request.setAttribute("USERSALL", usersallList);
     		/* “用户中心”页面的分页功能 */
         	if(usersCurrentPage != null){
         		uCurrentPage = Integer.parseInt(usersCurrentPage);
         	}
-        	List<String[]> usersList;
         	/* 根据用户真实名查询用户 */
     		if("usearch".equals(memberCenterSearchState)){  
-    			usersList = BackstageServiceImpl.getBackstageServiceImpl().queryUser(memberCenterSearch);
-    			String usersListStr = String.valueOf(usersList);
-    			if("[]".equals(usersListStr)){  //当搜索暂无此内容时，做出相关提示
-    				request.setAttribute("U_NOCONTENT", usersListStr);
+    			usersList = BackstageDaoImpl.getBackstageDaoImpl().queryUserall(memberCenterSearch);
+    			if("[]".equals(String.valueOf(usersList))){  //当搜索暂无此内容时，做出相关提示
+    				request.setAttribute("U_NOCONTENT", String.valueOf(usersList));
 	    		}
     		}else if("usort".equals(memberCenterSortState)){   //按最近登录时间排序用户
-    			usersList = BackstageServiceImpl.getBackstageServiceImpl().queryUserSort(uCurrentPage, uPageSize);
+    			usersList = BackstageDaoImpl.getBackstageDaoImpl().queryUserSort(uCurrentPage, uPageSize);
     		}else {    //正常全部内容显示
-    			usersList = BackstageServiceImpl.getBackstageServiceImpl().getUsersallListForCurrentPage(uCurrentPage, uPageSize);
+    			usersList = BackstageDaoImpl.getBackstageDaoImpl().getUsersallListForCurrentPage(uCurrentPage, uPageSize);
     		}
         	for(String[] user : usersList){
-        		if("停封".equals(user[3]) || "1".equals(user[3])){
+        		if( "1".equals(user[3])){
+        			user[3] = "停封";
         			user[6] = "#D9534F";  //偏红色
-        		}else if("解封".equals(user[3]) || "0".equals(user[3])){
+        		}else if("0".equals(user[3])){
+        			user[3] = "解封";
         			user[6] = "#5BC0DE";  //偏蓝色
         		}
         	}
@@ -104,30 +102,30 @@ public class BackstagePageCtrl extends HttpServlet {
     	
     	/*推文中心*/
     	if("tweetCenter".equals(option)){
-//    		/*未分页时的查询推文内容*/
-//    		List<String[]> utweetsList = new ArrayList<String[]>();
-//    		utweetsList = BackstageDaoImpl.getBackstageDaoImpl().queryUTweets();
-//    		request.setAttribute("UTWEETS", utweetsList);
-    		
+    		List<String[]> tweetsList;
     		int deleteResult = -1;
     		if(deleteTid != null){
     			/*删除推文操作*/
-    			deleteResult = BackstageServiceImpl.getBackstageServiceImpl().deleteTweet(deleteTid);
+    			boolean result = BackstageDaoImpl.getBackstageDaoImpl().deleteTweet(deleteTid);
+    			if(result){
+    				deleteResult = 1;
+    			}else{
+    				deleteResult = 0;
+    			}
     		}
     		/* “推文中心” 页面的分页功能*/
         	if(tweetsCurrentPage != null){
         		tCurrentPage = Integer.parseInt(tweetsCurrentPage);
         	}
-        	List<String[]> tweetsList;
     		/* 根据用户真实名查询该用户推文 */
     		if("tsearch".equals(tweetsCenterSearchState)){
-    			tweetsList = BackstageServiceImpl.getBackstageServiceImpl().queryUserTweets(tCurrentPage, tPageSize, tweetsCenterSearch);
+    			tweetsList = BackstageDaoImpl.getBackstageDaoImpl().getUTweetsListForCurrentPage(tCurrentPage, tPageSize, tweetsCenterSearch);
     			String tweetsListStr = String.valueOf(tweetsList);
     			if("[]".equals(tweetsListStr)){  //当搜索暂无此内容时，做出相关提示
     				request.setAttribute("T_NOCONTENT", tweetsListStr);
 	    		}
     		}else{  //默认查询所有推文内容且分页显示
-    			tweetsList = BackstageServiceImpl.getBackstageServiceImpl().getUTweetsListForCurrentPage(tCurrentPage, tPageSize);
+    			tweetsList = BackstageDaoImpl.getBackstageDaoImpl().getUTweetsListForCurrentPage(tCurrentPage, tPageSize);
     		}
         	request.setAttribute("TWEETS_LIST", tweetsList);   /*推文信息*/
         	request.setAttribute("TWEETS_CURRENT_PAGE", tCurrentPage);  /*当前页面数*/
@@ -144,7 +142,12 @@ public class BackstagePageCtrl extends HttpServlet {
     		Integer[] deleteResult = new Integer[tidsArr.length];
     		if(tidsInfo != null){
     			for(int i = 0; i < tidsArr.length; i++){
-        			deleteResult[i] = BackstageServiceImpl.getBackstageServiceImpl().deleteTweet(tidsArr[i]);
+        			boolean result = BackstageDaoImpl.getBackstageDaoImpl().deleteTweet(tidsArr[i]);
+        			if(result){
+        				deleteResult[i] = 1;
+        			}else{
+        				deleteResult[i] = 0;
+        			}
         		}
     			response.getWriter().print(deleteResult);
     		}
@@ -160,12 +163,12 @@ public class BackstagePageCtrl extends HttpServlet {
     		String updateOldPW = request.getParameter("oldPW");  //旧密码
     		String updateNewPW = request.getParameter("newPW");  //新密码
     		String updateConfirmPW = request.getParameter("confirmPW");  //确认密码
-    		boolean updateNameResult = BackstageServiceImpl.getBackstageServiceImpl().queryAdminName(updateAdminName);  //查询管理员名是否存在
-    		boolean adminPW = BackstageServiceImpl.getBackstageServiceImpl().queryAdminPW(aid, updateOldPW);  //查询旧密码是否匹配管理员密码
+    		boolean updateNameResult = BackstageDaoImpl.getBackstageDaoImpl().queryAdminName(updateAdminName);  //查询管理员名是否存在
+    		boolean adminPW = BackstageDaoImpl.getBackstageDaoImpl().queryAdminPW(Integer.parseInt(aid), updateOldPW);  //查询旧密码是否匹配管理员密码
     		if(updateNewPW.equals(updateConfirmPW)){  //新密码与确认密码相同，允许修改
     			if(updateNameResult){  //管理员修改名允许修改
         			if(adminPW){  //旧密码与管理员密码匹配，允许修改
-    					Boolean result = BackstageServiceImpl.getBackstageServiceImpl().updateAdmin(aid, updateAdminName, updateNewPW);
+    					Boolean result = BackstageDaoImpl.getBackstageDaoImpl().updateAdmin(Integer.parseInt(aid), updateAdminName, updateNewPW);
     					request.setAttribute("UPDATE_RESULT", String.valueOf(result));   /*删除结果返回提示*/
     					request.getRequestDispatcher("aboutBackstage.jsp").forward(request, response);
         			}else{  //旧密码与管理员密码不匹配，不允许修改操作
