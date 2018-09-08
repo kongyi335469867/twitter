@@ -1,6 +1,6 @@
 package com.twitter.bean;
 
-import com.sun.jmx.snmp.Timestamp;
+import java.sql.Timestamp;
 
 public class Signin {
 	private int sid;	//登录状态ID

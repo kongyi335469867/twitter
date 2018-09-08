@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -28,6 +27,10 @@ import net.sf.json.JSONObject;
 
 @WebServlet("/notify.do")
 public class NotificationServlet extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private NotificationDao notificationDao = new NotificationDao();
 	private UsersinfoDao usersinfoDao = new UsersinfoDao();
 	private TweetsDao tweetsDao = new TweetsDao();

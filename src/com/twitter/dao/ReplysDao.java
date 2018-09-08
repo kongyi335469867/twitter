@@ -14,6 +14,7 @@ public class ReplysDao {
 //获得所有的回复内容
 	public List<Replyall> getAllReply(int tid, int page) {
 		String sql = "select rid,uid,tid,rcontent,rtime,uname,urealname,ulogo,uaite from replyall where tid=? order by rtime desc limit ?,6";
+		@SuppressWarnings("unchecked")
 		List<Replyall> list = DBUtil.query(Replyall.class, sql, tid, page);
 		if (list.size() > 0) {
 			return list;

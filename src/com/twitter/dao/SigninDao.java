@@ -5,10 +5,10 @@ import java.util.List;
 
 import com.twitter.bean.Signin;
 import com.twitter.util.DBUtil;
-
+@SuppressWarnings("unchecked")
 public class SigninDao {
 	public Signin getLastSignin(int uid) {
-		String sql = "select * from signin where uid = ? order by stime desc limit 1";
+		String sql = "select * from signin where uid = ? order by stime desc limit 1";		
 		List<Signin> list = DBUtil.query(Signin.class, sql, uid);
 		if (list.size() > 0) {
 			return list.get(0);

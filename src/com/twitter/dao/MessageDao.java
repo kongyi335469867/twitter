@@ -6,7 +6,7 @@ import java.util.List;
 import com.twitter.bean.Messageall;
 import com.twitter.bean.Usersall;
 import com.twitter.util.DBUtil;
-
+@SuppressWarnings("unchecked")
 public class MessageDao {
 	//删除好友
 	public int delFriend(int fuid, String suid) {
@@ -17,6 +17,7 @@ public class MessageDao {
 //添加好友
 	public List<Usersall> addFriend(int fuid) {
 		String sql = "SELECT * FROM usersall where uid in(select s_uid from concern where f_uid=?);";
+		
 		List<Usersall> list = DBUtil.query(Usersall.class, sql, fuid);
 		if (list != null)
 			return list;

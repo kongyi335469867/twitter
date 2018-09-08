@@ -7,11 +7,12 @@ import java.util.List;
 import com.twitter.bean.Tweets;
 import com.twitter.bean.Utweets;
 import com.twitter.util.DBUtil;
-
+@SuppressWarnings("unchecked")
 public class TweetsDao {
 	public int getTwettNum(String cn) {
 		return DBUtil.query(cn);
 	}
+
 
 	public List<Utweets> getNewTweets(int uid, List uidList, String nowid) {
 		List<Utweets> list = new ArrayList<Utweets>();

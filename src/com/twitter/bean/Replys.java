@@ -1,6 +1,6 @@
 package com.twitter.bean;
 
-import com.sun.jmx.snmp.Timestamp;
+import java.sql.Timestamp;
 
 public class Replys {
 	private int rid;	//回复ID

@@ -1,6 +1,6 @@
 package com.twitter.bean;
 
-import com.sun.jmx.snmp.Timestamp;
+import java.sql.Timestamp;
 
 public class Users {
 	private int uid;	//用户ID

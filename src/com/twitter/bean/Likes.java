@@ -1,8 +1,6 @@
 package com.twitter.bean;
 
-
-
-import com.sun.jmx.snmp.Timestamp;
+import java.sql.Timestamp;
 
 public class Likes {
 	private int lid;	//点赞ID

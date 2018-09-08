@@ -4,13 +4,13 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.twitter.bean.Users;
+
 import com.twitter.bean.Usersall;
 import com.twitter.bean.Usersinfo;
 import com.twitter.util.DBUtil;
-
+@SuppressWarnings("unchecked")
 public class UsersinfoDao {
-	@SuppressWarnings("unchecked")
+	
 	public List<Usersall> fenye(int page, int size, Object... objects) {
 		StringBuffer sql = new StringBuffer("select * from usersall ");
 		List<Usersall> usersalls = new ArrayList<Usersall>();
@@ -66,6 +66,7 @@ public class UsersinfoDao {
 		return n;
 	}
 
+	
 	public List<Usersall> selTuiJian(int uid, List uidList) {
 		List<Usersall> list = new ArrayList<Usersall>();
 		String sql = "select uid, uname, urealname, uaite, ustate, utime, uonline, uaddress,  uabout, udate, ubg,ulogo, ufans, utweet,ufollow ,ucolor  from usersall where uid!=?";

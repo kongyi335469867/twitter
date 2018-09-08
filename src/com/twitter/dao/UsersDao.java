@@ -6,10 +6,11 @@ import java.util.List;
 import com.twitter.bean.Signin;
 import com.twitter.bean.Users;
 import com.twitter.util.DBUtil;
-
+@SuppressWarnings("unchecked")
 public class UsersDao {
 	public int getDayUp(String time) {
 		String sql = "select * from signin where DATE_FORMAT(stime,'%Y-%m-%d')=? ";
+		
 		List<Signin> result = DBUtil.query(Signin.class, sql, time);
 		return result.size();
 	}

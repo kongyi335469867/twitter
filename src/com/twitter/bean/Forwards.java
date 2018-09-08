@@ -1,5 +1,6 @@
 package com.twitter.bean;
-import com.sun.jmx.snmp.Timestamp;
+
+import java.sql.Timestamp;
 
 public class Forwards {
 	private int fid;	//转发ID	
