@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.twitter.dao.ReplysDao;
-import com.twitter.pojo.Replyall;
+import com.twitter.bean.Replyall;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
