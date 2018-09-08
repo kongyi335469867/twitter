@@ -2,7 +2,7 @@ package com.twitter.dao;
 
 import java.sql.Timestamp;
 import java.util.List;
-import com.twitter.pojo.Replyall;
+import com.twitter.bean.Replyall;
 import com.twitter.util.DBUtil;
 //回复
 public class ReplysDao {
