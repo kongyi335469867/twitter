@@ -18,10 +18,10 @@ import com.twitter.dao.ForwardsDao;
 import com.twitter.dao.NotificationDao;
 import com.twitter.dao.TweetsDao;
 import com.twitter.dao.UsersinfoDao;
-import com.twitter.pojo.Notification;
-import com.twitter.pojo.Users;
-import com.twitter.pojo.Usersall;
-import com.twitter.pojo.Utweets;
+import com.twitter.bean.Notification;
+import com.twitter.bean.Users;
+import com.twitter.bean.Usersall;
+import com.twitter.bean.Utweets;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
