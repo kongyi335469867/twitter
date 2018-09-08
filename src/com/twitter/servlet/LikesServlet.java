@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import com.twitter.dao.LikesDao;
 import com.twitter.dao.NotificationDao;
 import com.twitter.dao.TweetsDao;
-import com.twitter.pojo.Users;
+import com.twitter.bean.Users;
 import com.twitter.util.Times;
 
 /**
