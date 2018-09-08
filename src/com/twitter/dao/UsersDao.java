@@ -50,13 +50,13 @@ public class UsersDao {
 		}
 		return false;
 	}
-
+	//添加用户
 	public int addUser(String username, String password, String urealname, String aite, Timestamp utime) {
 		String sql = "insert into users(uname, upwd, urealname, uaite,utime) values(?,?,?,?,?)";
 		int n = DBUtil.update(sql, username, password, urealname, aite, utime);
 		return n;
 	}
-
+	//检查登陆名是否符合
 	public boolean checkUaite(String uaite) {
 		String sql = "select uid, uname,  urealname, uaite, ustate, utime ,uonline  from users where uaite=?  limit 1";
 		List<Users> list = DBUtil.query(Users.class, sql, uaite);
