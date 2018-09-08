@@ -24,12 +24,12 @@ import com.twitter.dao.NotificationDao;
 import com.twitter.dao.ReplysDao;
 import com.twitter.dao.TweetsDao;
 import com.twitter.dao.UsersinfoDao;
-import com.twitter.pojo.Concern;
-import com.twitter.pojo.Forwards;
-import com.twitter.pojo.Users;
-import com.twitter.pojo.Usersall;
-import com.twitter.pojo.Usersinfo;
-import com.twitter.pojo.Utweets;
+import com.twitter.bean.Concern;
+import com.twitter.bean.Forwards;
+import com.twitter.bean.Users;
+import com.twitter.bean.Usersall;
+import com.twitter.bean.Usersinfo;
+import com.twitter.bean.Utweets;
 import com.twitter.util.Times;
 import com.twitter.util.Upload;
 
