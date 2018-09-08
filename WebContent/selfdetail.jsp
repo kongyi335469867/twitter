@@ -120,6 +120,39 @@
 				</div>
 			</form>
 		</div>
+      <script>
+   $("#tweet2").keyup(function(){  
+    if($("#tweet2").val().length > 140){
+        $("#tweet2").val( $("#tweet2").val().substring(0,140) );
+    }
+    $(".zishu").text( 140 - $("#tweet2").val().length ) ;
+ });
+   
+   $("#tuiwen2").bind('input oninput', function() {
+		$(".cont").css("height", $(this).height() + 100 + "px");
+	});
+	$(".cont").css("height", "200px");
+	$(".wen").bind('input oninput', function() {
+		var zishu = 140 - $(this).val().length;
+		$(".zishu").html(zishu);
+		if (zishu < 0) {
+			$(".zishu").css("color", "lightcoral");
+			$(".zishu").css("fontWeight", "bold");
+			$(".wen").css("color", "lightcoral");
+			$(".but").attr("disabled", "true");
+		} else {
+			$(".zishu").css("color", "#657786");
+			$(".zishu").css("fontWeight", "");
+			$(".wen").css("color", "black");
+			$(".but").removeAttr("disabled");
+			if ($(this).val() == "") {
+				$(".but").attr("disabled", "true");
+			} else {
+				$(".but").removeAttr("disabled");
+			}
+		}
+	});
+</script>
 
 		<div id="mask_shadow"></div>
 	</div>
