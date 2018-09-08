@@ -32,14 +32,18 @@ public class LikesServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Users user = (Users) session.getAttribute("user");
 		int uid = user.getUid();
+		//得到系统时间
 		Timestamp ltime = Times.getSystemTime();
 		String method = request.getParameter("method");
 		String tid = request.getParameter("tid");
 		String uuid = request.getParameter("uid");
 		int n = 0;
+		//添加信息
 		if ("add".equals(method)) {
 			n = likesDao.addLikes(uid, Integer.parseInt(tid), ltime);
+			//当点赞的信息大于0时，n是更新次数
 			if (n > 0) {
+				//如果用户id不等于推文id，插入新的推文信息
 				if (uid != Integer.parseInt(uuid))
 					notificationDao.addNotify(uid, 2, Integer.parseInt(uuid), Integer.parseInt(tid), 0, 0, 0, 0, 0,
 							null, ltime, 0);
@@ -50,6 +54,7 @@ public class LikesServlet extends HttpServlet {
 //取消点赞
 		if ("del".equals(method)) {
 			n = likesDao.delLikes(uid, Integer.parseInt(tid));
+			//点赞数减一，取消点赞状态
 			if (n > 0) {
 				tweetsDao.addLikesNum(Integer.parseInt(tid), 0);
 			}

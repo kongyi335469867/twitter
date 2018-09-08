@@ -98,6 +98,8 @@ public class TweetServletTwo extends HttpServlet {
 	}
 //回复推文
 	private void toHuiFu(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
 		Users user = (Users) session.getAttribute("user");
 		int uid = user.getUid();
@@ -118,6 +120,8 @@ public class TweetServletTwo extends HttpServlet {
 	}
 //转发推文
 	private void toZhuanTui(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
 		Users user = (Users) session.getAttribute("user");
 		int uid = user.getUid();
@@ -127,7 +131,7 @@ public class TweetServletTwo extends HttpServlet {
 		String uuid = map.get("zhuanfauid");
 		String tcontent = map.get("zhuanfaneirong");
 		Timestamp ttime = Times.getSystemTime();
-		tweetsDao.addTweet(uid, tcontent, ttime, 1);
+		tweetsDao.addTweet(uid, tcontent, ttime, 1);	
 		usersinfoDao.addTweetsNum(uid);
 		tweetsDao.addForwardNum(Integer.parseInt(stid), 1);
 		Usersinfo info = usersinfoDao.getInfos(uid);
@@ -143,12 +147,13 @@ public class TweetServletTwo extends HttpServlet {
 	}
 
 	private void getNewTweets(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
 		String nowid = request.getParameter("nowid");
 		if (nowid == null || "".equals(nowid)) {
 			HttpSession session = request.getSession();
 			Users user = (Users) session.getAttribute("user");
-//没有登陆时跳转到主页面
+			//没有登陆时跳转到主页面
 			if (user == null) {
 				response.sendRedirect("index.jsp");
 				return;
@@ -233,6 +238,8 @@ public class TweetServletTwo extends HttpServlet {
 //获得推文
 	private void toGetTweets(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ParseException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
 		Users user = (Users) session.getAttribute("user");
 		List<Concern> concernList = new ArrayList<Concern>();
@@ -295,14 +302,13 @@ public class TweetServletTwo extends HttpServlet {
 		HttpSession session = request.getSession();
 		Users user = (Users) session.getAttribute("user");
 		int uid = user.getUid();
-
 		String path = request.getSession().getServletContext().getRealPath("img/") + user.getUname();
 		Map<String, String> map = Upload.upload(request, 100 * 1024 * 1024, path);
-		String tuiwen = map.get("tuiwen");
+		String tuiwen = map.get("tuiwen");		
 		String tpic = map.get("tpic");
 		Timestamp ttime = Times.getSystemTime();
 		if (tpic == "") {
-			tweetsDao.addTweet(uid, tuiwen, ttime, 0);
+			tweetsDao.addTweet(uid, tuiwen, ttime, 0);	
 			usersinfoDao.addTweetsNum(uid);
 			Usersinfo info = usersinfoDao.getInfos(uid);
 			ServletContext application = session.getServletContext();
@@ -334,6 +340,8 @@ public class TweetServletTwo extends HttpServlet {
 	}
 
 	private void toGetTweet(HttpServletRequest request, HttpServletResponse response)throws IOException, ParseException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
 		Users user = (Users) session.getAttribute("user");
 		List<Concern> concernList = new ArrayList<Concern>();

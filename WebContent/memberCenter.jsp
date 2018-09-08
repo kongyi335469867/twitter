@@ -15,11 +15,10 @@
   		int usersPageCount = (Integer)request.getAttribute("USERS_PAGE_COUNT");   //总页码
   		int usersPageNow = (Integer)request.getAttribute("USERS_CURRENT_PAGE");  //当前页码
   		String noContent = (String)request.getAttribute("U_NOCONTENT");  //暂无用户相关内容提示
-  	%>
-  	<!--%
+
 		String allow = (String)session.getAttribute("ALLOW");
 		if("allow".equals(allow)){
-	%-->
+	%>
 	<div class="container">
 		<div class="header">
 			<form action="BackstagePageCtrl?str=memberCenter&usearch=usearch" method="post">
@@ -41,7 +40,7 @@
 					for(String[] user : usersList){
 				%>
 				<li class="list">
-					<div class="headPortrait"><img src="img/1.jpg"><!--img src="<!--%=user[4] %>" alt="头像" style="font-size: 6px;"--></div>
+					<div class="headPortrait"><img src="${pageContext.request.contextPath}/img/<%=user[4] %>" alt="头像" style="font-size: 6px;"></div>
 					<div class="userName"><%=user[1] %></div>
 					<div class="registrationName">@<%=user[2] %></div>
 					<div class="loginTime">最近登录时间：<%=user[5] %></div>
@@ -132,10 +131,10 @@
 		%>
 		</div>
 	</div>
-	<!--%
+	<%
 		}else{
-			response.sendRedirect("backstageError.jsp");  //重定向到提示无权利访问页面
+			response.sendRedirect("./backstageError.jsp");  //重定向到提示无权利访问页面
 		}
-	%-->
+	%>
   </body>
 </html>

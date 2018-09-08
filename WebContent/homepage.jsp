@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
@@ -12,10 +12,10 @@
 	<script type="text/javascript" src="js/highcharts.js"></script><!--控制图表js-->
 </head>
 <body class="bd">
-	<!--%
+	<%
 		String allow = (String)session.getAttribute("ALLOW");
 		if("allow".equals(allow)){
-	%-->
+	%>
 	<div id="box">
 		<!--欢迎语-->
 		<div id="welcome">
@@ -55,7 +55,7 @@
 							animation: Highcharts.svg,                
 							marginRight: 10,
 							events: {
-								load: function() {
+								load: function() {   //每秒设置图表的更新
 									var series = this.series[0];
 									setInterval(function() {
 										var x = (new Date()).getTime(),         
@@ -81,7 +81,7 @@
 							} ]
 						},
 						tooltip:{
-							formatter: function() {
+							formatter: function() {   //显示间隔2秒时间
 								return '<b>' + this.series.name + '</b><br/>' +
 									Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
 									Highcharts.numberFormat(this.y, 2);
@@ -91,7 +91,7 @@
 						exporting: { enabled : false },
 						series: [ {
 							name: '即时在线人数',
-							data: (function() {
+							data: (function() {   //生成一组随机数据
 								var data = [],
 									time = (new Date()).getTime(),
 									i;
@@ -156,10 +156,10 @@
 		<!--实时在线人数图表位处-->
 		<div id="message"></div>
 	</div>
-	<!--%
+	<%
 		}else{
-			response.sendRedirect("backstageError.jsp");  //重定向到提示无权利访问页面
+			response.sendRedirect("./backstageError.jsp");  //重定向到提示无权利访问页面
 		}
-	%-->
+	%>
 </body>
 </html>

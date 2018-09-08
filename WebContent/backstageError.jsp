@@ -1,4 +1,4 @@
-
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +45,9 @@
 <body class="bd">
 	<div id="container">
 		<div id="box">
-			出错啦！<br/>无相关访问权限！<br/>请使用正确方式登录访问...
+			o(╥﹏╥) o 出错啦！<br/>
+			无相关访问权限！<br/>
+			请使用正确方式进行登录访问...
 		</div>
 	</div>
 </body>

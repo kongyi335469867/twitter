@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="com.twitter.bean.Admins" %>
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
   <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
@@ -14,12 +15,11 @@
   		String errNewPWmsg = (String)request.getAttribute("ERRNEWPW");  //新密码与确认密码不匹配提示
   		String errNamemsg = (String)request.getAttribute("ERRNAME");  //管理员修改名已存在提示
   		String errOldPWmsg = (String)request.getAttribute("");  //管理员旧密码不匹配提示
-  	%>
-  	<!--%
+  		
 		String allow = (String)session.getAttribute("ALLOW");
-		Admins adminDB = (Admins)session.getAttribute("ADMINS_DB");   //获取传递的管理员信息
+		Admins adminDB = (Admins)session.getAttribute("ADMIN_DB");   //获取传递的管理员信息
 		if("allow".equals(allow)){
-	%-->
+	%>
 	<div class="container">
 		<div class="header">
 		</div>
@@ -27,7 +27,7 @@
 			<div class="box">
 				<div class="updateInf">修改管理员信息 > ></div>
 				<hr/>
-				<form action="BackstagePageCtrl?str=updateAdminInfo&aid=123" method="post" name="updateForm">
+				<form action="BackstagePageCtrl?str=updateAdminInfo&aid=<%=adminDB.getAid() %>" method="post" name="updateForm">
 				<table border="0" width="100%" height="auto" cellspacing="0" style="border: #ccc">
 					<tr class="title">
 						<th>管理员登录名:</th>
@@ -131,10 +131,10 @@
 			</div>
 		</div>
 	</div>
-	<!--%
+	<%
 		}else{
-			response.sendRedirect("backstageError.jsp");  //重定向到提示无权利访问页面
+			response.sendRedirect("./backstageError.jsp");  //重定向到提示无权利访问页面
 		}
-	%-->	
+	%>	
   </body>
 </html>

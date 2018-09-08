@@ -2,9 +2,11 @@ package com.twitter.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.twitter.bean.Admins;
 import com.twitter.util.BackstageDBUtil;
 
 public class BackstageDaoImpl {
@@ -23,6 +25,56 @@ public class BackstageDaoImpl {
 			backstageDaoImpl = new BackstageDaoImpl();
 		}
 		return backstageDaoImpl;
+	}
+	
+	/*Dao层实现查询管理员登录名和密码是否匹配*/
+	public boolean adminLogin(String adminname, String adminpw) {
+		boolean loginResult = false;
+		try {
+			String sql = "select astate from admins where aname = ? and apwd = ?";
+			Object[] os = { adminname, adminpw };
+			ResultSet rs = BackstageDBUtil.executeQuery(sql, os);
+			if(rs.next()){
+				if(rs.getInt(1) == 1){  //管理员账号状态为1，允许登录
+					loginResult = true;
+				}else{     //管理员账号状态为0，允许登录
+					loginResult = false;
+				}
+			}else{    //管理员账号密码不匹配，不允许登录
+				loginResult = false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return loginResult;
+	}
+	
+	/* Dao层实现查询管理员信息 */
+	public Admins queryAdminDB(String adminname){
+		Admins adminDB = new Admins();
+		try {
+			String sql = "select * from admins where aname = ?";
+			Object[] os = { adminname };
+			ResultSet rs = BackstageDBUtil.executeQuery(sql, os);
+			if(rs.next()){
+				adminDB.setAid(rs.getInt("aid"));
+				adminDB.setAname(rs.getString("aname"));
+				adminDB.setApwd(rs.getString("apwd"));
+				adminDB.setAtime(rs.getTimestamp("atime"));
+				adminDB.setAstate(rs.getInt("astate"));
+				adminDB.setApower(rs.getInt("apower"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return adminDB;
+	}
+	
+	/* Dao层实现管理员登入、登出时间戳的记录  */
+	public void addAdminTime(int aid, java.sql.Timestamp aditime, java.sql.Timestamp adotime){
+		String sql = "insert into adlogin(adid, aid, aditime, adotime) value(null, ?, ?, ?)";
+		Object[] os = { aid, aditime, adotime };
+		BackstageDBUtil.executeAddOrUpdateOrDelete(sql, os);
 	}
 	
 	/*Dao层实现*查询在线人数*/
@@ -109,14 +161,14 @@ public class BackstageDaoImpl {
 		return userall;
 	}
 	/*Dao层实现查询用户最近登录时间*/
-	public String getLastSignin(int uid){
+	public Timestamp getLastSignin(int uid){
 		String sql = "select stime from signin where uid = ? order by stime desc limit 1";
 		Object[] os = { uid };
-		String lastSignin = null;
+		Timestamp lastSignin = null;
 		ResultSet rs = BackstageDBUtil.executeQuery(sql, os);
 		try {
 			if(rs.next()){
-				lastSignin = rs.getString(1);
+				lastSignin = rs.getTimestamp(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -135,7 +187,7 @@ public class BackstageDaoImpl {
 			if(rs.next()){
 				int uidInt = rs.getInt("uid");
 				String uid = String.valueOf(uidInt);
-				String lastSignin = getLastSignin(uidInt);
+				String lastSignin = getLastSignin(uidInt).toString();
 				String urealname = rs.getString("urealname");
 				String uaite = rs.getString("uaite");
 				String ustate = String.valueOf(rs.getInt("ustate"));
@@ -169,7 +221,7 @@ public class BackstageDaoImpl {
 				str[2] = rsPage.getString("uaite");  //用户登录名
 				str[3] = String.valueOf(rsPage.getInt("ustate"));  //用户账户状态
 				str[4] = rsPage.getString("ulogo");  //用户头像
-				str[5] = getLastSignin(rsPage.getInt("uid"));  //用户最近登录时间
+				str[5] = getLastSignin(rsPage.getInt("uid")).toString();  //用户最近登录时间
 				str[6] = null;  //预留空间，解封按钮背景颜色
 				usersallList.add(str);
 			}
@@ -201,7 +253,7 @@ public class BackstageDaoImpl {
 				str[2] = rs.getString("uaite");  //用户登录名
 				str[3] = String.valueOf(rs.getInt("ustate"));  //用户账户状态
 				str[4] = rs.getString("ulogo");  //用户头像
-				str[5] = rs.getString("stime");  //用户最近登录时间
+				str[5] = rs.getTimestamp("stime").toString();  //用户最近登录时间
 				str[6] = null;  //预留空间，解封按钮背景颜色
 				userallList.add(str);
 			}
@@ -229,7 +281,7 @@ public class BackstageDaoImpl {
 				str[2] = rs.getString("uaite");   //用户登录名
 				str[3] = String.valueOf(rs.getInt("ustate"));    //用户账户状态
 				str[4] = rs.getString("ulogo");   //用户头像
-				str[5] = getLastSignin(rs.getInt("uid")); //用户最近登录时间
+				str[5] = getLastSignin(rs.getInt("uid")).toString(); //用户最近登录时间
 				str[6] = null;  //预留空间，解封按钮背景颜色
 				userInfoList.add(str);
 			}
@@ -254,7 +306,7 @@ public class BackstageDaoImpl {
 	 * （包括用户真实名urealname，用户登录名uatie，用户头像ulogo，推文表内容tcontent，推文发布时间ttime）
 	 * */
 	public List<String[]> queryUTweets(){
-		List<String[]> utweetsList = new ArrayList<String[]>();   /*集合，所有推文内容*/
+		List<String[]> utweetsList = new ArrayList<String[]>(); /*集合，所有推文内容*/
 		String[] tweets = null;  /*一条推文内容*/
 		String sql = "select uid, urealname, uaite, ulogo, tid, tcontent, ttime from utweets";
 		Object[] os = null;
@@ -267,7 +319,7 @@ public class BackstageDaoImpl {
 				String ulogo = rs.getString("ulogo");
 				String tid = String.valueOf(rs.getInt("tid"));
 				String tcontent = rs.getString("tcontent");
-				String ttime = rs.getString("ttime");
+				String ttime = rs.getTimestamp("ttime").toString();
 				tweets = new String[]{uid,urealname, uatie, ulogo, tid, tcontent, ttime};
 				utweetsList.add(tweets);
 			}
@@ -298,7 +350,7 @@ public class BackstageDaoImpl {
 				str[3] = rsPage.getString("ulogo");   //用户头像
 				str[4] = String.valueOf(rsPage.getInt("tid"));  //推文id
 				str[5] = rsPage.getString("tcontent");  //推文内容
-				str[6] = rsPage.getString("ttime");  //推文发布时间
+				str[6] = rsPage.getTimestamp("ttime").toString();  //推文发布时间
 				utweetsList.add(str);
 			}
 		} catch (SQLException e) {
@@ -337,7 +389,7 @@ public class BackstageDaoImpl {
 				str[3] = rsPage.getString("ulogo");   //用户头像
 				str[4] = String.valueOf(rsPage.getInt("tid"));  //推文id
 				str[5] = rsPage.getString("tcontent");  //推文内容
-				str[6] = rsPage.getString("ttime");  //推文发布时间
+				str[6] = rsPage.getTimestamp("ttime").toString();  //推文发布时间
 				userTweetsList.add(str);
 			}
 			for(String[] tweet : userTweetsList){
