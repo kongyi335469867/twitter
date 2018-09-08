@@ -4,8 +4,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.twitter.pojo.Tweets;
-import com.twitter.pojo.Utweets;
+import com.twitter.bean.Tweets;
+import com.twitter.bean.Utweets;
 import com.twitter.util.DBUtil;
 
 public class TweetsDao {
