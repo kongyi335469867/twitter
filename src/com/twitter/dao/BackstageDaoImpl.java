@@ -254,7 +254,7 @@ public class BackstageDaoImpl {
 	 * （包括用户真实名urealname，用户登录名uatie，用户头像ulogo，推文表内容tcontent，推文发布时间ttime）
 	 * */
 	public List<String[]> queryUTweets(){
-		List<String[]> utweetsList = new ArrayList<String[]>(); /*集合，所有推文内容*/
+		List<String[]> utweetsList = new ArrayList<String[]>();   /*集合，所有推文内容*/
 		String[] tweets = null;  /*一条推文内容*/
 		String sql = "select uid, urealname, uaite, ulogo, tid, tcontent, ttime from utweets";
 		Object[] os = null;
