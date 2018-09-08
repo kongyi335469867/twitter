@@ -2,7 +2,7 @@ package com.twitter.bean;
 
 import java.sql.Timestamp;
 
-public class Replyall {
+public class Replayall {
 	private int rid;	//回复id
 	private int uid;	//用户id
 	private int tid;	//推文id

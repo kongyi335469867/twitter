@@ -18,7 +18,7 @@ public class DBUtil {
 		for (int i = 0; i < 20; i++) {
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
-				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mytwitter", "root", "min");
+				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mytwitter", "root", "orange");
 				conPool.add(con);
 			} catch (Exception e) {
 				e.printStackTrace();
