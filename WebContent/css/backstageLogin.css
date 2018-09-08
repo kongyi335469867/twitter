@@ -1,0 +1,150 @@
+body {
+	background: white;
+	font-family: "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "\9ED1\4F53", Arial, sans-serif;
+	color: #222;
+	font-size: 12px;
+}
+
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+/*蓝色背景部分*/
+.topDiv {
+	background: rgba(29, 161, 241, 1.00);
+	width: 100%;
+	height: 300px;
+}
+
+/* 登录框 */
+.containerBox{
+	background: rgb(255, 255, 255); 
+	margin: -100px auto auto; 
+	width: 400px; 
+	height: 205px; 
+	border: 1px solid rgb(231, 231, 231); 
+	border-image: none; 
+	border-radius: 5px;
+	text-align: center;
+}
+
+/* 猫头鹰图片部分 */
+.owlPictureBox{
+	width: 165px; 
+	height: 96px; 
+	position: absolute;
+}
+.head {
+	background: url("../img/tou.png") no-repeat;
+	width: 97px;
+	height: 92px;
+	position: absolute;
+	top: -87px;
+	left: 140px;
+}
+.initial_left_hand {
+	background: url("../img/hand.png") no-repeat;
+	width: 30px;
+	height: 20px;
+	position: absolute;
+	top: -12px;
+	left: 100px;
+}
+.initial_right_hand {
+	background: url("../img/hand.png") no-repeat;
+	width: 30px;
+	height: 20px;
+	position: absolute;
+	top: -12px;
+	right: -112px;
+}
+/* 猫头鹰动态效果 */
+.left_hand {
+	background: url("../img/left_hand.png") no-repeat;
+	width: 32px;
+	height: 37px;
+	position: absolute;
+	top: -38px;
+	left: 150px;
+}
+.right_hand {
+	background: url("../img/right_hand.png") no-repeat;
+	width: 32px;
+	height: 37px;
+	position: absolute;
+	top: -38px;
+	right: -64px;
+}
+.left_handing {
+	background: url("../img/left-handing.png") no-repeat;
+	width: 30px;
+	height: 20px;
+	position: absolute;
+	top: -24px;
+	left: 139px;
+}
+.right_handinging {
+	background: url("../img/right_handing.png") no-repeat;
+	width: 30px;
+	height: 20px;
+	position: absolute;
+	top: -21px;
+	left: 210px;
+}
+
+/* 管理员名和密码输入框 */
+.ipt {
+	border: 1px solid #d3d3d3;
+	padding: 10px 10px;
+	width: 290px;
+	border-radius: 4px;
+	padding-left: 35px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	-webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
+}
+.ipt:focus {
+	border-color: #66afe9;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6)
+}
+
+/* 管理员名处图标 */
+.a_logo {
+	background: url("../img/username.png") no-repeat;
+	padding: 10px 10px;
+	position: absolute;
+	top: 43px;
+	left: 43px;
+}
+/* 管理员密码处图标 */
+.p_logo {
+	background: url("../img/password.png") no-repeat;
+	padding: 10px 10px;
+	position: absolute;
+	top: 12px;
+	left: 43px;
+}
+
+/* 登录提交按钮 */
+.loginBtnBox{
+	height: 50px; 
+	line-height: 50px; margin-top: 30px; 
+	border-top-color: rgb(231, 231, 231); 
+	border-top-width: 1px; 
+	border-top-style: solid;
+}
+#submitBtn {
+	background-color: rgba(29, 161, 241, 1.00);
+	padding: 10px 90px;
+	border-radius: 4px;
+	border: 1px solid rgb(26, 117, 152);
+	border-image: none;
+	color: rgb(255, 255, 255);
+	font-size: 16px;
+	cursor: pointer;
+}
