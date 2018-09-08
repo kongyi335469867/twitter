@@ -3,8 +3,8 @@ package com.twitter.dao;
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.twitter.pojo.Messageall;
-import com.twitter.pojo.Usersall;
+import com.twitter.bean.Messageall;
+import com.twitter.bean.Usersall;
 import com.twitter.util.DBUtil;
 
 public class MessageDao {
