@@ -1,6 +1,6 @@
 package com.twitter.bean;
 
-import com.sun.jmx.snmp.Timestamp;
+import java.sql.Timestamp;
 
 public class Notification {
 	private int nid;	//通知id
@@ -12,9 +12,29 @@ public class Notification {
 	private int nretid;		//转发推文id
 	private int nuided;		//非本人关注用户id
 	private int nhuiuid;	//非本人回复推文用户id
+	private int nhuitid;	//非本人转发推文用户id
 	private String nrcontent;	//通知内容
 	private Timestamp ntime;	//通知内容
-	private int state;			//非本人通知读取状态 0未读/1已读
+	private int nstate;			//非本人通知读取状态 0未读/1已读
+	private Utweets utweets;
+	private Utweets utweetstwo;
+	private Usersall user;
+	private String time;
+	
+	
+	
+	public Usersall getUser() {
+		return user;
+	}
+	public void setUser(Usersall user) {
+		this.user = user;
+	}
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
 	public int getNid() {
 		return nid;
 	}
@@ -81,12 +101,31 @@ public class Notification {
 	public void setNtime(Timestamp ntime) {
 		this.ntime = ntime;
 	}
-	public int getState() {
-		return state;
+	public int getNstate() {
+		return nstate;
 	}
-	public void setState(int state) {
-		this.state = state;
+	public void setNstate(int nstate) {
+		this.nstate = nstate;
 	}
+	public Utweets getUtweets() {
+		return utweets;
+	}
+	public void setUtweets(Utweets utweets) {
+		this.utweets = utweets;
+	}
+	public Utweets getUtweetstwo() {
+		return utweetstwo;
+	}
+	public void setUtweetstwo(Utweets utweetstwo) {
+		this.utweetstwo = utweetstwo;
+	}
+	public int getNhuitid() {
+		return nhuitid;
+	}
+	public void setNhuitid(int nhuitid) {
+		this.nhuitid = nhuitid;
+	}
+
 	
 	
 }	
