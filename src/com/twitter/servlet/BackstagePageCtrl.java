@@ -135,7 +135,7 @@ public class BackstagePageCtrl extends HttpServlet {
         	request.setAttribute("DELETE_RESULT", String.valueOf(deleteResult));   /*删除结果*/
     		request.getRequestDispatcher("tweetCenter.jsp").forward(request,response);
     	}
-    	//AJAX实现“推文中心”推文内容的批量删除
+    	/* AJAX实现“推文中心”推文内容的批量删除 */
     	if("ajaxDeleteBatches".equals(option)){  
     		String tidsInfo = request.getParameter("tids"); 
     		String[] tidsArr = tidsInfo.split(",");
