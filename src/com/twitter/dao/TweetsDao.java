@@ -71,6 +71,7 @@ public class TweetsDao {
 
 	public List<Utweets> getAllTweets(int uid, List uidList, int page) {
 		String sql = "select tid,uid,uname,upwd,urealname,uaite,uonline,uabout,ulogo,ubg,ufans,utweet,ufollow,ucolor,tcontent, ttime, tpic, tvideo, treply, tforward, tlike,tzhuan   from utweets where  (tzhuan=1 or tcontent!='' ) and (uid=?";
+		
 		for (int i = 0; i < uidList.size(); i++) {
 			sql = sql + " or uid=?";
 		}
@@ -109,6 +110,7 @@ public class TweetsDao {
 //添加推文
 	public int addTweet(int uid, String tcontent, Timestamp ttime, int tzhuan) {
 		String sql = "insert into tweets(uid, tcontent, ttime,tzhuan) values(?,?,?,?)";
+		System.out.println("tweetsDao: "+tcontent);
 		int n = DBUtil.update(sql, uid, tcontent, ttime, tzhuan);
 		return n;
 	}

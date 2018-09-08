@@ -43,23 +43,30 @@ public class NotificationServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		String method = request.getParameter("method");
+		//判断已读状态
 		if ("all".equals(method)) {
 			toGetAllNotify(request, response);
 		}
+		//判断未读状态
 		if ("noread".equals(method)) {
 			toGetNoRead(request, response);
 		}
 	}
 //获取未读的通知
 	private void toGetNoRead(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
 		Users user = (Users) session.getAttribute("user");
 		int uid = user.getUid();
+		//未读信息的条数
 		int n = notificationDao.getNoRead(uid);
 		response.getWriter().print(n);
 	}
 //获得所有的通知内容
 	private void toGetAllNotify(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
 		String page = request.getParameter("page");
 		HttpSession session = request.getSession();
 		Users user = (Users) session.getAttribute("user");
@@ -72,12 +79,14 @@ public class NotificationServlet extends HttpServlet {
 		}
 		JSONArray js = new JSONArray();
 		for (Notification notification : notifications) {
+			//关注
 			if (notification.getNtype() == 1) {
 				int nuid = notification.getNuid();
 				Usersall users = usersinfoDao.getInfotwo(nuid);
 				notification.setUser(users);
 				changeTime(notification, notification.getNtime());
 			}
+			//点赞
 			if (notification.getNtype() == 2) {
 				int nliketid = notification.getNliketid();
 				Utweets utweets = tweetsDao.getTweetsByTid(nliketid);
@@ -87,6 +96,7 @@ public class NotificationServlet extends HttpServlet {
 				notification.setUtweets(utweets);
 				changeTime(notification, notification.getNtime());
 			}
+			//转发
 			if (notification.getNtype() == 3) {
 				int nretid = notification.getNretid();
 				Utweets utweets = tweetsDao.getTweetsByTid(nretid);
@@ -96,6 +106,7 @@ public class NotificationServlet extends HttpServlet {
 				notification.setUtweetstwo(utweets);
 				changeTime(notification, notification.getNtime());
 			}
+			//回复
 			if (notification.getNtype() == 4) {
 				int nhuitid = notification.getNhuitid();
 				int nuid = notification.getNuid();
@@ -120,13 +131,16 @@ public class NotificationServlet extends HttpServlet {
 		jsonobj.put("nuid", nuid);
 		jsonobj.put("ntype", ntype);
 		jsonobj.put("time", time);
+		//第一条推文不为空和Tpic不为空
 		if (utweets != null && utweets.getTpic() != null) {
 			jsonobj.put("utweets",
 					"{\"uname\":\"" + utweets.getUname() + "\",\"ulogo\":\"" + utweets.getUlogo() + "\",\"uid\":\""
 							+ utweets.getUid() + "" + "\",\"urealname\":\"" + utweets.getUrealname() + "\",\"uaite\":\""
 							+ utweets.getUaite() + "\",\"tcontent\":\"" + utweets.getTcontent() + "\",\"tpic\":\""
 							+ utweets.getTpic() + "\"}");
-		} else if (utweets != null && utweets.getTpic() == null) {
+		} 
+		//推文不为空和Tpic为空，缺少tpic	
+		else if (utweets != null && utweets.getTpic() == null) {
 			jsonobj.put("utweets",
 					"{\"uname\":\"" + utweets.getUname() + "\",\"ulogo\":\"" + utweets.getUlogo() + "\",\"uid\":\""
 							+ utweets.getUid() + "\",\"urealname\":\"" + utweets.getUrealname() + "\",\"uaite\":\""
@@ -158,11 +172,12 @@ public class NotificationServlet extends HttpServlet {
 		SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日 HH:mm");
 		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
 		SimpleDateFormat sdf3 = new SimpleDateFormat("HH:mm");
+		//获得Calendar的对象
 		Calendar cal = Calendar.getInstance();
 		int day = cal.get(Calendar.DATE);
 		int month = cal.get(Calendar.MONTH) + 1;
 		int year = cal.get(Calendar.YEAR);
-
+		//年月日时分秒
 		String nowyear = year + "-01-01 00:00:00";
 		Timestamp yeardate = Timestamp.valueOf(nowyear);
 
@@ -178,10 +193,13 @@ public class NotificationServlet extends HttpServlet {
 		} else if (chazhi < 3600000) {
 			long n = chazhi / 60000;
 			notification.setTime(n + "分钟");
+			//当此刻的时间大于date的时间，仅显示时分
 		} else if (ntime.after(date)) {
 			notification.setTime(sdf3.format(ntime));
+			//当此刻时间大于昨天的时间时，显示年月日时分秒
 		} else if (ntime.after(yeardate)) {
 			notification.setTime(sdf.format(ntime));
+			//显示月日时分
 		} else {
 			notification.setTime(sdf2.format(ntime));
 		}

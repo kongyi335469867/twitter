@@ -26,12 +26,13 @@ public class ReplyServlet extends HttpServlet {
 	private ReplysDao replysDao = new ReplysDao();
 
 	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
-		resp.setContentType("text/html;charset=UTF-8");
-		String page = req.getParameter("page");
-		String tid = req.getParameter("tid");
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		String page = request.getParameter("page");
+		String tid = request.getParameter("tid");
 		List<Replyall> replys = replysDao.getAllReply(Integer.parseInt(tid), Integer.parseInt(page));
+		//当回复为空时，返回空
 		if (replys == null) {
 			return;
 		}
@@ -72,7 +73,7 @@ public class ReplyServlet extends HttpServlet {
 			js.add(getJsonObj(reply.getRid(), reply.getUid(), reply.getTid(), reply.getRcontent(), reply.getTime(),
 					reply.getUname(), reply.getUrealname(), reply.getUaite(), reply.getUlogo()));
 		}
-		resp.getWriter().print(js.toString());
+		response.getWriter().print(js.toString());
 	}
 //JSONObject-lib包是一个beans,collections,maps,java arrays和xml和JSON互相转换的包。
 	public JSONObject getJsonObj(int rid, int uid, int tid, String rcontent, String time, String uname,
