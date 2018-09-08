@@ -16,9 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.twitter.dao.MessageDao;
-import com.twitter.pojo.Messageall;
-import com.twitter.pojo.Users;
-import com.twitter.pojo.Usersall;
+import com.twitter.bean.Messageall;
+import com.twitter.bean.Users;
+import com.twitter.bean.Usersall;
 import com.twitter.util.Times;
 
 import net.sf.json.JSONArray;
