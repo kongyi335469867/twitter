@@ -3,7 +3,7 @@ package com.twitter.dao;
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.twitter.pojo.Concern;
+import com.twitter.bean.Concern;
 import com.twitter.util.DBUtil;
 
 public class ConcernDao {
