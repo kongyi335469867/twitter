@@ -46,7 +46,7 @@
         <aside class="layout-side">
             <ul class="side-menu">
                 <li class="menu-header menu-item"><i class="iconfont">&#xe613;</i></li>
-                <li class="menu-item" title="主页">
+                <li class="menu-item item_active" title="主页">
                     <a id="homepage" href="homepage.jsp" target="iframe0">
                         <i class="iconfont">&#xe65e;</i>
                         <span class="menu-item-word">主页</span>
