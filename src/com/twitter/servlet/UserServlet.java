@@ -154,8 +154,8 @@ public class UserServlet extends HttpServlet {
 		Users user = (Users) session.getAttribute("user");
 		int uid = user.getUid();
 		// 获取绝对路径
-		//String path = request.getSession().getServletContext().getRealPath("img/") + user.getUname();
-		String path = "Z:/HelloWord/Java/twitter/WebContent/img/"+user.getUname();
+		String path = request.getSession().getServletContext().getRealPath("img/") + user.getUname();
+		//String path = "Z:/HelloWord/Java/twitter/WebContent/img/"+user.getUname();
 		Map<String, String> map = Upload.upload(request, 100 * 1024 * 1024, path);
 		String picName = map.get("picpath");
 		int n = usersinfoDao.updateBg(uid, picName);
@@ -251,8 +251,8 @@ public class UserServlet extends HttpServlet {
 				}
 			}
 			// 生成jpeg图片
-			// String path = request.getSession().getServletContext().getRealPath("img/") + user.getUname();
-			String path = "Z:/HelloWord/Java/twitter/WebContent/img/"+user.getUname();
+			String path = request.getSession().getServletContext().getRealPath("img/") + user.getUname();
+			//String path = "Z:/HelloWord/Java/twitter/WebContent/img/"+user.getUname();
 			newFileName = new Date().getTime() + ".png";
 			String imgFilePath = path + "/" + newFileName;// 新生成的图片
 			OutputStream out = new FileOutputStream(imgFilePath);
@@ -601,11 +601,11 @@ public class UserServlet extends HttpServlet {
 			if (m > 0) {
 				Usersinfo info = usersinfoDao.getInfos(user.getUid());
 
-				/*String folder = request.getSession().getServletContext().getRealPath("/img/" + user.getUname());
-				String img = request.getSession().getServletContext().getRealPath("/img");*/
+				String folder = request.getSession().getServletContext().getRealPath("/img/" + user.getUname());
+				String img = request.getSession().getServletContext().getRealPath("/img");
 				//本地绝对路径
-				String folder = "Z:/HelloWord/Java/twitter/WebContent/img/" + user.getUname();
-				String img = "Z:/HelloWord/Java/twitter/WebContent/img";
+				//String folder = "Z:/HelloWord/Java/twitter/WebContent/img/" + user.getUname();
+				//String img = "Z:/HelloWord/Java/twitter/WebContent/img";
 				
 				File file = new File(folder);
 				file.mkdir();
