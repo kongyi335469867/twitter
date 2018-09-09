@@ -129,7 +129,8 @@ public class MessageServlet extends HttpServlet {
 					JSONArray jsonArray = JSONArray.fromObject(list, config);
 					response.getWriter().print(jsonArray.toString());
 				}
-			}catch(NullPointerException e){
+			 }
+		}catch(NullPointerException e){
 			e.printStackTrace();
 			System.out.println("NotificationServlet获取未读信息用户id为Null");
 		}
