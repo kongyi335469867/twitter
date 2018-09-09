@@ -37,9 +37,11 @@
 				<div id="xiaoxitop"></div>
 				<input class="uid" type="hidden">
 				<div id="xiaoxinall"></div>
-				<div id="addpic"></div>
-				<textarea id="xiaoxikuang"></textarea>
-				<div id="tip">按下Enter发送消息/Ctrl+Enter换行</div>
+				<div id="xiaoxibottom">
+					<div id="addpic"></div>
+					<textarea id="xiaoxikuang"></textarea>
+					<div id="tip">按下Enter发送消息/Ctrl+Enter换行</div>
+				</div>
 			</div>
 			<div id="xiaoxitwo">您还未选中或发起聊天，快去跟好友聊一聊吧</div>
 		</div>
@@ -259,6 +261,26 @@
 			
 		}
 	});
+	
+	//点击输入框背景变白
+	$("#xiaoxibottom").click(function(){
+		$("#xiaoxikuang").focus();
+		$("#addpic").css("background","white")
+		$("#xiaoxikuang").css("background","white")
+		$("#tip").css("background","white").html(" ");
+		$("#xiaoxibottom").css("background","white");
+		
+	});
+	
+	//输入框失去焦点背景变白
+	$("#xiaoxikuang").blur(function(){
+		$("#addpic").css("background","#EEE")
+		$("#xiaoxikuang").css("background","#EEE")
+		$("#tip").css("background","#EEE").html("按下Enter发送消息/Ctrl+Enter换行");
+		$("#xiaoxibottom").css("background","#EEE");
+		
+	});
+	
 	$(function() {
 		$("#friend").mCustomScrollbar({
 			setTop : "0"
