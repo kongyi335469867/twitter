@@ -1,7 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<c:if test="${user == null }">
+	<jsp:forward page="index.jsp"></jsp:forward>
+</c:if>
 <html>
 <head>
 <meta charset="utf-8">
@@ -10,7 +12,6 @@
 <link rel="icon" href="img/index.ico" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/tanchu.css" />
-<link rel="stylesheet" href="css/mycss.css" />
 <script src="js/jquery-1.4.4.min.js"></script>
 <script src="js/jquery.reveal.js"></script>
 <script src="js/jquery-3.1.1.min.js"></script>
@@ -19,9 +20,989 @@
 <script src="js/popup.js"></script>
 <script src="js/autosize.min.js"></script>
 <script src="js/select.js"></script>
-
 <style>
+* {
+	margin: 0px;
+	padding: 0px;
+	font-family: "microsoft yahei";
+}
 
+body {
+	width: 1349px;
+	background-color: rgba(230, 236, 240, 1.00);
+	height: auto;
+	font-family: "microsoft yahei";
+}
+
+#loader {
+	min-width: 1349px;
+	background-color: rgba(255, 255, 255, 1.00);
+	width: 100%;
+	height: 46px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 99;
+	box-shadow: 0 0 5px #657786;
+}
+
+a {
+	text-decoration: none;
+}
+
+li {
+	list-style: none;
+}
+
+#logo {
+	background-color: rgba(255, 255, 255, 1.00);
+	height: 23px;
+	width: 23px;
+	position: fixed;
+	top: 12px;
+	left: 650px;
+	cursor: pointer;
+}
+
+.search {
+	width: 220px;
+	height: 30px;
+	border: 1px solid rgba(203, 203, 203, 1.00);
+	border-radius: 25px;
+	background-color: rgba(245, 248, 250, 1.00);
+	padding-right: 30px;
+	padding-left: 15px;
+	line-height: 30px;
+	font-size: 12px;
+}
+
+#search {
+	width: 300px;
+	height: 30px;
+	margin-left: 870px;
+	margin-top: -45px;
+}
+
+.sea {
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+	float: left;
+	position: relative;
+	top: 7px;
+	left: 210px;
+	background-color: rgba(245, 248, 250, 1.00);
+}
+
+#daohang {
+	width: 300px;
+	height: 38px;
+	margin-left: 80px;
+	margin-top: 5px;
+}
+
+#daohang li {
+	float: left;
+	width: 80px;
+	height: 42px;
+	padding: 0 15px;
+	line-height: 43px;
+	cursor: pointer;
+	font-size: 15px;
+	color: rgba(102, 107, 117, 1.00);
+}
+
+.bian {
+	margin-left: 5px;
+	position: relative;
+	top: -1px;
+}
+
+#touxiang {
+	border-radius: 25px;
+	position: absolute;
+	right: 193px;
+	top: 7px;
+}
+
+.button {
+	position: absolute;
+	right: 90px;
+	top: 7px;
+	width: 81px;
+	height: 32px;
+	border: none;
+	color: white;
+	border-radius: 3px;
+	box-shadow: 0 1px 0 #657786;
+}
+
+.fa {
+	font-size: 15px;
+	position: relative;
+	top: -6px;
+	left: -2px;
+}
+
+.edit {
+	font-size: 23px;
+	position: relative;
+	top: -1px;
+	left: -4px;
+}
+
+#listlist {
+	width: 180px;
+	height: 360px;
+	position: fixed;
+	top: 51px;
+	right: 185px;
+	border-radius: 3px;
+	box-shadow: 0 0 2.5px lightslategray;
+	z-index: auto;
+	background-color: white;
+}
+
+#list {
+	display: none;
+	width: 120px;
+	height: 270px;
+	z-index: auto;
+}
+
+.triangle {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	line-height: 0;
+}
+
+.xia {
+	border: 4px solid transparent;
+	border-top-color: aliceblue;
+	border-bottom-width: 0;
+}
+
+.shang {
+	border: 10px solid transparent;
+	border-bottom-color: white;
+	border-top-width: 0;
+	filter: drop-shadow(.5px -1px 1px lightslategray);
+}
+
+.ss {
+	position: fixed;
+	top: 41px;
+	right: 200px;
+	z-index: 6;
+}
+
+#body {
+	width: 1349px;
+	height: auto;
+	float: left;
+	position: relative;
+	top: -200px;
+}
+
+#third {
+	width: 240px;
+	height: auto;
+	position: absolute;
+	left: 1000px;
+}
+
+#tuijian {
+	width: 240px;
+	height: 260px;
+	border-radius: 3px;
+	background-color: white;
+	box-shadow: 0 0 .5px #657786;
+}
+
+#mask_shadow {
+	display: none;
+	opacity: 0;
+	position: fixed;
+	z-index: 99;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, .9);
+}
+
+#popup {
+	display: none;
+	opacity: 0;
+	position: absolute;
+	z-index: 100;
+	top: 80px;
+	width: 600px;
+	height: auto;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+#popup .title {
+	position: relative;
+	width: 100%;
+	height: 45px;
+	background-color: white;
+	cursor: move;
+	border-radius: 3px 3px 0 0;
+	margin-bottom: -10px;
+}
+
+#popup .title p {
+	padding-left: 14px;
+	line-height: 55px;
+	color: #657786;
+	text-align: center;
+	font-size: 17px;
+	color: black;
+	font-weight: bold;
+}
+
+#popup .title span {
+	position: absolute;
+	top: 12px;
+	right: 20px;
+	width: 30px;
+	height: 30px;
+	color: #000;
+	opacity: .2;
+	font-size: 21px;
+	cursor: pointer;
+	text-align: center;
+	border-radius: 3px;
+}
+
+#popup .title span:hover {
+	opacity: .8;
+}
+
+#popup .cont {
+	width: 100%;
+	height: 200px;
+	border-radius: 0 0 3px 3px;
+	min-height: 210px;
+	background-color: rgba(232, 245, 253, 1);
+}
+
+.listd {
+	padding: 4px 0 3px 20px;
+	font-size: 15px;
+	color: black;
+	margin: 5px 0;
+	cursor: pointer;
+}
+
+hr {
+	margin: 5px 0;
+}
+
+#bg {
+	width: 1349px;
+	height: 300px;
+	background-size: 1349px 300px;
+	position: fixed;
+	top: 0px;
+	cursor: pointer;
+	z-index: 1;
+	background-color: ${info.ucolor
+}
+
+;
+}
+#bodytwo {
+	margin-top: 300px;
+	position: relative;
+	z-index: 5;
+	background-color: rgba(230, 236, 240, 1.00);
+	height: 100%;
+}
+
+#back {
+	width: 620px;
+	height: 60px;
+	display: none;
+	background-color: white;
+	cursor: pointer;
+}
+
+#back img {
+	margin-left: 276px;
+	margin-top: 10px;
+	width: 24px;
+	height: 24px;
+	width: 24px;
+}
+
+#bigtouxiang {
+	background-color: white;
+	background-size: 200px 200px;
+	width: 200px;
+	height: 200px;
+	border: 1px solid white;
+	position: relative;
+	top: -120px;
+	left: 100px;
+	border-radius: 3px;
+	z-index: 3;
+	cursor: pointer;
+}
+
+#jiazai {
+	width: 620px;
+	height: 40px;
+	background-color: white;
+	line-height: 40px;
+	font-size: 15px;
+	color: black;
+	display: none;
+	margin-top: -9px;
+}
+
+#jiazai img {
+	margin-left: 28px;
+	display: none;
+	margin-top: 10px;
+	z-index: 2;
+}
+
+#littleloader {
+	background-color: rgba(255, 255, 255, 1.00);
+	width: 1349px;
+	height: 56px;
+	box-shadow: 0 0 5px #657786;
+	position: relative;
+	z-index: 2;
+}
+
+#secondloader {
+	position: relative;
+	left: 360px;
+	height: 52px;
+	text-align: center;
+	width: 800px;
+	z-index: 2;
+}
+
+#secondloader li {
+	float: left;
+	width: 60px;
+	height: 52px;
+	margin-right: 50px;
+	cursor: pointer;
+	color: #657786;
+	margin-top: 5px;
+	font-weight: bold;
+}
+
+.datadetail {
+	font-weight: bold;
+	font-size: 16px;
+	z-index: 2;
+}
+
+#editdata {
+	position: absolute;
+	right: 86px;
+	top: 10px;
+	color: #657786;
+	z-index: 2;
+	border-radius: 5px;
+}
+
+#firstclass {
+	width: 200px;
+	height: 400px;
+	float: left;
+	margin-left: 100px;
+	z-index: 5;
+	margin-top: 20px;
+}
+
+.touxiang {
+	width: 32px;
+	height: 32px;
+	border: 1px solid white;
+	background-size: 31px 31px;
+	cursor: pointer;
+	background:
+		url(${pageContext.request.contextPath}/img/${user.uname }/${info.ulogo});
+	z-index: 2;
+}
+
+#secondclass {
+	width: 620px;
+	height: 400px;
+	float: left;
+	margin-left: 60px;
+	z-index: 2;
+}
+
+#thirdclass {
+	width: 300px;
+	height: 400px;
+	float: left;
+	margin-left: 20px;
+	z-index: 2;
+}
+
+#classdetail {
+	width: 1349px;
+	height: auto;
+	margin-top: 20px;
+	z-index: 2;
+}
+
+#rname {
+	height: 30px;
+	width: auto;
+	font-size: 20px;
+	color: black;
+	font-weight: bold;
+	margin-top: 10px;
+	cursor: pointer;
+}
+
+#aitename {
+	font-size: 15px;
+	height: 30px;
+	width: auto;
+	color: #657786;
+	cursor: pointer;
+}
+
+#infos {
+	margin-top: 10px;
+	color: black;
+	z-index: 2;
+}
+
+.info {
+	color: #657786;
+	margin-bottom: 5px;
+	cursor: pointer;
+	z-index: 2;
+	margin-bottom: 5px;
+}
+
+.info span {
+	margin-right: 4px;
+}
+
+.tuiwen {
+	width: 620px;
+	height: auto;
+	background-color: white;
+	cursor: pointer;
+	z-index: 2;
+	margin-top: -9px;
+}
+
+.tuiwentwo {
+	width: 620px;
+	height: auto;
+	background-color: white;
+	z-index: 2;
+}
+
+#content {
+	width: 620px;
+	height: auto;
+	z-index: 2;
+}
+
+.sender_tou_xiang {
+	background-size: 60px 60px;
+	border-radius: 3px;
+	width: 60px;
+	height: 60px;
+	position: relative;
+	top: 10px;
+	left: 10px;
+}
+
+.sender_info {
+	width: 500px;
+	height: auto;
+	position: relative;
+	left: 80px;
+	top: -50px;
+}
+
+.sender_name {
+	float: left;
+	width: auto;
+	margin-right: 5px;
+	font-size: 16px;
+	font-weight: bold;
+	height: 20px;
+	line-height: 20px;
+	color: black;
+}
+
+.sender_aite {
+	float: left;
+	width: auto;
+	margin-right: 5px;
+	font-size: 15px;
+	color: #657786;
+	height: 20px;
+	line-height: 20px;
+}
+
+.sender_time {
+	font-size: 15px;
+	color: #657786;
+	height: 20px;
+	line-height: 20px;
+}
+
+.neirong {
+	width: 500px;
+	height: auto;
+	margin-top: 5px;
+	font-size: 15px;
+	color: black;
+	word-wrap: break-word;
+	word-break: break-all;
+}
+
+.sender_gongneng {
+	width: 500px;
+	position: relative;
+	top: 10px;
+}
+
+.sender_gongneng ul li {
+	float: left;
+	width: 80px;
+	height: 20px;
+	line-height: 20px;
+}
+
+.sender_gongneng ul li div {
+	font-size: 16px;
+	color: #657786;
+}
+
+.sender_gongneng ul li div span {
+	font-size: 13px;
+	color: #657786;
+	height: 20px;
+	line-height: 20px;
+	position: relative;
+	top: -4px;
+	left: 7px;
+}
+
+.sender_pic {
+	width: 100%;
+	max-height: 400px;
+	border-radius: 3px;
+}
+
+.sender_pic img {
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	max-height: 300px;
+	margin: 10px 0px;
+	border-radius: 3px;
+}
+
+.meiyou {
+	font-size: 25px;
+	margin-left: 50px;
+	padding-top: 50px;
+}
+
+.kongkong {
+	width: 465px;
+	font-size: 15px;
+	margin-left: 50px;
+	padding-top: 10px;
+	color: #657786;
+}
+
+#seluser {
+	margin: 30px 0px 50px 50px;
+	padding: 10px;
+	border: 1px solid white;
+	border-radius: 5px;
+	font-weight: bold;
+	padding: 10px;
+}
+
+#loaderto {
+	width: 620px;
+	height: 40px;
+	cursor: pointer;
+}
+
+#loaderto li {
+	margin-left: 13px;
+	float: left;
+	margin-right: 10px;
+	height: 40px;
+	line-height: 40px;
+	font-size: 16px;
+	color: rgba(29, 161, 241, 1.00);
+}
+
+.tuijian_info {
+	width: 240px;
+	height: 60px;
+	padding-left: 20px;
+	z-index: 8;
+	padding-left: 20px;
+}
+
+.tuijian_touxiang {
+	background-size: 50px 50px;
+	width: 50px;
+	height: 50px;
+	margin: 5px;
+	float: left;
+	background-color: white;
+	float: left;
+	cursor: pointer;
+	border-radius: 3px;
+}
+
+.tuijian_name {
+	float: left;
+	color: black;
+	font-size: 16px;
+	font-weight: bold;
+	height: 20px;
+	max-width: 65px;
+	overflow: hidden;
+	margin-left: 8px;
+	cursor: pointer;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.tuijian_aite {
+	float: left;
+	font-size: 14px;
+	margin-left: 5px;
+	color: gray;
+	height: 20px;
+	width: auto;
+	max-width: 80px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+.guanzhu_btn {
+	position: relative;
+	top: 3px;
+	left: 0px;
+	width: 81px;
+	height: 32px;
+	border: none;
+	color: white;
+	border-radius: 3px;
+	box-shadow: 0 0.5px 0 #657786;
+}
+
+.guanzhu {
+	font-size: 20px;
+	color: gray;
+	padding-top: 10px;
+	padding-left: 10px;
+	margin-bottom: 20px;
+}
+
+#tuijian {
+	width: 265px;
+	height: 280px;
+	background-color: white;
+	box-shadow: 0 0 0.5px #657786;
+}
+</style>
+<style>
+.tweet {
+	width: 500px;
+	height: auto;
+	float: left;
+	position: relative;
+	top: -20px;
+	left: 70px;
+}
+
+.wen {
+	width: 480px;
+	border-radius: 5px;
+	border: 0px solid gray;
+	z-index: 8;
+	margin: 10px 0 10px 10px;
+}
+
+textarea {
+	resize: none;
+	overflow-y: auto;
+	width: 100%;
+	min-height: 80px;
+	border-style: hidden;
+}
+
+.thing {
+	width: 300px;
+	height: 30px;
+	position: relative;
+	top: -60px;
+	left: 70px;
+	z-index: 7;
+}
+
+.addThing {
+	width: 40px;
+	height: 40px;
+	font-size: 24px;
+	cursor: pointer;
+	padding: 8px;
+	margin-right: 2px;
+	position: relative;
+	top: 50px;
+}
+
+.but {
+	width: 80px;
+	height: 40px;
+	position: relative;
+	left: 235px;
+	top: 45px;
+}
+
+.zishu {
+	position: relative;
+	left: 445px;
+	top: 2px;
+	color: #657786;
+	width: 50px;
+	height: 30px;
+	font-size: 16px;
+	font-style: oblique;
+}
+
+.zishu_lu {
+	position: relative;
+	left: 455px;
+	top: 55px;
+	color: gray;
+}
+
+.but_lu {
+	position: relative;
+	left: 290px;
+	top: 80px;
+}
+
+.add {
+	position: relative;
+	top: -40px;
+	left: 25px;
+}
+
+.addx {
+	position: relative;
+	top: 90px;
+}
+
+.tweet {
+	border: 1px solid red;
+	height: auto;
+	border-radius: 5px;
+	background-color: white;
+}
+
+.ttt {
+	position: relative;
+	top: 30px;
+	left: 20px;
+	width: 560px;
+	color: powderblue
+}
+
+.tuiwencha {
+	position: absolute;
+	right: -20px;
+	top: 0px;
+	color: #657786;
+}
+
+.deltuiwen {
+	position: absolute;
+	right: -70px;
+	top: 15px;
+	width: 120px;
+	height: 80px;
+	background-color: white;
+	text-align: center;
+	line-height: 28px;
+	z-index: 5;
+	display: none;
+	box-shadow: 0 0 0.5px #657786;
+}
+
+.deltuiwen ul li {
+	height: 30px;
+	line-height: 30px;
+}
+
+#souxianshi {
+	width: 330px;
+	height: auto;
+	background-color: white;
+	box-shadow: 0 0 1.5px #657786;
+	position: fixed;
+	top: 49px;
+	left: 885px;
+	border-radius: 3px;
+	display: none;
+}
+
+#souxianshishang {
+	position: fixed;
+	left: 905px;
+	z-index: 999999;
+	margin-top: 1px;
+	display: none;
+}
+
+.souneirong {
+	width: 330px;
+	height: 50px;
+	line-height: 50px;
+	cursor: pointer;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 330px;
+}
+
+.soumingzi {
+	float: left;
+	font-weight: bold;
+	font-size: 16px;
+	color: black;
+	margin-left: 10px;
+	min-width: 35px;
+	max-width: 200px;
+	margin-right: 6px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.soutouxiang {
+	float: left;
+}
+
+.soutouxiang img {
+	width: 30px;
+	height: 30px;
+	border-radius: 50px;
+	margin-top: 10px;
+	margin-left: 20px;
+}
+
+.sousouaite {
+	height: 50px;
+	min-width: 50px;
+	max-width: 200px;
+	font-size: 14px;
+	color: rgb(101, 119, 134);
+	margin-left: 5px;
+	max-width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.guanzhuta {
+	width: 100px;
+	height: 25px;
+	border-radius: 5px;
+	background-color: white;
+	font-size: 14px;
+	font-weight: bold;
+	cursor: pointer;
+	z-index: 999;
+}
+
+#shanchukuang {
+	position: fixed;
+	top: 40%;
+	left: 38%;
+	z-index: 9999999;
+	background-color: white;
+	width: 300px;
+	height: 100px;
+	box-shadow: 0 0 0.5px #657786;
+	border-radius: 5px;
+	text-align: center;
+	display: none;
+}
+
+#xiugaibg {
+	position: absolute;
+	top: 150px;
+	z-index: 9;
+	left: 595px;
+	display: none;
+}
+
+#uppic {
+	position: fixed;
+	top: 800px;
+}
+
+#date select {
+	padding: 2px;
+	border-radius: 5px;
+	outline: none;
+	border: 1px solid rgb(164, 217, 249);
+	height: 30px;
+	margin-right: 5px;
+	width: 100px;
+}
+
+.txt {
+	width: 160px;
+	height: 28px;
+	margin: 10px 8px;
+	border: 1px solid rgb(164, 217, 249);
+	border-radius: 3px;
+	font-size: 15px;
+	color: black;
+	padding: 0 5px;
+}
+
+#tongzhi {
+	width: 480px;
+	height: 50px;
+	background-color: white;
+	position: fixed;
+	top: 46px;
+	left: 430px;
+	z-index: 98;
+	border-radius: 3px;
+	box-shadow: 0 0 2px #657786;
+	text-align: center;
+	color: black;
+	box-shadow: 0 0 2px gray;
+	line-height: 47px;
+	display: none;
+}
 </style>
 </head>
 
@@ -120,39 +1101,6 @@
 				</div>
 			</form>
 		</div>
-      <script>
-   $("#tweet2").keyup(function(){  
-    if($("#tweet2").val().length > 140){
-        $("#tweet2").val( $("#tweet2").val().substring(0,140) );
-    }
-    $(".zishu").text( 140 - $("#tweet2").val().length ) ;
- });
-   
-   $("#tuiwen2").bind('input oninput', function() {
-		$(".cont").css("height", $(this).height() + 100 + "px");
-	});
-	$(".cont").css("height", "200px");
-	$(".wen").bind('input oninput', function() {
-		var zishu = 140 - $(this).val().length;
-		$(".zishu").html(zishu);
-		if (zishu < 0) {
-			$(".zishu").css("color", "lightcoral");
-			$(".zishu").css("fontWeight", "bold");
-			$(".wen").css("color", "lightcoral");
-			$(".but").attr("disabled", "true");
-		} else {
-			$(".zishu").css("color", "#657786");
-			$(".zishu").css("fontWeight", "");
-			$(".wen").css("color", "black");
-			$(".but").removeAttr("disabled");
-			if ($(this).val() == "") {
-				$(".but").attr("disabled", "true");
-			} else {
-				$(".but").removeAttr("disabled");
-			}
-		}
-	});
-</script>
 
 		<div id="mask_shadow"></div>
 	</div>
@@ -213,23 +1161,16 @@
 							class="txt" type="text" style="margin-left: 0px" id="txt" /><span
 							class="check"></span>
 					</div>
-      <div id="date" style="margin-top: 20px;">
+					<div id="date" style="margin-top: 20px;">
+						<span>出生日期：</span> <select name="year" id="year">
+							<option value="">年</option>
+						</select> <select name="month" id="month">
+							<option value="">月</option>
+						</select> <select id="days" class="day">
+							<option value="">日</option>
+						</select>
+					</div>
 
-                    <form  style="margin-top: 20px;" name="date">
-                        <span>出生日期：</span>
-                        <select name="year" onchange="selectYear(this.value)">
-                            <option value="">选择 年</option>
-                        </select>
-                        <select name="month" onchange="selectMonth(this.value)">
-                            <option value="">选择 月</option>
-                        </select>
-                        <select name="day">
-                            <option value="">选择 日</option>
-                        </select>
-                    </form>
-                              				
- 
- 
 					<div style="color:black;padding-top: 30px;">简介：</div>
 					<textarea
 						style="width:540px;margin:10px 0;border-radius: 5px;border:1px solid rgb(164, 217, 249) ;padding:5px"
@@ -247,20 +1188,18 @@
 					<div id="rname">${user.urealname }</div>
 					<div id="aitename">@${user.uaite }</div>
 					<div id="infos">
-					<!-- 传入个人简介 -->
 						<ul>
 							<c:if test="${info.uabout != null }">
 								<li class="info">${info.uabout }</li>
 								<br>
 								<br>
 							</c:if>
-						<!-- 传入登陆时间 -->
+
 							<li class="info"><span
 								class="glyphicon glyphicon-map-marker"></span>中华人民共和国</li>
 							<li class="info" style="margin-left: 1.5px;"><span
 								class="glyphicon glyphicon-calendar"></span>加入与 <fmt:formatDate
-			   			value="${user.utime }" pattern="yyyy年M月" type="both" /></li>
-			   			<!-- 如果登陆时间不为空 -->
+									value="${user.utime }" pattern="yyyy年M月" type="both" /></li>
 							<c:if test="${info.udate != null }">
 								<li class="info"><span class="glyphicon glyphicon-heart"></span>生于
 									<fmt:formatDate value="${info.udate }" pattern="yyyy年M月d日"
@@ -312,69 +1251,6 @@
 	</div>
 </body>
 <script type="text/javascript">
-/* //设置下拉框中的年月日 */
-function dateStart()
-{
-    //月份对应天数
-    MonHead = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    //给年下拉框赋内容
-    var y  = new Date().getFullYear();
-    for (var i = (y-50); i < (y+50); i++) //以今年为准，前50年，后50年
-        document.date.year.options.add(new Option(" "+ i +" 年", i));
-    //给月下拉框赋内容
-    for (var i = 1; i < 13; i++)
-        document.date.month.options.add(new Option(" " + i + " 月", i));
-    document.date.year.value = y;
-    document.date.month.value = new Date().getMonth() + 1;
-    var n = MonHead[new Date().getMonth()];
-    if (  new Date().getMonth() ==1 && IsPinYear(yearvalue)  )
-        n++;
-    writeDay(n); //赋日期下拉框
-    document.date.day.value = new Date().getDate();
-}
-if(document.attachEvent)
-    window.attachEvent("onload", dateStart);
-else
-    window.addEventListener('load', dateStart, false);
-function selectYear(str) //年发生变化时日期发生变化(主要是判断闰平年)
-{
-    var monthvalue = document.date.month.options[document.date.month.selectedIndex].value;
-    if (monthvalue == "")
-    {
-        var e = document.date.day;
-        optionsClear(e);
-        return;
-    }
-    var n = MonHead[monthvalue - 1];
-    if (  monthvalue ==2 && IsPinYear(str)  )
-        n++;
-    writeDay(n);
-}
-function selectMonth(str)   //月发生变化时日期联动
-{
-    var yearvalue = document.date.year.options[document.date.year.selectedIndex].value;
-    if (yearvalue == "")
-    {
-        var e = document.date.day;
-        optionsClear(e);
-        return;
-    }
-    var n = MonHead[str - 1];
-    if (  str ==2 && IsPinYear(yearvalue)  )
-        n++;
-    writeDay(n);
-}
-function writeDay(n)  
-{
-    var e = document.date.day; optionsClear(e);
-    for (var i=1; i<(n+1); i++)
-        e.options.add(new Option(" "+ i +" 日", i));
-}
-
-function IsPinYear(year)//判断是否闰平年
-{
-    return(  0 == year%4 && ( year%100 !=0 || year%400 == 0 )  );
-}    
 	$("#txt").bind('input propertychange change', function() {
 		checkaite();
 	});
@@ -399,7 +1275,6 @@ function IsPinYear(year)//判断是否闰平年
 		$("#close-reveal").click();
 	}
 
-	/* 保存修改个人资料 */
 	function baocunxiugai() {
 		var brithday = "${info.udate }";
 		var str1 = brithday.split(" ");
@@ -426,10 +1301,8 @@ function IsPinYear(year)//判断是否闰平年
 			$("#txt").focus();
 			return;
 		}
-		
-		/* 修改个人资料 */
 		$.ajax({
-			url : '/mytwitter/user.do?method=xiugaiziliao',
+			url : '/twitter/user.do?method=xiugaiziliao',
 			type : 'POST',
 			data : {
 				urealname : realname,
@@ -450,9 +1323,7 @@ function IsPinYear(year)//判断是否闰平年
 
 	}
 </script>
-
 <script>
-/* 设置鼠标内容 */
 	$(function() {
 		$("#touxiang").popover({
 			content : "修改个人信息和登出",
@@ -471,10 +1342,9 @@ function IsPinYear(year)//判断是否闰平年
 		});
 
 	})
-	
 	function catsession() {
 		$.ajax({
-			url : '/mytwitter/user.do?method=catsession',
+			url : '/twitter/user.do?method=catsession',
 			type : 'POST',
 			success : function(response, status) {
 				if (response == "exit") {
@@ -490,7 +1360,6 @@ function IsPinYear(year)//判断是否闰平年
 		catsession();
 	}, 1000);
 </script>
-<!-- 设置背景图以及点击上传 -->
 <script>
 	$("#bg").on({
 		mouseover : function() {
@@ -538,20 +1407,31 @@ function IsPinYear(year)//判断是否闰平年
 			});
 		}
 	});
-/* 获取本地文件 */
+
 	function getObjectURL(file) {
 		var url = null;
-		if (window.createObjectURL != undefined) { 
+		if (window.createObjectURL != undefined) { // basic
 			url = window.createObjectURL(file);
-		} else if (window.URL != undefined) { 
+		} else if (window.URL != undefined) { // mozilla(firefox)
 			url = window.URL.createObjectURL(file);
-		} else if (window.webkitURL != undefined) { 
+		} else if (window.webkitURL != undefined) { // webkit or chrome
 			url = window.webkitURL.createObjectURL(file);
 		}
 		return url;
 	}
+	/* $("#bigtouxiang").on({
+		mouseover : function() {
+			$("#bigbigtouxiang").stop().animate({
+				opacity : 0.5
+			}, 1000);
+		},
+		mouseout : function() {
+			$("#bigbigtouxiang").stop().animate({
+				opacity : 1
+			}, 1000);
+		}
+	}) */
 </script>
-<!-- ucolor用户背景颜色，设置各类背景颜色 -->
 <script>
 	var color = "${info.ucolor}";
 	$(".button").css("backgroundColor", color);
@@ -571,8 +1451,7 @@ function IsPinYear(year)//判断是否闰平年
 			$("#chaxun").css("backgroundColor", "rgba(245,248,250,1.00)");
 		}
 	});
-	
-/* animate自定义动画 ，scrollTop 滚动条=0则表示置顶*/
+
 	$("#logo").click(function(e) {
 		e.preventDefault();
 		$(document.documentElement).animate({
@@ -583,7 +1462,7 @@ function IsPinYear(year)//判断是否闰平年
 			scrollTop : 0
 		}, 500);
 	});
-/* 也是置顶，当scrollTop:0时，表示滚动条置顶 */
+
 	$("#back").on({
 		mouseover : function() {
 			$(this).css("color", color);
@@ -602,8 +1481,6 @@ function IsPinYear(year)//判断是否闰平年
 			}, 500);
 		}
 	});
-	
-	
 
 	$("#daohang li").on({
 		mouseover : function() {
@@ -615,7 +1492,6 @@ function IsPinYear(year)//判断是否闰平年
 			$(this).css("color", "rgba(102,107,117,1.00)");
 		}
 	});
-	/* 代表点击导航的第一个li时跳转到main.jsp */
 	$("#daohang li:eq(0)").on({
 		click : function() {
 			location = "main.jsp";
@@ -639,7 +1515,7 @@ function IsPinYear(year)//判断是否闰平年
 	$("#touxiang").click(function() {
 		$("#list").fadeToggle(10);
 	});
-/* 兼容性 */
+
 	$(document).click(function(e) {
 		e = window.event || e; // 兼容IE7
 		obj = $(e.srcElement || e.target);
@@ -663,7 +1539,6 @@ function IsPinYear(year)//判断是否闰平年
 			$("#secondloader li:eq(0)").find(".datadetail").css("color", color);
 		}
 	});
-	/* 导航到第二个的时候，跳转到search.jsp*/
 	$("#secondloader li:eq(1)").on({
 		click : function() {
 			location = "search.jsp?word=&fw=1";
@@ -674,7 +1549,6 @@ function IsPinYear(year)//判断是否闰平年
 			location = "search.jsp?word=&fw=2";
 		}
 	});
-	/* mouseover与mouseout代表鼠标移动 */
 	$("#editdata").on({
 		mouseover : function() {
 			$(this).css("backgroundColor", color);
@@ -685,7 +1559,7 @@ function IsPinYear(year)//判断是否闰平年
 			$(this).css("color", "#657786");
 		},
 		click : function() {
-/* 将登录名和真实姓名上传到这里，也就是个人修改资料 */
+
 			$(".check:eq(0)").html("");
 			$(".check:eq(1)").html("");
 			$(".txt:eq(0)").val("${user.urealname}");
@@ -711,8 +1585,7 @@ function IsPinYear(year)//判断是否闰平年
 			dragLimit : true
 		});
 	});
-	
-	/* 设置下拉框 */
+
 	$(".listd").on({
 		mouseover : function() {
 			$(this).css("backgroundColor", color);
@@ -727,26 +1600,23 @@ function IsPinYear(year)//判断是否闰平年
 	$(".listd:first").click(function() {
 		window.reload();
 	});
-//登出
+
 	$(".listd:last").click(function() {
 		location = "user.do?method=exit";
 	});
 </script>
-<!-- 上传推文 -->
 <script>
 	$(".wen").css("border", "0px solid lightsalmon");
 	$(".wen").css("color", color);
 	$(".tweet").css("border", "2px solid rgb(164, 217, 249)");
 	$(".addThing").css("color", color);
 	$(".xinxian").focus();
-	/* 假设推文上有字或者内容，则改变css如果没有则提示禁止标签 */
 	$(".wen").on({
 		focus : function() {
 			if ($(this).trim().val() == "" || $(this).val() == null) {
 				$(".wen").css("color", "black");
 				$(".but").attr("disabled", "true");
 			} else {
-				/* 提示禁止标签 */
 				$(".but").removeAttr("disabled");
 			}
 			$(".tweet").css("border", "1px solid " + color);
@@ -761,8 +1631,7 @@ function IsPinYear(year)//判断是否闰平年
 			$(".tweet").css("border", "2px solid rgb(164, 217, 249)");
 		}
 	});
-	
-/* 表示下列的font图标 */
+
 	$(".addThing").on({
 		mouseover : function() {
 			$(this).css("color", "#657786");
@@ -774,6 +1643,7 @@ function IsPinYear(year)//判断是否闰平年
 	});
 
 	autosize(document.querySelectorAll('textarea'));
+
 	if ($(".wen").val() == "") {
 		$(".but").attr("disabled", "true");
 	}
@@ -785,7 +1655,7 @@ function IsPinYear(year)//判断是否闰平年
 	$(".wen").bind('input oninput', function() {
 		var zishu = 140 - $(this).val().length;
 		$(".zishu").html(zishu);
-/* 字数于0为界限 */
+
 		if (zishu < 0) {
 			$(".zishu").css("color", "lightcoral");
 			$(".zishu").css("fontWeight", "bold");
@@ -803,7 +1673,6 @@ function IsPinYear(year)//判断是否闰平年
 			}
 		}
 	});
-	/* 判断字体是否超过界限 */
 	$(".wen").on({
 		blur:function(){
 			if ($(this).val() == "" || $(this).val().length>140) {
@@ -814,7 +1683,7 @@ function IsPinYear(year)//判断是否闰平年
 		}
 	});
 	
-	var mytwitter  =' ${pageContext.request.contextPath}';
+	var twitter  =' ${pageContext.request.contextPath}';
 	var number = ${info.utweet}+"";
 	var one = "1";
 	var zero = "0";
@@ -850,12 +1719,12 @@ function IsPinYear(year)//判断是否闰平年
 					}
 				}
 			} 
-	});	
-	/* 加载推文*/
+	});
+	
 	function jiaZai() {
 		if( $("#back").css("display") == "none"){
 			$('#jiazai img').fadeIn();
-			var url = '/mytwitter/tweettwo.do?method=gettweets&num=one&pagenum='+page;
+			var url = '/twitter/tweettwo.do?method=gettweets&num=one&pagenum='+page;
 			$.ajax({
 				url : url,
 				type : 'POST',
@@ -872,10 +1741,9 @@ function IsPinYear(year)//判断是否闰平年
 				$("#jiazai img").fadeOut();
 		}
 	};
-	/* 添加推文 */
 	function hasNew() {
 		$.ajax({
-			url : '/mytwitter/tweettwo.do?method=gettweets&num=one&pagenum='+page,
+			url : '/twitter/tweettwo.do?method=gettweets&num=one&pagenum='+page,
 			type : 'POST',
 			success : function(response, status) {
 				var length = response.length;
@@ -897,7 +1765,7 @@ function IsPinYear(year)//判断是否闰平年
 			}			
 		});
 	};
-	/* 添加以及删除推文 、转发，点赞等等*/
+	
 	function addTweet(tweets){
 	var html = "";
 	for (var i = 0; i < tweets.length; i++) {
@@ -905,7 +1773,7 @@ function IsPinYear(year)//判断是否闰平年
 				 	continue;
 				 }else{
 				 	html += '<div class="tuiwen"><div class="sender_tou_xiang"	style="background: url(\''
-				 	+mytwitter+'/img/'+tweets[i].uname+"/"+tweets[i].ulogo+ '\');background-size: 60px 60px"></div><div class="sender_info"><div class="sender_name" style="font-weight: bold;">'
+				 	+twitter+'/img/'+tweets[i].uname+"/"+tweets[i].ulogo+ '\');background-size: 60px 60px"></div><div class="sender_info"><div class="sender_name" style="font-weight: bold;">'
 						+tweets[i].urealname+'</div><div class="sender_aite">'+'@'+tweets[i].uaite+'</div><span style="float:left;margin-right:5px">·</span><div class="sender_time">'
 						+tweets[i].time +'</div><span class=" glyphicon glyphicon-chevron-down tuiwencha" onclick="chuxiao(this)"></span><div class="deltuiwen"><ul><li onclick="dianshan(this)" style="margin-top:5px">删除推文</li><hr><li onclick="quxiao(this)">取消</li></ul></div><input class="idid" type="hidden" value="'
 						+tweets[i].tid+'"/><input class="uuid" type="hidden" value="'
@@ -926,7 +1794,7 @@ function IsPinYear(year)//判断是否闰平年
 						+tweets[i].utweets.tcontent+'';
 						if(tweets[i].utweets.tpic != null){
 								html+='<a style="margin-left:10px;z-index:9999" target="view_window" href="'
-							+mytwitter+'/img/'+tweets[i].uname+'/'+tweets[i].utweets.tpic+'" >图片</a>';
+							+twitter+'/img/'+tweets[i].uname+'/'+tweets[i].utweets.tpic+'" >图片</a>';
 						}
 						html+='</div></div>'						 
 						 }
@@ -934,7 +1802,7 @@ function IsPinYear(year)//判断是否闰平年
 						html+='</div>';
 						if(tweets[i].tpic != null){
 							html+='<div class="sender_pic"><img src="'
-						+mytwitter+'/img/'+tweets[i].uname+'/'+tweets[i].tpic+'" /></div>';
+						+twitter+'/img/'+tweets[i].uname+'/'+tweets[i].tpic+'" /></div>';
 						}
 						
 						html+='<div class="sender_gongneng"><ul><li><div class="glyphicon glyphicon-share-alt huifu"><span class="huifuCount"> ';
@@ -957,7 +1825,6 @@ function IsPinYear(year)//判断是否闰平年
 							}
 							html+='</span></div>'
 						}
-						/* 点赞 */
 					html+='</li><li>';
 						if(tweets[i].zaned == one){
 							html+='<div class="glyphicon glyphicon-heart zan" onclick="dianzanla(this)" style="color:rgb(226, 38, 77)"><span class="dianzanCount" style="color:rgb(226, 38, 77)">';
@@ -982,8 +1849,8 @@ function IsPinYear(year)//判断是否闰平年
 	function qucha(){
 		location="search.jsp?word=";
 	}
-	/* 添加关注 */
-	function tweetsJs(){	
+	function tweetsJs(){
+	
 	$(".guanzhuta").on({
 			mouseover : function() {
 				if ($(this).html() == '关注') {
@@ -1007,8 +1874,7 @@ function IsPinYear(year)//判断是否闰平年
 				}
 			}
 		});
-		
-		/* 推文 */
+	
 		$(".tuiwen").on({
 		mouseover : function() {
 			$(this).css("backgroundColor", "rgba(245,248,250,1.00)");
@@ -1017,7 +1883,6 @@ function IsPinYear(year)//判断是否闰平年
 			$(this).css("backgroundColor", " white");
 		}
 	});
-		
 		$(".sender_name").on({
 		mouseover : function() {
 			$(this).css("color", color);
@@ -1027,7 +1892,6 @@ function IsPinYear(year)//判断是否闰平年
 
 		}
 	});
-		
 
 	$(".sender_time").on({
 		mouseover : function() {
@@ -1038,14 +1902,13 @@ function IsPinYear(year)//判断是否闰平年
 
 		}
 	});
-	
-	/* 回复信息 */
 	$(".huifu").on({
 		mouseover : function() {
 			$(this).css("color", "rgb(29, 161, 242) ");
 		},
 		mouseout : function() {
 			$(this).css("color", "#657786");
+
 		},
 		click:function(){
 			var sender_name = $(this).parent().parent().parent().parent().find(".sender_name").html();
@@ -1054,6 +1917,7 @@ function IsPinYear(year)//判断是否闰平年
 			var neirong = $(this).parent().parent().parent().parent().find(".neirong").html();	
 			var sender_tou_xiang = $(this).parent().parent().parent().parent().parent().find(".sender_tou_xiang").css("background-image");
 			var touxiang = sender_tou_xiang.substring(sender_tou_xiang.indexOf('"')*1+1,find(sender_tou_xiang,'"',1));
+			
 			if($(this).parent().parent().parent().parent().find(".sender_pic").html()!=null){
 				var sender_pic = $(this).parent().parent().parent().parent().find(".sender_pic").html();
 				var pic = sender_pic.substring(sender_pic.indexOf('"')*1+1,find(sender_pic,'"',1));
@@ -1071,19 +1935,21 @@ function IsPinYear(year)//判断是否闰平年
 		}
 	});
 
-	/* 转发 */
+	
 	$(".zhuanfa").on({
 		mouseover : function() {
 		if($(this).css("color") != "rgb(23, 191, 99)"){
 				$(this).css("color", "rgb(23, 190, 99)");
 				$(this).find(".zhuanfaCount").css("color", "rgb(23, 190, 99)");
-			}		
+			}
+			
 		},
 		mouseout : function() {
 			if($(this).css("color") != "rgb(23, 191, 99)"){
 				$(this).css("color", "#657786");
 				$(this).find(".zhuanfaCount").css("color", "#657786");
-			}		
+			}
+			
 		},
 		click : function() {
 			$("#zhuanfa").find("textarea").val("");
@@ -1102,6 +1968,7 @@ function IsPinYear(year)//判断是否闰平年
 			}else{
 				$("#zhuanfa").find(".zhuanfa_xinxi").html(neirong);
 			}
+		
 			$("#zhuanfa").find(".zhuanfa_touxiang img").attr("src",touxiang);
 			$("#zhuanfa").find(".zhuanfa_name").html(sender_name);
 			$("#zhuanfa").find(".zhuanfa_aite").html(sender_aite);
@@ -1111,19 +1978,20 @@ function IsPinYear(year)//判断是否闰平年
  			tzhuan(); 
 		}
 	});
-	/* 点赞 */
 	$(".zan").on({
 		mouseover : function() {
 			if($(this).css("color") != "rgb(226, 38, 77)"){
 				$(this).css("color", "rgb(226,39,78)");
 				$(this).find(".dianzanCount").css("color", "rgb(226,39,78)");
-			}		
+			}
+			
 		},
 		mouseout : function() {
 			if($(this).css("color") != "rgb(226, 38, 77)"){
 				$(this).css("color", "#657786");
 				$(this).find(".dianzanCount").css("color", "#657786");
 			}
+		
 		}
 	});
 
@@ -1159,12 +2027,13 @@ function IsPinYear(year)//判断是否闰平年
 	window.onload = function() {
 		hasNew();
 	}
-	/* 是否删除推文 */
 	function dianshan(button){
-		/* 删除tid(转发id) */
 		   var tid = $(button).parent().parent().next().val();
 		   $('#shanchukuang').show();
 		    $('#shanchukuang').find("input").val(tid);
+	  		//deltweet(tid,$(button));
+	  		//dtNum -= 1;
+            //$(".datadetail:eq(0)").html(dtNum);
             $("#querenshan").on({
 				click:function(){
 					 var tid =  $('#shanchukuang').find("input").val();
@@ -1196,7 +2065,6 @@ function IsPinYear(year)//判断是否闰平年
 	function chuxiao(button){
 			$(button).next().fadeToggle();
 	}
-	/* 删除推文 */
 	function deltweet(tid){
 			$.ajax({
               type: "POST",
@@ -1276,7 +2144,6 @@ function IsPinYear(year)//判断是否闰平年
 			$(this).css("color", "#657786");
 		}
 	});
-   
 	$("#search_two").bind("input change", function() {
 
 		var name = $(this).val();
@@ -1284,8 +2151,7 @@ function IsPinYear(year)//判断是否闰平年
 			$("#souxianshi").hide();
 			$("#souxianshishang").hide();
 		}
-		/* 查询用户 */
-		var url = '/mytwitter/user.do?method=chayonghu';
+		var url = '/twitter/user.do?method=chayonghu';
 		if ($(this).val() != "") {
 			$.ajax({
 				url : url,
@@ -1307,7 +2173,7 @@ function IsPinYear(year)//判断是否闰平年
 					var html = "";
 					for (var i = 0; i < users.length; i++) {
 						html += '<div class="souneirong" onclick="chaxunuser(0,this)"><div class="soutouxiang"><img src="'
-							+ mytwitter + '/img/' + users[i].uname + "/" + users[i].ulogo + '" /></div><div class="soumingzi">'
+							+ twitter + '/img/' + users[i].uname + "/" + users[i].ulogo + '" /></div><div class="soumingzi">'
 							+ users[i].urealname + '</div><div class="sousouaite">@' + users[i].uaite + '</div><input class="uid" type="hidden" value="'
 							+ users[i].uid + '"/></div>';
 					}
@@ -1340,12 +2206,11 @@ function IsPinYear(year)//判断是否闰平年
 		location = "user.do?method=iswho&who=" + urealname + "&id=" + uid;
 	}
 </script>
-<!-- 刷新与关注 -->
 <script>
 	shuaXinTuiJian();
 	function shuaXinTuiJian() {
 		$.ajax({
-			url : '/mytwitter/user.do?method=shuaxintuijian&suiji=' + Math.random(),
+			url : '/twitter/user.do?method=shuaxintuijian&suiji=' + Math.random(),
 			type : 'POST',
 			success : function(response, status) {
 				var length = response.length;
@@ -1378,7 +2243,7 @@ function IsPinYear(year)//判断是否闰平年
 	function changeTuiJian(users) {
 		var html = "";
 		for (var i = 0; i < users.length; i++) {
-			html += '<div class="tuijian_info"><div class="tuijian_touxiang" style="background: url(' + mytwitter + '/img/'
+			html += '<div class="tuijian_info"><div class="tuijian_touxiang" style="background: url(' + twitter + '/img/'
 				+ users[i].uname + "/" + users[i].ulogo + ');background-size: 50px 50px;"></div><div class="tuijian_name" onclick="guanzhuname(this)">'
 				+ users[i].urealname + '</div><div class="tuijian_aite" style="color:#657786">@' + users[i].uaite
 				+ '</div><div><button  onclick="guanzhuta(this)" class=" guanzhuta" style="color:${info.ucolor};margin-top:8px;margin-left:8px;border:1px solid ${info.ucolor}">关注</button></div>'
@@ -1482,6 +2347,7 @@ function IsPinYear(year)//判断是否闰平年
 				if (xmlHttp.status == 200) { //如果服务器响应码是200时
 					var regex = new RegExp("^[A-Za-z0-9]+$", "g");
 					var data = xmlHttp.responseText;
+
 					if (data == "yes" && txt != "" && txt != null && regex.test(txt)) {
 						$(".check:eq(1)").html("<img src='img/icon_tick_blue.png'/>");
 					} else if (data == "no" && txt != "" && txt != null && regex.test(txt)) {
@@ -1493,10 +2359,10 @@ function IsPinYear(year)//判断是否闰平年
 						$(".check:eq(1)").html("<img src='img/error.png'/><span style='color:tomato;font-size:14px'>只支持英文字母和数字。</span>");
 					}
 				}
+			}
 		}
-		xmlHttp.open("GET", "/mytwitter/user.do?method=checkaite&aite=" + txt, false);
+		xmlHttp.open("GET", "/twitter/user.do?method=checkaite&aite=" + txt, false);
 		xmlHttp.send(null);
 	}
-	
 </script>
 </html>

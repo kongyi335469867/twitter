@@ -1,5 +1,4 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
 <meta charset="utf-8">
@@ -9,7 +8,7 @@
 <script src="js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css" />
-<link rel="stylesheet" href="css/message.css">
+<link rel="stylesheet" href="css/message.css" />
 <script src="js/jquery.mCustomScrollbar.min.js"></script>
 
 </head>
@@ -19,26 +18,21 @@
 		<div id="liebiao">
 			<div id="info">
 				<div id="touxiang">
-				<!-- //发送头像 -->
 					<img
-						src="${pageContext.request.contextPath}/img/${user.uname }/${info.ulogo}" />
-       </div>
-<!-- //获得用户的真实姓名 -->
-   <div id="uname">${user.urealname } </div>
-	<span class="glyphicon glyphicon-comment" id="addfriend"
+						src="${pageContext.request.contextPath}/img/${user.uname }/${info.ulogo} " />
+				</div>
+				<div id="uname">${user.urealname }</div>
+				<span class="glyphicon glyphicon-comment" id="addfriend"
 					data-toggle="modal" data-target="#myModal"></span>
 			</div>
-			<!-- //查找联系人 -->
 			<div id="search">
 				<span class="glyphicon glyphicon-search"
 					style="padding-top:12px;z-index: 9;float:left;color:#657786;font-size: 16px;width: 40px;height: 40px;position: relative;"></span>
 				<input type="text" placeholder="查找联系人">
 			</div>
-			
 			<div id="friend"></div>
 		</div>
 		<div id="xiaoxi">
-		<!-- 发送消息显示出来 -->
 			<div id="xiaoxione" style="display: none;">
 				<div id="xiaoxitop"></div>
 				<input class="uid" type="hidden">
@@ -73,14 +67,12 @@
 	</div>
 </body>
 <script>
-/* 选择好友  */
 	$("#xuanze").on({
 		click:function(){
 			xqnum = 0;
 			$("input[name='haoyou']").each(function(){
 				   if($(this).get(0).checked){
-				   		var haoyou = $(this).get(0);0
-				   		
+				   		var haoyou = $(this).get(0);
 				   		$(".xiangqing").each(function(){
 					   		if($(this).find(".uuid").val() == $(haoyou).parent().find(".uid").val()){
 					   			if($("#xiaoxione").css("display") == "block"){
@@ -98,13 +90,10 @@
 					   			xqnum++;
 					   		}
 					 	});
-				   		/* 消息内容 */
 					 	if(xqnum == $(".xiangqing").length){
 					 		var html = '<div class="xiangqing" onclick="getMessage(this)"><div class="touxiang"><img src="'
 								+$(haoyou).parent().find(".pengyoutouxiang img").attr("src")+ '" /></div><div class="liaotianxinxi">'
-								+ '<input type="hidden" class="uuid" value="' + $(haoyou).parent().find(".uid").val()+ '">
-								/* 添加聊天姓名和聊天的内容 */
-								<div class="liaotianname">' + $(haoyou).parent().find(".pengyouname").html().trim() + '</div><div class="liaotiantime"></div>'
+								+ '<input type="hidden" class="uuid" value="' + $(haoyou).parent().find(".uid").val()+ '"><div class="liaotianname">' + $(haoyou).parent().find(".pengyouname").html().trim() + '</div><div class="liaotiantime"></div>'
 								+ '<div class="liaotianneirong"></div></div></div></div>';
 							$("#friend").prepend(html);
 							$(".xiangqing:eq(0)").click();
@@ -116,7 +105,6 @@
 			   $("#guanbi").click();
 		}
 	})
-	/* 添加好友 */
 	$("#addfriend").on({
 		mouseover : function() {
 			$(this).css("color", "white");
@@ -128,8 +116,6 @@
 			addFriends();
 		}
 	});
-	/* xiaoxione代表的是整个消息内容	xiaoxitwo代表的是没有消息是的提示 */
-	/* 获取消息/在没有消息的时候xioaxione隐藏，xiaoxitwo显示 */
 	function getMessage(user) {
 		if ($(user).css("backgroundColor") == "rgb(41, 43, 46)") {
 			$(user).css("backgroundColor", "rgba(51, 53, 58, 1.00)");
@@ -147,7 +133,6 @@
 		$(user).siblings().css("backgroundColor", "rgba(51, 53, 58, 1.00)");
 		$(user).siblings().css("borderLeft", "");
 		$(this).find(".newmsg").hide();
-		/* 在顶部添加你需要聊天的名字 */
 		$("#xiaoxitop").html($(user).find(".liaotianname").html().trim());
 		var uid = $(user).find(".uuid").val();
 		$("#xiaoxione").find(".uid").val(uid);
@@ -156,8 +141,6 @@
 			shuaxin()
 		}, 1000);
 	}
-	
-	/* 添加朋友，利用ajax */
 	function addFriends(){
 		$.ajax({
 			url : "/twitter/message.do?method=addfriend",
@@ -170,18 +153,15 @@
 				}
 				var pengyou = $.parseJSON(response);
 				var html = addPengyou(pengyou);
-				/* 将相应的添加好友在modal-body这个类中显示出来*/
 				$(".modal-body").html(html);
 			}
 		})
 	}
-	/* 生成添加朋友，获取头像等等 */
 	function addPengyou(pengyou){
 		var html = '';
 		for(var i = 0; i < pengyou.length; i++){
 			html+='<div class="pengyou"><input type="hidden" class="uid" value="'
-			+pengyou[i].uid+'"><input type="radio" name="haoyou" class="pengyoudanxuan" style="margin-top: 13px;margin-left: 30px;" />
-			<div class="pengyoutouxiang"	><img src="'
+			+pengyou[i].uid+'"><input type="radio" name="haoyou" class="pengyoudanxuan" style="margin-top: 13px;margin-left: 30px;" /><div class="pengyoutouxiang"	><img src="'
 			+'${pageContext.request.contextPath}/img/'+pengyou[i].uname+'/'+pengyou[i].ulogo+'" /></div><div class="pengyouname">'
 			+pengyou[i].urealname+'</div><div class="pengyouaite">@'+pengyou[i].uaite+'</div>';
 			
@@ -189,8 +169,6 @@
 		}
 		return html;
 	}
-	
-	/* 获取消息 */
 	function getMsg(uid) {
 		$.ajax({
 			url : "/twitter/message.do?method=msg&uid=" + uid,
@@ -198,8 +176,6 @@
 			asyn : true,
 			success : function(response) {
 				var msg = $.parseJSON(response);
-				/* 在xiaoxiall存放着消息的内容 */
-				/* scrollTop的目的是为了设置消息的滚动条 */
 				var html = addMessage(msg);
 				$("#xiaoxinall").html(html);	
 				$('#xiaoxinall').scrollTop($('#xiaoxinall')[0].scrollHeight);
@@ -207,7 +183,6 @@
 		})
 	}
 	
-	/* 刷新信息 */
 	function shuaxin(){
 		var url =  "/twitter/message.do?method=shuaxin&uid=" +$("#xiaoxione").find(".uid").val() +"&mid=" +$(".xiaoxixiaoxi:last").find(".mid").val();
 		$.ajax({
@@ -223,9 +198,6 @@
 			}
 		})
 	}
-	
-	
-	/* 删除聊天 */
 	function delliaotian(uid){
 		var url =  "/twitter/message.do?method=del&uid="+ uid ;
 		$.ajax({
@@ -235,8 +207,6 @@
 			}
 		})
 	}
-	
-	/* 设置鼠标设置事件，xiangqing代表用户列表 */
 	function friendJs() {
 	var kyoPopupMenu={};  
     kyoPopupMenu = (function(){  
@@ -258,7 +228,7 @@
     $('html').on('contextmenu', function (){return false;}).click(function(){  
         $('.popup_menu').hide();  
     });  
-    //桌面点击右击  ，且可选择删除聊天
+    //桌面点击右击  
 	    $('.xiangqing').on('contextmenu',function (e){  
 	        var popupmenu = kyoPopupMenu.sys(this);  
 	        l = ($(document).width() - e.clientX) < popupmenu.width() ? (e.clientX - popupmenu.width()) : e.clientX;  
@@ -277,7 +247,7 @@
 			}
 		});
 	}
-	/* keyCode==13表示点击inter发送 */
+	
 	$("#xiaoxikuang").keyup(function(e) {
 		if (e.keyCode == 13 && e.ctrlKey) {
 			$(this).val($(this).val() + "\n");
@@ -314,8 +284,6 @@
 	
 	}
 	var message;
-	
-	
 	function getFriend() {
 		$.ajax({
 			url : "/twitter/message.do?method=liebiao",
@@ -339,7 +307,6 @@
 			}
 		})
 	}
-	/* 发送消息以及接收消息 */
 	function addMessage(msg) {
 		var html = "";
 		for (var i = 0; i < msg.length; i++) {
@@ -382,5 +349,6 @@
 		}
 		return html;
 	}
+	
 </script>
 </html>

@@ -32,10 +32,9 @@ import com.twitter.util.Md5Util;
 import com.twitter.util.Times;
 import com.twitter.util.Upload;
 
-import Decoder.BASE64Decoder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
+import sun.misc.BASE64Decoder;
 
 /**
  * Servlet implementation class UserServlet
@@ -127,7 +126,7 @@ public class UserServlet extends HttpServlet {
 		}
 
 	}
-//修改个人资料toUpdateDate
+
 	private void toUpdateData(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String urealname = request.getParameter("urealname");
 		String uaite = request.getParameter("uaite");
@@ -147,7 +146,7 @@ public class UserServlet extends HttpServlet {
 			response.getWriter().print("ok");
 		}
 	}
-//获得背景图片
+
 	private void toUpdateBg(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
 		Users user = (Users) session.getAttribute("user");
@@ -165,6 +164,12 @@ public class UserServlet extends HttpServlet {
 	}
 
 	private void toCatSession(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		/*
+		 * HttpSession session = request.getSession(); Users user = (Users)
+		 * session.getAttribute("user"); if (user == null) {
+		 * response.getWriter().print("exit"); return; }
+		 * response.getWriter().print("have");
+		 */
 	}
 
 	private void toGengXinInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -181,13 +186,12 @@ public class UserServlet extends HttpServlet {
 			return;
 		}
 	}
-//获得个人信息
+
 	private void toUpdateAbout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String uabout = request.getParameter("about");
 		HttpSession session = request.getSession();
 		Users user = (Users) session.getAttribute("user");
 		int uid = user.getUid();
-		//修改个人简介
 		int n = usersinfoDao.updateAbout(uid, uabout);
 		if (n > 0) {
 			Usersinfo info = usersinfoDao.getInfos(uid);
@@ -195,7 +199,7 @@ public class UserServlet extends HttpServlet {
 			response.getWriter().print("ok");
 		}
 	}
-//获得左下角的生日时间
+
 	private void toUpdateBrithday(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String date = request.getParameter("date");
 		String brithy = date.substring(0, date.indexOf("日")).replaceAll("[\u4e00-\u9fa5]", "-") + " 00:00:00";
@@ -210,7 +214,7 @@ public class UserServlet extends HttpServlet {
 			response.getWriter().print("ok");
 		}
 	}
-//查询用户
+
 	private void toChaUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		JSONArray js = new JSONArray();
 		String name = request.getParameter("name");
@@ -226,7 +230,7 @@ public class UserServlet extends HttpServlet {
 		}
 		response.getWriter().write(js.toString());
 	}
-//修改头像
+
 	private void toChangeLogo(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String ulogo = request.getParameter("touxiang");
 		HttpSession session = request.getSession();
@@ -244,7 +248,7 @@ public class UserServlet extends HttpServlet {
 				}
 			}
 			// 生成jpeg图片
-			String path = "Z:/HelloWord/Java/twitter/WebContent/img/"+user.getUname();
+			String path = request.getSession().getServletContext().getRealPath("img/") + user.getUname();
 			newFileName = new Date().getTime() + ".png";
 			String imgFilePath = path + "/" + newFileName;// 新生成的图片
 			OutputStream out = new FileOutputStream(imgFilePath);
@@ -280,7 +284,7 @@ public class UserServlet extends HttpServlet {
 				users.getUfollow(), users.getUcolor(), users.getUaddress(), users.getGuanzhu()));
 		response.getWriter().write(js.toString());
 	}
-//刷新推荐，在右方
+
 	private void toShuaXinTuiJian(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		JSONArray js = new JSONArray();
 		HttpSession session = request.getSession();
@@ -546,9 +550,10 @@ public class UserServlet extends HttpServlet {
 		}
 	}
 
-	// 注册数据
+	// 注册
 	private void signUp(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+
 		String name = (String) session.getAttribute("name");
 		String uname = (String) session.getAttribute("uname");
 		String pwd = (String) session.getAttribute("pwd");
@@ -570,14 +575,12 @@ public class UserServlet extends HttpServlet {
 			int m = usersinfoDao.addUserinfo(user.getUid());
 			if (m > 0) {
 				Usersinfo info = usersinfoDao.getInfos(user.getUid());
-				//相对路径
-				String folder = "Z:/HelloWord/Java/twitter/WebContent/img/" + user.getUname();
-				String img = "Z:/HelloWord/Java/twitter/WebContent/img";
-			    System.out.println("folder路径:"+folder);
-			    System.out.println("img路径:"+img);
+
+				String folder = request.getSession().getServletContext().getRealPath("/img/" + user.getUname());
+				String img = request.getSession().getServletContext().getRealPath("/img");
 				File file = new File(folder);
 				file.mkdir();
-//				System.out.println("info.getUlogo="+info.getUlogo());
+
 				InputStream is = new FileInputStream(img + "/" + info.getUlogo());
 				OutputStream os = new FileOutputStream(folder + "/" + info.getUlogo(), true);
 				byte[] b = new byte[1024];
