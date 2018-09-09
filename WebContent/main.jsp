@@ -396,6 +396,7 @@ hr {
 	border: 0px solid gray;
 	z-index: 8;
 	margin: 10px 0 10px 10px;
+    outline:none;
 }
 
 textarea {
