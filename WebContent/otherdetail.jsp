@@ -259,7 +259,7 @@
 	})
 	function catsession() {
 		$.ajax({
-			url : '/mytwitter/user.do?method=catsession',
+			url : '/twitter/user.do?method=catsession',
 			type : 'POST',
 			success : function(response, status) {
 				if (response == "exit") {
@@ -527,7 +527,7 @@
 		}
 	});
 	
-	var mytwitter  =' ${pageContext.request.contextPath}';
+	var twitter  =' ${pageContext.request.contextPath}';
 	var number = ${who.utweet}+"";
 	var one = "1";
 	var zero = "0";
@@ -556,10 +556,10 @@
 	function jiaZai() {
 		if( $("#back").css("display") == "none"){
 			$('#jiazai img').fadeIn();
-			var url = '/mytwitter/tweettwo.do?method=gettweets&num=one&who=other&pagenum='+page;
+			var url = '/twitter/tweettwo.do?method=gettweets&num=one&who=other&pagenum='+page;
 			$.ajax({
 				url : url,
-				// '/mytwitter/tweettwo.do?method=getnewtweets&td=down&nowid='+$(".tuiwen:eq(0)").find(".idid").val(),
+				// '/twitter/tweettwo.do?method=getnewtweets&td=down&nowid='+$(".tuiwen:eq(0)").find(".idid").val(),
 				type : 'POST',
 				success : function(response, status) {
 					$("#jiazai img").fadeOut();
@@ -576,7 +576,7 @@
 	};
 	function hasNew() {
 		$.ajax({
-			url : '/mytwitter/tweettwo.do?method=gettweets&num=one&who=other&pagenum='+page,
+			url : '/twitter/tweettwo.do?method=gettweets&num=one&who=other&pagenum='+page,
 			type : 'POST',
 			success : function(response, status) {
 				var length = response.length;
@@ -606,7 +606,7 @@
 				 	continue;
 				 }else{
 				 	html += '<div class="tuiwen"><div class="sender_tou_xiang"	style="background: url(\''
-				 	+mytwitter+'/img/'+tweets[i].uname+"/"+tweets[i].ulogo+ '\');background-size: 60px 60px"></div><div class="sender_info"><div class="sender_name" style="font-weight: bold;">'
+				 	+twitter+'/img/'+tweets[i].uname+"/"+tweets[i].ulogo+ '\');background-size: 60px 60px"></div><div class="sender_info"><div class="sender_name" style="font-weight: bold;">'
 						+tweets[i].urealname+'</div><div class="sender_aite">'+'@'+tweets[i].uaite+'</div><span style="float:left;margin-right:5px">·</span><div class="sender_time">'
 						+tweets[i].time +'</div><span class=" glyphicon glyphicon-chevron-down tuiwencha"></span><div class="deltuiwen">删除推文</div><input class="idid" type="hidden" value="'
 						+tweets[i].tid+'"/><div class="neirong">'
@@ -626,7 +626,7 @@
 						+tweets[i].utweets.tcontent+'';
 						if(tweets[i].utweets.tpic != null){
 								html+='<a style="margin-left:10px;z-index:9999" target="view_window" href="'
-							+mytwitter+'/img/'+tweets[i].uname+'/'+tweets[i].utweets.tpic+'" >图片</a>';
+							+twitter+'/img/'+tweets[i].uname+'/'+tweets[i].utweets.tpic+'" >图片</a>';
 						}
 						html+='</div></div>'						 
 						 }
@@ -634,7 +634,7 @@
 						html+='</div>';
 						if(tweets[i].tpic != null){
 							html+='<div class="sender_pic"><img src="'
-						+mytwitter+'/img/'+tweets[i].uname+'/'+tweets[i].tpic+'" /></div>';
+						+twitter+'/img/'+tweets[i].uname+'/'+tweets[i].tpic+'" /></div>';
 						}
 						
 						html+='<div class="sender_gongneng"><ul><li><div class="glyphicon glyphicon-share-alt huifu"><span class="huifuCount"> ';
@@ -938,7 +938,7 @@ $(".huifu").on({
 			$("#souxianshi").hide();
 			$("#souxianshishang").hide();
 		}
-		var url = '/mytwitter/user.do?method=chayonghu';
+		var url = '/twitter/user.do?method=chayonghu';
 		if ($(this).val() != "") {
 			$.ajax({
 				url : url,
@@ -960,7 +960,7 @@ $(".huifu").on({
 					var html = "";
 					for (var i = 0; i < users.length; i++) {
 						html += '<div class="souneirong" onclick="chaxunuser(0,this)"><div class="soutouxiang"><img src="'
-							+ mytwitter + '/img/' + users[i].uname + "/" + users[i].ulogo + '" /></div><div class="soumingzi">'
+							+ twitter + '/img/' + users[i].uname + "/" + users[i].ulogo + '" /></div><div class="soumingzi">'
 							+ users[i].urealname + '</div><div class="sousouaite">@' + users[i].uaite + '</div><input class="uid" type="hidden" value="'
 							+ users[i].uid + '"/></div>';
 					}
@@ -997,7 +997,7 @@ $(".huifu").on({
 	shuaXinTuiJian();
 	function shuaXinTuiJian() {
 		$.ajax({
-			url : '/mytwitter/user.do?method=shuaxintuijian&suiji=' + Math.random(),
+			url : '/twitter/user.do?method=shuaxintuijian&suiji=' + Math.random(),
 			type : 'POST',
 			success : function(response, status) {
 				var length = response.length;
@@ -1031,7 +1031,7 @@ $(".huifu").on({
 	function changeTuiJian(users) {
 		var html = "";
 		for (var i = 0; i < users.length; i++) {
-			html += '<div class="tuijian_info"><div class="tuijian_touxiang" style="background: url(' + mytwitter + '/img/'
+			html += '<div class="tuijian_info"><div class="tuijian_touxiang" style="background: url(' + twitter + '/img/'
 				+ users[i].uname + "/" + users[i].ulogo + ');background-size: 50px 50px;"></div><div class="tuijian_name" onclick="guanzhuname(this)">'
 				+ users[i].urealname + '</div><div class="tuijian_aite" style="color:#657786">@' + users[i].uaite
 				+ '</div><div><button  onclick="guanzhuta(this)" class=" guanzhuta" style="color:${info.ucolor};margin-top:8px;margin-left:8px;border:1px solid ${info.ucolor}">关注</button></div>'

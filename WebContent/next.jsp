@@ -184,7 +184,7 @@ li {
 				}
 			}
 		}
-		xmlHttp.open("GET", "/mytwitter/user.do?method=checkaite&aite=" + txt, false);
+		xmlHttp.open("GET", "/twitter/user.do?method=checkaite&aite=" + txt, false);
 		xmlHttp.send(null);
 	});
 

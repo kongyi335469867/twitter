@@ -572,7 +572,7 @@ $(".wen").on({
 
 
 //加载的
-var mytwitter  =' ${pageContext.request.contextPath}';
+var twitter  =' ${pageContext.request.contextPath}';
 	var number = ${info.utweet}+"";
 	var one = "1";
 	var zero = "0";
@@ -613,7 +613,7 @@ var mytwitter  =' ${pageContext.request.contextPath}';
 	function jiaZai() {
 		if( $("#back").css("display") == "none"){
 			$('#jiazai img').fadeIn();
-			var url = '/mytwitter/tweettwo.do?method=gettweets&num=one&pagenum='+page;
+			var url = '/twitter/tweettwo.do?method=gettweets&num=one&pagenum='+page;
 			$.ajax({
 				url : url,
 				type : 'POST',

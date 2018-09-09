@@ -770,7 +770,7 @@
 								page += 1;
 							}
 							$.ajax({
-								url: '/mytwitter/notify.do?method=all&page='+page,
+								url: '/twitter/notify.do?method=all&page='+page,
 								type: 'POST',
 								success: function(response , status){
 									if(response == 'none' && $(".notifications").length <1){
@@ -798,7 +798,7 @@
 							});						
 						}
 						//显示通知信息
-						var mytwitter = '${pageContext.request.contextPath}';
+						var twitter = '${pageContext.request.contextPath}';
 						function addNotify(notification){
 							var html = ""
 							for(var i=0;i<notification.length;i++){
@@ -806,7 +806,7 @@
 								if(notification[i].ntype == 1){
 									html += '<div class="notifications"><div	style="margin-left: 55px;padding-top: 20px;height: 26px;line-height: 26px">	<span class=" glyphicon glyphicon-user"'
 										+ '	style="color:rgba(29, 161, 242, 1);font-size: 16px;margin-right: 10px"></span><img style="width: 31px;height: 31px;border-radius: 50px;background-color: white;margin-top: -10px"'
-										+ ' src="' + mytwitter + '/img/' + notification[i].usersall.uname + '/' + notification[i].usersall.ulogo + '" /></div><div style="margin-left: 85px;margin-top: 20px;color: black;padding-bottom: 20px">'
+										+ ' src="' + twitter + '/img/' + notification[i].usersall.uname + '/' + notification[i].usersall.ulogo + '" /></div><div style="margin-left: 85px;margin-top: 20px;color: black;padding-bottom: 20px">'
 										+ '<span class="guanzhurenming" style="font-weight: bold;margin-right: 5px;cursor: pointer;"	onclick=chakanwho(this)>'
 										+ notification[i].usersall.urealname + '</span> <input type="hidden" class="uuid" value="'
 										+ notification[i].usersall.uid + '" />关注了你<span style="margin: 0px 5px;color:#657786">·</span><span'
@@ -827,7 +827,7 @@
 									+ notification[i].utweets.uid + '" /><div class="dianzantweetaite">@' + notification[i].utweets.uaite + '</div><div class="dianzantweetneirong">'
 									+ notification[i].utweets.tcontent;
 									if (notification[i].utweets.tpic != null) {
-										html += '<a style="margin-left:10px;" target="view_window" href="' + mytwitter + '/img/' + notification[i].utweets.uname + '/' + notification[i].utweets.tpic + '">图片</a>';
+										html += '<a style="margin-left:10px;" target="view_window" href="' + twitter + '/img/' + notification[i].utweets.uname + '/' + notification[i].utweets.tpic + '">图片</a>';
 									}
 									html += '</div></div></div></div>';
 								}
@@ -838,7 +838,7 @@
 									}
 									html += '<div class="notifications"><div	style="margin-left: 55px;padding-top: 20px;height: 26px;line-height: 26px"><span class=" glyphicon glyphicon-retweet" style="color:rgba(23, 191, 99, 1);font-size: 16px;margin-right: 10px"></span>'
 									+ '<img style="width: 31px;height: 31px;border-radius: 50px;background-color: white;margin-top: -10px" src="'
-									+ mytwitter + '/img/' + notification[i].utweets.uname + '/' + notification[i].utweets.ulogo + '" />	</div><div style="margin-left: 85px;margin-top: 20px;color: black;padding-bottom: 20px">'
+									+ twitter + '/img/' + notification[i].utweets.uname + '/' + notification[i].utweets.ulogo + '" />	</div><div style="margin-left: 85px;margin-top: 20px;color: black;padding-bottom: 20px">'
 									+ '<span class="guanzhurenming" style="font-weight: bold;margin-right: 5px;cursor: pointer;" onclick=chakanwho(this)>'
 									+ notification[i].utweets.urealname + '</span> <input type="hidden" class="uuid" value="'
 									+ notification[i].utweets.uid + '" />转发了你的推文<span	style="margin: 0px 5px;color:#657786">·</span><span class="guanzhudetime" style="color:#657786">'
@@ -849,7 +849,7 @@
 									+ notification[i].utweetstwo.uaite + '</div><div class="dianzantweetneirong">'
 									+ notification[i].utweetstwo.tcontent;
 									if (notification[i].utweetstwo.tpic != null) {
-										html += '<a style="margin-left:10px;" target="view_window" href="' + mytwitter + '/img/' + notification[i].utweetstwo.uname + '/' + notification[i].utweetstwo.tpic + '">图片</a>';
+										html += '<a style="margin-left:10px;" target="view_window" href="' + twitter + '/img/' + notification[i].utweetstwo.uname + '/' + notification[i].utweetstwo.tpic + '">图片</a>';
 									}
 									html += '</div></div></div></div>';
 								}
@@ -860,7 +860,7 @@
 									}
 									html += '<div class="notifications"><div	style="margin-left: 55px;padding-top: 20px;height: 26px;line-height: 26px"><span class=" glyphicon glyphicon-share-alt" style="color:rgb(29, 161, 242);font-size: 16px;margin-right: 10px"></span>'
 									+ '<img style="width: 31px;height: 31px;border-radius: 50px;background-color: white;margin-top: -10px" src="'
-									+ mytwitter + '/img/' + notification[i].usersall.uname + '/' + notification[i].usersall.ulogo + '" />	</div><div style="margin-left: 85px;margin-top: 20px;color: black;padding-bottom: 20px">'
+									+ twitter + '/img/' + notification[i].usersall.uname + '/' + notification[i].usersall.ulogo + '" />	</div><div style="margin-left: 85px;margin-top: 20px;color: black;padding-bottom: 20px">'
 									+ '<span class="guanzhurenming" style="font-weight: bold;margin-right: 5px;cursor: pointer;" onclick=chakanwho(this)>'
 									+ notification[i].usersall.urealname + '</span> <input type="hidden" class="uuid" value="'
 									+ notification[i].usersall.uid + '" />回复了你的推文<span	style="margin: 0px 5px;color:#657786">·</span><span class="guanzhudetime" style="color:#657786">'
@@ -871,7 +871,7 @@
 									+ notification[i].utweets.uaite + '</div><div class="dianzantweetneirong">'
 									+ notification[i].utweets.tcontent;
 									if (notification[i].utweets.tpic != null) {
-										html += '<a style="margin-left:10px;" target="view_window" href="' + mytwitter + '/img/' + notification[i].utweets.uname + '/' + notification[i].utweets.tpic + '">图片</a>';
+										html += '<a style="margin-left:10px;" target="view_window" href="' + twitter + '/img/' + notification[i].utweets.uname + '/' + notification[i].utweets.tpic + '">图片</a>';
 									}
 									html += '</div></div></div></div>';
 								}							
@@ -947,7 +947,7 @@
 	});
 	
 	var touxiang = "${pageContext.request.contextPath}/img/${user.uname }/${info.ulogo}";
-	var mytwitter = ' ${pageContext.request.contextPath}';
+	var twitter = ' ${pageContext.request.contextPath}';
 	$(".tuijian_touxiang").css("background", "url('" + touxiang + "')");
 	$(".tuijian_touxiang").css("backgroundSize", "50px 50px");
 	var one = "1";
@@ -1218,7 +1218,7 @@
 	}
 	
 	$("#subminttwo").click(function(){
-		var url = '/mytwitter/tweettwo.do?method=getnewtweets&td=down&nowid=' + $(".tuiern:eq(0)").find(".idid").val();
+		var url = '/twitter/tweettwo.do?method=getnewtweets&td=down&nowid=' + $(".tuiern:eq(0)").find(".idid").val();
 		$.ajax({
 			url : url,
 			type : 'POST',
@@ -1262,7 +1262,7 @@
 	shuaXinTuiJian();
 	function shuaXinTuiJian(){
 		$.ajax({
-			url:'/mytwitter/user.do?method=shuaxintuijian&suiji=' + Math.random(),
+			url:'/twitter/user.do?method=shuaxintuijian&suiji=' + Math.random(),
 			type : 'POST',
 			success : function(response,status){
 				var length = response.length;
@@ -1322,7 +1322,7 @@
 	function changeTuiJian(users){
 		var html = "";
 		for (var i = 0; i < users.length; i++) {
-			html += '<div class="tuijian_info"><div class="tuijian_touxiang" style="background: url(' + mytwitter + '/img/'
+			html += '<div class="tuijian_info"><div class="tuijian_touxiang" style="background: url(' + twitter + '/img/'
 				+ users[i].uname + "/" + users[i].ulogo + ');background-size: 50px 50px;"></div><div class="tuijian_name" onclick="guanzhuname(this)">'
 				+ users[i].urealname + '</div><div class="tuijian_aite" style="color:#657786">@' + users[i].uaite
 				+ '</div><div><button  onclick="guanzhuta(this)" class=" guanzhuta" style="color:${info.ucolor};margin-top:8px;margin-left:8px;border:1px solid ${info.ucolor}">关注</button></div>'
@@ -1341,7 +1341,7 @@
 			$("#souxianshi").hide();
 			$("#souxianshishang").hide();
 		}
-		var url = '/mytwitter/user.do?method=chayonghu';
+		var url = '/twitter/user.do?method=chayonghu';
 		if ($(this).val() != "") {
 			$.ajax({
 				url : url,
@@ -1363,7 +1363,7 @@
 					var html = "";
 					for (var i = 0; i < users.length; i++) {
 						html += '<div class="souneirong" onclick="chaxunuser(0,this)"><div class="soutouxiang"><img src="'
-							+ mytwitter + '/img/' + users[i].uname + "/" + users[i].ulogo + '" /></div><div class="soumingzi">'
+							+ twitter + '/img/' + users[i].uname + "/" + users[i].ulogo + '" /></div><div class="soumingzi">'
 							+ users[i].urealname + '</div><div class="sousouaite">@' + users[i].uaite + '</div><input class="uid" type="hidden" value="'
 							+ users[i].uid + '"/></div>';
 					}

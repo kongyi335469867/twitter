@@ -160,7 +160,7 @@
 	/* 添加朋友，利用ajax */
 	function addFriends(){
 		$.ajax({
-			url : "/mytwitter/message.do?method=addfriend",
+			url : "/twitter/message.do?method=addfriend",
 			type : "POST",
 			asyn : true,
 			success : function(response) {
@@ -193,7 +193,7 @@
 	/* 获取消息 */
 	function getMsg(uid) {
 		$.ajax({
-			url : "/mytwitter/message.do?method=msg&uid=" + uid,
+			url : "/twitter/message.do?method=msg&uid=" + uid,
 			type : "POST",
 			asyn : true,
 			success : function(response) {
@@ -209,7 +209,7 @@
 	
 	/* 刷新信息 */
 	function shuaxin(){
-		var url =  "/mytwitter/message.do?method=shuaxin&uid=" +$("#xiaoxione").find(".uid").val() +"&mid=" +$(".xiaoxixiaoxi:last").find(".mid").val();
+		var url =  "/twitter/message.do?method=shuaxin&uid=" +$("#xiaoxione").find(".uid").val() +"&mid=" +$(".xiaoxixiaoxi:last").find(".mid").val();
 		$.ajax({
 			url : url ,
 			type : "POST",
@@ -227,7 +227,7 @@
 	
 	/* 删除聊天 */
 	function delliaotian(uid){
-		var url =  "/mytwitter/message.do?method=del&uid="+ uid ;
+		var url =  "/twitter/message.do?method=del&uid="+ uid ;
 		$.ajax({
 			url : url ,
 			type : "POST",
@@ -299,7 +299,7 @@
 		}, 1000);
 	})
 	function addMessageAll(){
-		var url =  "/mytwitter/message.do?method=addmsg&uid=" +$("#xiaoxione").find(".uid").val() + "&mcontent=" +$("#xiaoxikuang").val() ;
+		var url =  "/twitter/message.do?method=addmsg&uid=" +$("#xiaoxione").find(".uid").val() + "&mcontent=" +$("#xiaoxikuang").val() ;
 		$.ajax({
 			url : url,
 			type : "POST",
@@ -318,7 +318,7 @@
 	
 	function getFriend() {
 		$.ajax({
-			url : "/mytwitter/message.do?method=liebiao",
+			url : "/twitter/message.do?method=liebiao",
 			type : "POST",
 			asyn : true,
 			success : function(response) {

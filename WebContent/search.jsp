@@ -838,7 +838,7 @@ select {
 <script>
 	function catsession() {
 		$.ajax({
-			url : '/mytwitter/user.do?method=catsession',
+			url : '/twitter/user.do?method=catsession',
 			type : 'POST',
 			success : function(response, status) {
 				if (response == "exit") {
@@ -876,15 +876,15 @@ $(function() {
 $("#fanwei").bind("change", function() {
 		/* $("#second").html("");
 		if ($("#fanwei").val() == "follow") {
-			search('/mytwitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=follow');
+			search('/twitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=follow');
 		} else if ($("#fanwei").val() == "fans") {
-			search('/mytwitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=fans');
+			search('/twitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=fans');
 		} else if ($("#fanwei").val() == "followtwo") {
-			search('/mytwitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=followtwo');
+			search('/twitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=followtwo');
 		} else if ($("#fanwei").val() == "fanstwo") {
-			search('/mytwitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=fanstwo');
+			search('/twitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=fanstwo');
 		} else if ($("#fanwei").val() == "all") {
-			search('/mytwitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0');
+			search('/twitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0');
 		} */
 		location.reload();
 	})
@@ -892,34 +892,34 @@ $("#fanwei").bind("change", function() {
 		click : function() {
 			if ($(this).html().trim() == "点击加载更多") {
 				if ($("#fanwei").val() == "follow") {
-					search('/mytwitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=' + $(".usersinfo").length + '&fanwei=follow');
+					search('/twitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=' + $(".usersinfo").length + '&fanwei=follow');
 				} else if ($("#fanwei").val() == "fans") {
-					search('/mytwitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=' + $(".usersinfo").length + '&fanwei=fans');
+					search('/twitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=' + $(".usersinfo").length + '&fanwei=fans');
 				} else if ($("#fanwei").val() == "followtwo") {
-					search('/mytwitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=' + $(".usersinfo").length + '&fanwei=followtwo');
+					search('/twitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=' + $(".usersinfo").length + '&fanwei=followtwo');
 				} else if ($("#fanwei").val() == "fanstwo") {
-					search('/mytwitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=' + $(".usersinfo").length + '&fanwei=fanstwo');
+					search('/twitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=' + $(".usersinfo").length + '&fanwei=fanstwo');
 				} else {
-					search('/mytwitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=' + $(".usersinfo").length);
+					search('/twitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=' + $(".usersinfo").length);
 				}
 			}
 		}
 	});
 	window.onload=function(){
 		if ($("#fanwei").val() == "follow") {
-			search('/mytwitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=follow');
+			search('/twitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=follow');
 		}else if ($("#fanwei").val() == "fans") {
-			search('/mytwitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=fans');
+			search('/twitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=fans');
 		} else if ($("#fanwei").val() == "followtwo") {
-			search('/mytwitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=followtwo');
+			search('/twitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=followtwo');
 		}else if ($("#fanwei").val() == "fanstwo") {
-			search('/mytwitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=fanstwo');
+			search('/twitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0&fanwei=fanstwo');
 		} else {
-			search('/mytwitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0');
+			search('/twitter/user.do?method=search&word=' + $("#searchname").html().trim() + '&pagenum=0');
 		}
 	}
 	
-	var mytwitter = ' ${pageContext.request.contextPath}';
+	var twitter = ' ${pageContext.request.contextPath}';
 	function addSearch(result) {
 		var html = "";
 		for (var i = 0; i < result.length; i++) {
@@ -928,10 +928,10 @@ $("#fanwei").bind("change", function() {
 			if (result[i].ubg == null) {
 				html += 'style="background: ' + result[i].ucolor + ';'
 			} else {
-				html += 'style="background-color: ' + result[i].ucolor + ';background: url(' + mytwitter + '/img/' + result[i].uname + "/" + result[i].ubg + ');';
+				html += 'style="background-color: ' + result[i].ucolor + ';background: url(' + twitter + '/img/' + result[i].uname + "/" + result[i].ubg + ');';
 			}
 			html += 'background-size: 300px 100px;"></div><div class="waiyuan">' +
-				'<div class="yuantouxiang" style="background: url(' + mytwitter + '/img/' + result[i].uname + "/" + result[i].ulogo + ');background-size: 70px 70px;"></div></div>'
+				'<div class="yuantouxiang" style="background: url(' + twitter + '/img/' + result[i].uname + "/" + result[i].ulogo + ');background-size: 70px 70px;"></div></div>'
 			html += '<div class="waiguanzhu">';
 			if ("@" + result[i].uaite != $("#aitevalue").html()) {
 				if(result[i].guanzhu == 1)

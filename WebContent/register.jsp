@@ -367,7 +367,7 @@ body {
 			}
 		}
 
-		xmlHttp.open("GET", "/mytwitter/user.do?method=checkuser&username=" + username, false);
+		xmlHttp.open("GET", "/twitter/user.do?method=checkuser&username=" + username, false);
 		xmlHttp.send(null);
 	}
 
