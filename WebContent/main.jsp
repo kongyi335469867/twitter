@@ -96,6 +96,7 @@ li {
 	padding-left: 15px;
 	line-height: 30px;
 	font-size: 12px;
+	outline:none;
 }
 
 #search {
