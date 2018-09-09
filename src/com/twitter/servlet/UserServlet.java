@@ -25,6 +25,7 @@ import com.twitter.dao.SigninDao;
 import com.twitter.dao.UsersDao;
 import com.twitter.dao.UsersinfoDao;
 import com.twitter.bean.Concern;
+import com.twitter.bean.Messageall;
 import com.twitter.bean.Users;
 import com.twitter.bean.Usersall;
 import com.twitter.bean.Usersinfo;
@@ -34,6 +35,7 @@ import com.twitter.util.Upload;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 import sun.misc.BASE64Decoder;
 
 /**
@@ -146,13 +148,14 @@ public class UserServlet extends HttpServlet {
 			response.getWriter().print("ok");
 		}
 	}
-
+	//更新背景
 	private void toUpdateBg(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
 		Users user = (Users) session.getAttribute("user");
 		int uid = user.getUid();
-
-		String path = request.getSession().getServletContext().getRealPath("img/") + user.getUname();
+		// 获取绝对路径
+		//String path = request.getSession().getServletContext().getRealPath("img/") + user.getUname();
+		String path = "Z:/HelloWord/Java/twitter/WebContent/img/"+user.getUname();
 		Map<String, String> map = Upload.upload(request, 100 * 1024 * 1024, path);
 		String picName = map.get("picpath");
 		int n = usersinfoDao.updateBg(uid, picName);
@@ -248,7 +251,8 @@ public class UserServlet extends HttpServlet {
 				}
 			}
 			// 生成jpeg图片
-			String path = request.getSession().getServletContext().getRealPath("img/") + user.getUname();
+			// String path = request.getSession().getServletContext().getRealPath("img/") + user.getUname();
+			String path = "Z:/HelloWord/Java/twitter/WebContent/img/"+user.getUname();
 			newFileName = new Date().getTime() + ".png";
 			String imgFilePath = path + "/" + newFileName;// 新生成的图片
 			OutputStream out = new FileOutputStream(imgFilePath);
@@ -270,19 +274,32 @@ public class UserServlet extends HttpServlet {
 		JSONArray js = new JSONArray();
 		String uid = request.getParameter("uid");
 		HttpSession session = request.getSession();
-		Users user = (Users) session.getAttribute("user");
-		int f_uid = user.getUid();
-		Usersall users = usersinfoDao.getInfo(Integer.parseInt(uid));
-		int result = concernDao.hasFollow(f_uid, Integer.parseInt(uid));
-		if (result == 1) {
-			users.setGuanzhu(1);
-		} else {
-			users.setGuanzhu(0);
+		
+		try {
+			
+			Users user = (Users) session.getAttribute("user");
+			int f_uid = user.getUid();  
+			//System.out.println("NotificationServlet获取session的user值:"+user);
+			if(user != null) {
+				Usersall users = usersinfoDao.getInfo(Integer.parseInt(uid));
+				int result = concernDao.hasFollow(f_uid, Integer.parseInt(uid));
+				if (result == 1) {
+					users.setGuanzhu(1);
+				} else {
+					users.setGuanzhu(0);
+				}
+				js.add(getJsonObj(users.getUid(), users.getUname(), users.getUrealname(), users.getUaite(), users.getUonline(),
+						users.getUabout(), users.getUlogo(), users.getUbg(), users.getUfans(), users.getUtweet(),
+						users.getUfollow(), users.getUcolor(), users.getUaddress(), users.getGuanzhu()));
+				response.getWriter().write(js.toString());
+			}
+			
+		}catch(NullPointerException e){
+			e.printStackTrace();
+			System.out.println("NotificationServlet获取未读信息用户id为Null");
 		}
-		js.add(getJsonObj(users.getUid(), users.getUname(), users.getUrealname(), users.getUaite(), users.getUonline(),
-				users.getUabout(), users.getUlogo(), users.getUbg(), users.getUfans(), users.getUtweet(),
-				users.getUfollow(), users.getUcolor(), users.getUaddress(), users.getGuanzhu()));
-		response.getWriter().write(js.toString());
+		
+		
 	}
 
 	private void toShuaXinTuiJian(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -304,12 +321,15 @@ public class UserServlet extends HttpServlet {
 			}
 			list = usersinfoDao.selTuiJian(uid, uidList);
 		}
-
-		for (Usersall users : list) {
-			js.add(getJsonObj(users.getUid(), users.getUname(), users.getUrealname(), users.getUaite(),
-					users.getUonline(), users.getUabout(), users.getUlogo(), users.getUbg(), users.getUfans(),
-					users.getUtweet(), users.getUfollow(), users.getUcolor(), users.getUaddress(), users.getGuanzhu()));
+		if(list != null) {
+			
+			for (Usersall users : list) {
+				js.add(getJsonObj(users.getUid(), users.getUname(), users.getUrealname(), users.getUaite(),
+						users.getUonline(), users.getUabout(), users.getUlogo(), users.getUbg(), users.getUfans(),
+						users.getUtweet(), users.getUfollow(), users.getUcolor(), users.getUaddress(), users.getGuanzhu()));
+			}
 		}
+		
 		response.getWriter().write(js.toString());
 	}
 
@@ -517,12 +537,9 @@ public class UserServlet extends HttpServlet {
 
 	// 登出
 	private void toExit(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		System.out.println("UserServlet更新在线用户1");
 		HttpSession session = request.getSession();
-		if (session.getAttribute("admin") == null) {
-			session.invalidate();
-			response.sendRedirect("index.jsp");
-			return;
-		}
+		//如果admin是null就跳掉
 		Users user = (Users) session.getAttribute("user");
 		ServletContext application = session.getServletContext();
 		application.removeAttribute(((Users) session.getAttribute("user")).getUname());
@@ -533,8 +550,16 @@ public class UserServlet extends HttpServlet {
 		Object signinid = session.getAttribute("signinid");
 		int uid = user.getUid();
 		Timestamp sdtime = Times.getSystemTime();
+		//更新在线用户值
 		usersDao.updateOnline(0, uid);
+		System.out.println("UserServlet更新在线用户!!!");
 		signinDao.updateSignin((Integer) signinid, sdtime);
+		if (session.getAttribute("admin") == null) {
+			//System.out.println("UserServlet更新在线用户2");
+			session.invalidate();
+			response.sendRedirect("index.jsp");
+			return;
+		}
 		response.sendRedirect("index.jsp");
 	}
 
@@ -576,8 +601,12 @@ public class UserServlet extends HttpServlet {
 			if (m > 0) {
 				Usersinfo info = usersinfoDao.getInfos(user.getUid());
 
-				String folder = request.getSession().getServletContext().getRealPath("/img/" + user.getUname());
-				String img = request.getSession().getServletContext().getRealPath("/img");
+				/*String folder = request.getSession().getServletContext().getRealPath("/img/" + user.getUname());
+				String img = request.getSession().getServletContext().getRealPath("/img");*/
+				//本地绝对路径
+				String folder = "Z:/HelloWord/Java/twitter/WebContent/img/" + user.getUname();
+				String img = "Z:/HelloWord/Java/twitter/WebContent/img";
+				
 				File file = new File(folder);
 				file.mkdir();
 
@@ -665,10 +694,11 @@ public class UserServlet extends HttpServlet {
 		Usersinfo info = usersinfoDao.getInfos(user.getUid());
 		ServletContext application = request.getSession().getServletContext();
 		HttpSession oldSession = (HttpSession) application.getAttribute(user.getUname());
-
-		if (oldSession != null) {
+		
+		//注销重复登陆用户
+		/*if (oldSession != null) {
 			oldSession.invalidate();
-		}
+		}*/
 		HttpSession session = request.getSession();
 		session.setAttribute("user", user);
 		session.setAttribute("info", info);
