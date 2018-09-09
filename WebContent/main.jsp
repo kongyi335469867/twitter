@@ -396,7 +396,7 @@ hr {
 	border: 0px solid gray;
 	z-index: 8;
 	margin: 10px 0 10px 10px;
-    outline:none;
+	outline:none;
 }
 
 textarea {
@@ -3308,7 +3308,7 @@ function tweetsJs(){
 			});  */
 		$(user).parent().parent().prev().remove();
 	}
-    //名字显示资料卡
+	//名字显示资料卡
 	function nameTianZiLiao(user) {
 		var url = '/twitter/user.do?method=getziliaoka&uid=' + $(user).parent().parent().find(".uuid").val() + '&suiji=' + Math.random();
 		if($(".usersinfo").length < 1){
@@ -3324,12 +3324,14 @@ function tweetsJs(){
 					$(user).parent().parent().prev().bind("mouseleave",function(){
 			            $(user).parent().parent().prev().remove();                        //删除资料卡
 			       	});
-                    tweetsJs();
+					
+					tweetsJs();
 				}
 			});
 		}
 	}
-    //头像显示资料卡
+	
+	//头像显示资料卡
 	function tianZiLiaoKa(user) {
 		var url = '/twitter/user.do?method=getziliaoka&uid=' + $(user).parent().find(".uuid").val() + '&suiji=' + Math.random();
 		if($(".usersinfo").length < 1){
@@ -3340,7 +3342,7 @@ function tweetsJs(){
 				var tweets = $.parseJSON(response);
 				var html = addZiLiaoKa(tweets, "touxiang");
 				$(user).parent().before(html);
-                $(user).parent().prev().bind("mouseleave",function(){
+				$(user).parent().prev().bind("mouseleave",function(){
 	           		 $(user).parent().prev().remove();                        //删除资料卡
 	       		});
 				tweetsJs();
@@ -3348,6 +3350,8 @@ function tweetsJs(){
 		});
 		}
 	}
+	
+	//添加资料卡
 	function addZiLiaoKa(tweets, state) {
 		var html = "";
 		for (var i = 0; i < tweets.length; i++) {
@@ -3656,4 +3660,3 @@ function tweetsJs(){
 	}));
 </script>
 </html>
-
