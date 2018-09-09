@@ -99,13 +99,13 @@ public class MessageServlet extends HttpServlet {
 				int fuid = user.getUid();
 				int n = messageDao.hasNew(fuid);
 				response.getWriter().print(n);
-				System.out.println("MessageServlet发送新消息用户id:"+fuid);
-				System.out.println("MessageServlet发送新消息条数"+n);
+				//System.out.println("MessageServlet发送新消息用户id:"+fuid);
+				//System.out.println("MessageServlet发送新消息条数"+n);
 			}
 			
 		}catch(NullPointerException e){
 			e.printStackTrace();
-			System.out.println("MessageServlet发送新消息用户id为Null");
+			//System.out.println("MessageServlet发送新消息用户id为Null");
 		}
 	}
 //刷新
@@ -113,15 +113,25 @@ public class MessageServlet extends HttpServlet {
 		String suid = request.getParameter("uid");
 		String mid = request.getParameter("mid");
 		HttpSession session = request.getSession();
-		Users user = (Users) session.getAttribute("user");
-		int fuid = user.getUid();
-		List<Messageall> list = messageDao.shuaXin(fuid, mid, suid);
-		if (list != null) {
-			messageDao.toRead(fuid, suid);
-			JsonConfig config = new JsonConfig();
-			config.setExcludes(new String[] { "mtime" });
-			JSONArray jsonArray = JSONArray.fromObject(list, config);
-			response.getWriter().print(jsonArray.toString());
+		
+		
+		try {
+			
+			Users user = (Users) session.getAttribute("user");
+			//System.out.println("NotificationServlet获取session的user值:"+user);
+			if(user != null) {
+				int fuid = user.getUid();
+				List<Messageall> list = messageDao.shuaXin(fuid, mid, suid);
+				if (list != null) {
+					messageDao.toRead(fuid, suid);
+					JsonConfig config = new JsonConfig();
+					config.setExcludes(new String[] { "mtime" });
+					JSONArray jsonArray = JSONArray.fromObject(list, config);
+					response.getWriter().print(jsonArray.toString());
+				}
+			}catch(NullPointerException e){
+			e.printStackTrace();
+			System.out.println("NotificationServlet获取未读信息用户id为Null");
 		}
 	}
 //添加消息
@@ -159,68 +169,81 @@ public class MessageServlet extends HttpServlet {
 
 	private void toGetLieBiao(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
-		Users user = (Users) session.getAttribute("user");
-		int uid = user.getUid();
+		
+		
+		try {
+			Users user = (Users) session.getAttribute("user");
+			if(user != null) {
+				int uid = user.getUid();
+				
+				List<Messageall> listF = messageDao.findById(uid, 1);
+				List<Messageall> listS = messageDao.findById(uid, 2);
+				int num = 0;
 
-		List<Messageall> listF = messageDao.findById(uid, 1);
-		List<Messageall> listS = messageDao.findById(uid, 2);
-		// List<Messageall> listT = new ArrayList<Messageall>();
-		int num = 0;
+				int fSize = listF.size();
+				int sSize = listS.size();
 
-		int fSize = listF.size();
-		int sSize = listS.size();
-
-		if (fSize != 0 && sSize == 0) {
-			listS = listF;
-		} else {
-			if (fSize < sSize) {
-				for (int i = 0; i < fSize; i++) {
-					num = 0;
-					for (int j = 0; j < sSize; j++) {
-						if (listF.get(i).getSuid() != listS.get(j).getFuid()) {
-							num++;
-						}
-						if (listF.get(i).getSuid() == listS.get(j).getFuid()) {
-							if (listS.get(j).getMtime().before(listF.get(i).getMtime())) {
-								listS.set(j, listF.get(i));
+				if (fSize != 0 && sSize == 0) {
+					listS = listF;
+				} else {
+					if (fSize < sSize) {
+						for (int i = 0; i < fSize; i++) {
+							num = 0;
+							for (int j = 0; j < sSize; j++) {
+								if (listF.get(i).getSuid() != listS.get(j).getFuid()) {
+									num++;
+								}
+								if (listF.get(i).getSuid() == listS.get(j).getFuid()) {
+									if (listS.get(j).getMtime().before(listF.get(i).getMtime())) {
+										listS.set(j, listF.get(i));
+									}
+								}
+								if (num == sSize) {
+									listS.add(listF.get(i));
+								}
 							}
 						}
-						if (num == sSize) {
-							listS.add(listF.get(i));
-						}
-					}
-				}
-			} else {
-				for (int i = 0; i < sSize; i++) {
-					num = 0;
-					for (int j = 0; j < fSize; j++) {
-						if (listS.get(i).getFuid() != listF.get(j).getSuid()) {
-							num++;
-						}
-						if (listS.get(i).getFuid() == listF.get(j).getSuid()) {
-							if (listF.get(j).getMtime().before(listS.get(i).getMtime())) {
-								listF.set(j, listS.get(i));
+					} else {
+						for (int i = 0; i < sSize; i++) {
+							num = 0;
+							for (int j = 0; j < fSize; j++) {
+								if (listS.get(i).getFuid() != listF.get(j).getSuid()) {
+									num++;
+								}
+								if (listS.get(i).getFuid() == listF.get(j).getSuid()) {
+									if (listF.get(j).getMtime().before(listS.get(i).getMtime())) {
+										listF.set(j, listS.get(i));
+									}
+								}
+								if (num == fSize) {
+									listF.add(listS.get(i));
+								}
 							}
 						}
-						if (num == fSize) {
-							listF.add(listS.get(i));
-						}
+						listS = listF;
 					}
 				}
-				listS = listF;
+				Collections.sort(listS, (o1, o2) -> {
+					return o2.getMtime().compareTo(o1.getMtime());
+				});
+
+				for (Messageall messageall : listS) {
+					formatDate(messageall, messageall.getMtime());
+				}
+				JsonConfig config = new JsonConfig();
+				config.setExcludes(new String[] { "mtime" });
+				JSONArray jsonArray = JSONArray.fromObject(listS, config);
+				response.getWriter().print(jsonArray.toString());
+				//System.out.println("MessageServlet发送新消息用户id:"+fuid);
+				//System.out.println("MessageServlet发送新消息条数"+n);
 			}
+			
+		}catch(NullPointerException e){
+			e.printStackTrace();
+			//System.out.println("MessageServlet发送新消息用户id为Null");
 		}
-		Collections.sort(listS, (o1, o2) -> {
-			return o2.getMtime().compareTo(o1.getMtime());
-		});
-
-		for (Messageall messageall : listS) {
-			formatDate(messageall, messageall.getMtime());
-		}
-		JsonConfig config = new JsonConfig();
-		config.setExcludes(new String[] { "mtime" });
-		JSONArray jsonArray = JSONArray.fromObject(listS, config);
-		response.getWriter().print(jsonArray.toString());
+		// List<Messageall> listT = new ArrayList<Messageall>();
+		
 	}
 
 	public void formatDate(Messageall messageall, Timestamp ttime) {
