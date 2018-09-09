@@ -112,13 +112,13 @@ li {
 			</div>
 			<div id="first">
 				<div
-					style="width: 400px;font-size: 28px;margin-top: 80px;font-weight: bold;color: black;">很高兴你来到这里，${user.urealname }。</div>
+					style="width: 400px;font-size: 28px;margin-top: 80px;font-weight: bold;color: black;">很高兴你来到这里，${user.urealname }</div>
 				<div
-					style="width: 400px;font-size: 21px;margin-top: 30px;font-weight: bold;color: dimgray;">Twitter将持续更新最潮、最重大的新闻、媒体、体育、电视、对话消息等等——全为你量身定制！</div>
+					style="width: 400px;font-size: 21px;margin-top: 30px;font-weight: bold;color: dimgray;">Twitter-是一家美国社交网络及微博客服务的网站，是全球互联网上访问量最大的十个网站之一</div>
 				<div
-					style="width: 400px;font-size: 21px;margin-top: 20px;font-weight: bold;color: dimgray;">告诉我们你喜欢的东西，我们会帮你打点一切。</div>
-				<button id="btn"
-					style="border: none; margin-top: 20px;padding: 15px 30px;text-align: center;border-radius: 50px;color: white;font-size: 20px; font-weight: bold;background-color: rgb(19, 163, 243);cursor: pointer;">
+					style="width: 400px;font-size: 21px;margin-top: 20px;font-weight: bold;color: dimgray;">告诉我们你喜欢的东西，我们会帮你打点一切</div>
+					
+				<button id="btn"style="border: none; margin-top: 20px;padding: 15px 30px;text-align: center;border-radius: 50px;color: white;font-size: 20px; font-weight: bold;background-color: rgb(19, 163, 243);cursor: pointer;">
 					<p style="margin-left:5px">我们开始吧！</p>
 				</button>
 			</div>
