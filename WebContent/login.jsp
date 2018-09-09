@@ -3,6 +3,7 @@
 <html>
 <head>
 <meta charset="utf-8">
+
 <title>登录</title>
 <link rel="icon" href="img/index.ico" />
 <script src="js/jquery-3.1.1.min.js"></script>
@@ -16,6 +17,7 @@
 .hidden {
 	display: none;
 }
+//
 
 body {
 	background-color: rgba(245, 248, 250, 1.00);
