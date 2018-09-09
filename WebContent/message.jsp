@@ -219,7 +219,7 @@
             //绑定事件  
             $('.app-menu a[menu="menu1"]').on('click', function (){  
             	var suid = $(obj).find(".uuid").val();
-            	//delliaotian(suid)
+            	delliaotian(suid); //删除用户聊天记录
             });  
             return popupMenuApp;  
         }  
