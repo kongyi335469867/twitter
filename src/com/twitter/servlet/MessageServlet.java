@@ -89,10 +89,24 @@ public class MessageServlet extends HttpServlet {
 //发送新消息
 	private void toHasNew(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
-		Users user = (Users) session.getAttribute("user");
-		int fuid = user.getUid();
-		int n = messageDao.hasNew(fuid);
-		response.getWriter().print(n);
+		
+		
+		
+		
+		try {
+			Users user = (Users) session.getAttribute("user");
+			if(user != null) {
+				int fuid = user.getUid();
+				int n = messageDao.hasNew(fuid);
+				response.getWriter().print(n);
+				System.out.println("MessageServlet发送新消息用户id:"+fuid);
+				System.out.println("MessageServlet发送新消息条数"+n);
+			}
+			
+		}catch(NullPointerException e){
+			e.printStackTrace();
+			System.out.println("MessageServlet发送新消息用户id为Null");
+		}
 	}
 //刷新
 	private void toShuaxinMsg(HttpServletRequest request, HttpServletResponse response) throws IOException {

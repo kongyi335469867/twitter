@@ -57,11 +57,24 @@ public class NotificationServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		HttpSession session = request.getSession();
-		Users user = (Users) session.getAttribute("user");
-		int uid = user.getUid();
-		//未读信息的条数
-		int n = notificationDao.getNoRead(uid);
-		response.getWriter().print(n);
+		
+		try {
+			
+			Users user = (Users) session.getAttribute("user");
+			System.out.println("NotificationServlet获取session的user值:"+user);
+			if(user != null) {
+				int uid = user.getUid();
+				//未读信息的条数
+				int n = notificationDao.getNoRead(uid);
+				response.getWriter().print(n);
+				System.out.println("NotificationServlet获取未读信息用户id:"+uid);
+				System.out.println("NotificationServlet获取未读信息条数:"+n);
+			}
+			
+		}catch(NullPointerException e){
+			e.printStackTrace();
+			System.out.println("NotificationServlet获取未读信息用户id为Null");
+		}
 	}
 //获得所有的通知内容
 	private void toGetAllNotify(HttpServletRequest request, HttpServletResponse response) throws IOException {
