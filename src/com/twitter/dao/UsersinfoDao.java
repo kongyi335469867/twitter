@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import com.twitter.bean.Users;
 import com.twitter.bean.Usersall;
 import com.twitter.bean.Usersinfo;
 import com.twitter.util.DBUtil;
@@ -91,8 +91,10 @@ public class UsersinfoDao {
 		String sql = "select id, uid, uaddress,  uabout, udate, ubg,ulogo, ufans, utweet,ufollow ,ucolor  from usersinfo where uid=?  limit 1";
 		List<Usersinfo> list = DBUtil.query(Usersinfo.class, sql, uid);
 		if (list.size() > 0) {
+			System.out.println("UserinfoDao查询 成功！");
 			return list.get(0);
 		}
+		System.out.println("UserinfoDao查询失败！");
 		return null;
 	}
 

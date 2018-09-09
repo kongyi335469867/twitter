@@ -573,12 +573,11 @@ public class UserServlet extends HttpServlet {
 				//相对路径
 				String folder = "Z:/HelloWord/Java/twitter/WebContent/img/" + user.getUname();
 				String img = "Z:/HelloWord/Java/twitter/WebContent/img";
-				
 			    System.out.println("folder路径:"+folder);
 			    System.out.println("img路径:"+img);
 				File file = new File(folder);
 				file.mkdir();
-
+//				System.out.println("info.getUlogo="+info.getUlogo());
 				InputStream is = new FileInputStream(img + "/" + info.getUlogo());
 				OutputStream os = new FileOutputStream(folder + "/" + info.getUlogo(), true);
 				byte[] b = new byte[1024];
