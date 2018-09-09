@@ -21,7 +21,7 @@ import com.twitter.dao.ConcernDao;
 import com.twitter.dao.ForwardsDao;
 import com.twitter.dao.LikesDao;
 import com.twitter.dao.NotificationDao;
-import com.twitter.dao.ReplysDao;
+import com.twitter.dao.ReplaysDao;
 import com.twitter.dao.TweetsDao;
 import com.twitter.dao.UsersinfoDao;
 import com.twitter.bean.Concern;
@@ -48,7 +48,7 @@ public class TweetServletTwo extends HttpServlet {
 	private ForwardsDao forwardsDao = new ForwardsDao();
 	private LikesDao likesDao = new LikesDao();
 	private NotificationDao notificationDao = new NotificationDao();
-	private ReplysDao replysDao = new ReplysDao();
+	private ReplaysDao replysDao = new ReplaysDao();
 
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response)
@@ -109,7 +109,7 @@ public class TweetServletTwo extends HttpServlet {
 		String neirong = request.getParameter("huifuneirong");
 		Timestamp rtime = Times.getSystemTime();
 		//Integer.parseInt将一个字符转化为int
-		int n = replysDao.addReplys(Integer.parseInt(tid), neirong, uid, rtime);
+		int n = replysDao.addReplay(Integer.parseInt(tid), neirong, uid, rtime);
 		if (n > 0) {
 			tweetsDao.addReplyNum(Integer.parseInt(tid), 1);
 			if (uid != Integer.parseInt(uuid))

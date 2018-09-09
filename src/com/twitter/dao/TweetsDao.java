@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.twitter.bean.Tweets;
+
 import com.twitter.bean.Utweets;
 import com.twitter.util.DBUtil;
 @SuppressWarnings("unchecked")

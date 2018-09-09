@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.twitter.dao.ReplysDao;
-import com.twitter.bean.Replyall;
+import com.twitter.dao.ReplaysDao;
+import com.twitter.bean.Replayall;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -22,8 +22,8 @@ import net.sf.json.JSONObject;
  * Servlet implementation class ReplyServlet
  */
 @WebServlet("/reply.do")
-public class ReplyServlet extends HttpServlet {
-	private ReplysDao replysDao = new ReplysDao();
+public class ReplayServlet extends HttpServlet {
+	private ReplaysDao replysDao = new ReplaysDao();
 
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,13 +31,13 @@ public class ReplyServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		String page = request.getParameter("page");
 		String tid = request.getParameter("tid");
-		List<Replyall> replys = replysDao.getAllReply(Integer.parseInt(tid), Integer.parseInt(page));
+		List<Replayall> replys = replysDao.getAllReplay(Integer.parseInt(tid), Integer.parseInt(page));
 		//当回复为空时，返回空
 		if (replys == null) {
 			return;
 		}
 		JSONArray js = new JSONArray();
-		for (Replyall reply : replys) {
+		for (Replayall reply : replys) {
 			Timestamp rtime = reply.getRtime();
 			SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日 HH:mm");
 			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
