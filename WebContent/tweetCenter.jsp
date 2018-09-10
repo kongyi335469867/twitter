@@ -8,6 +8,7 @@
     <title>推文中心</title>
     <link rel="stylesheet" type="text/css" href="css/BasicStyle.css"><!--后台页面基本样式-->
     <link rel="stylesheet" type="text/css" href="css/tweetCenter.css"><!--后台推文中心页面样式-->
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
   </head>
   <body class="bd">
   	<%
@@ -16,13 +17,14 @@
   		int tweetsPageNow = (Integer)request.getAttribute("TWEETS_CURRENT_PAGE");  /*当前页面*/
   		String deleteResult = (String)request.getAttribute("DELETE_RESULT");  /*推文删除结果*/
   		String noContent = (String)request.getAttribute("T_NOCONTENT"); //暂无推文相关内容提示
-
+  		String tpic = null;
+  		
   		String allow = (String)session.getAttribute("ALLOW");
 		if("allow".equals(allow)){
 	%>
 	<div class="container">
 		<div class="header">
-			<form action="BackstagePageCtrl?str=tweetCenter&tsearch=tsearch" method="post">
+			<form action="${pageContext.request.contextPath}/BackstagePageCtrl?str=tweetCenter&tsearch=tsearch" method="post">
 			<div class="search">
 				<input type="text" id="searchBar" name="tsearchUrealname" placeholder="输入用户名进行搜索内容..." />
 				<input type="submit" value="搜索" class="searchBtn" />
@@ -48,28 +50,43 @@
 						for(String[] tweet : tweetsList){
 					%>
 					<tr bgcolor="#F9F9F9" class="row">
-						<td><input type="checkbox" name="checkitem" value="<%=tweet[4] %>"></td>
+						<td><input type="checkbox" name="checkitem" value="<%=tweet[5] %>"></td>
 						<td>
-							<div class="images"><img src="${pageContext.request.contextPath}/img/<%=tweet[3] %>" alt="头像" style="font-size: 6px;"></div>
+							<div class="images"><img src="${pageContext.request.contextPath}/img/<%=tweet[1] %>/<%=tweet[4] %>" alt="头像" style="font-size: 6px;"></div>
 							<div class="name">
-								<div class="userName"><%=tweet[1] %></div>
-								<div class="registrationName">@<%=tweet[2] %></div>
+								<div class="userName"><%=tweet[2] %></div>
+								<div class="registrationName">@<%=tweet[3] %></div>
 							</div>
 							<div class="clear"></div>
 						</td>
 						<td>
-							<div class="publishingContent"><%=tweet[5] %></div>
+							<div class="publishingContent"><%=tweet[6] %></div>
+							<a target="_blank" href="${pageContext.request.contextPath}/img/<%=tweet[1]%>/<%=tweet[7]%>" title="图片">
+								<img class="publishingPicture" src="${pageContext.request.contextPath}/img/<%=tweet[1]%>/<%=tweet[7]%>" alt="图片" style="width: auto; height: 72px;"/>
+							</a>
 						</td>
 						<td>
-							<div class="publishedTime"><%=tweet[6] %></div>
+							<div class="publishedTime"><%=tweet[9] %></div>
 						</td>
 						<td><input type="button" value="删除" name="deleteBtn" class="deleteBtn" 
-							onclick="javascript:window.location.href='BackstagePageCtrl?str=tweetCenter&deleteTid=<%=tweet[4] %>'"/></td>
+							onclick="javascript:window.location.href='${pageContext.request.contextPath}/BackstagePageCtrl?str=tweetCenter&deleteTid=<%=tweet[5] %>'"/></td>
 					</tr>
 					<%
 					}
 					%>
 				</table>
+				<script type="text/javascript">
+					$(document).ready(function(){
+						$(".publishingContent").each(function(){
+					    	if($(this).text().length == 0){
+					    		$(this).remove();
+					    		$(this).attr("display","block");
+					    	}else{
+					    		$(this).next().remove();
+					    	}
+						});
+					});
+				</script>
 			</div>
 			<%
 				if("1".equals(deleteResult)){
@@ -94,15 +111,19 @@
 				if("[]".equals(noContent)){
 			%>
 				<script type="text/javascript">
-					document.getElementsByClassName("box")[0].style.cssText = "display:none;";
-					document.getElementsByClassName("noContent")[0].style.cssText = "display:block;";
+					$(document).ready(function(){
+						$(".box").attr("display", "none");
+						$(".noContent").attr("display", "block");
+					});
 				</script> 
 			<% 		
 				}else{
 			%>
 				<script type="text/javascript">
-					document.getElementsByclassName("box")[0].style.cssText = "display:block;";
-					document.getElementsByClassName("noContent")[0].style.cssText = "display:none;";
+					$(document).ready(function(){
+						$(".box").attr("display", "block");
+						$(".noContent").attr("display", "none");
+					});
 				</script> 
 			<% 	
 				}
@@ -117,53 +138,52 @@
 		}else if(tweetsPageCount == 1){
 		%>		
 			<div class="pages pages1">
-				<a href="BackstagePageCtrl?tweetsCurrentPage=1" class="page page1">1</a>
+				<a href="${pageContext.request.contextPath}/BackstagePageCtrl?tweetsCurrentPage=1" class="page page1">1</a>
 			</div>
 		<%
-			}else if(tweetsPageCount == 2){
+		}else if(tweetsPageCount == 2){
 		%>
-			<a href="BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=1" class="prev">上一页</a>
+			<a href="${pageContext.request.contextPath}/BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=1" class="prev">上一页</a>
 			<div class="pages pages2">
-				<a href="BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=1" class="page page1">1</a>
-				<a href="BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=2" class="page page2">2</a>
+				<a href="${pageContext.request.contextPath}/BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=1" class="page page1">1</a>
+				<a href="${pageContext.request.contextPath}/BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=2" class="page page2">2</a>
 			</div>
-			<a href="BackstagePageCtrl?tweetsCurrentPage=2" class="next">下一页</a>
+			<a href="${pageContext.request.contextPath}/BackstagePageCtrl?tweetsCurrentPage=2" class="next">下一页</a>
 		<%
-			}else {
-				if(tweetsPageNow != 1){
+		}else {
+			if(tweetsPageNow != 1){
 		%>
-					<a href="BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=<%=tweetsPageNow-1 %>" class="prev">上一页</a>
+					<a href="${pageContext.request.contextPath}/BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=<%=tweetsPageNow-1 %>" class="prev">上一页</a>
 			<%
-				}
+			}
 			%>
 					<div class="pages pages3">
 			<%
-				if(tweetsPageNow <= tweetsPageCount - 3 ){
-					for(int i = tweetsPageNow; i < tweetsPageNow + 3; i++){
+			if(tweetsPageNow <= tweetsPageCount - 3 ){
+				for(int i = tweetsPageNow; i < tweetsPageNow + 3; i++){
 			%>
-						<a href="BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=<%=i %>" class="page"><%=i %></a>
+						<a href="${pageContext.request.contextPath}/BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=<%=i %>" class="page"><%=i %></a>
 			<%
-					}
-				}else{
-					for(int i = tweetsPageCount-(3-1); i <= tweetsPageCount; i++ ){
-			%>
-						<a href="BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=<%=i %>" class="page"><%=i %></a>
-			<%
-					}
 				}
+			}else{
+				for(int i = tweetsPageCount-(3-1); i <= tweetsPageCount; i++ ){
+			%>
+						<a href="${pageContext.request.contextPath}/BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=<%=i %>" class="page"><%=i %></a>
+			<%
+				}
+			}
 			%>
 					</div>
 			<%
-				if(tweetsPageNow != tweetsPageCount){
+			if(tweetsPageNow != tweetsPageCount){
 			%>
-					<a href="BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=<%=tweetsPageNow+1 %>" class="next">下一页</a>
+					<a href="${pageContext.request.contextPath}/BackstagePageCtrl?str=tweetCenter&tweetsCurrentPage=<%=tweetsPageNow+1 %>" class="next">下一页</a>
 		<%
-				}
 			}
+		}
 		%>
 		</div>
 	</div>
-	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			/*全选或全不选*/
@@ -196,11 +216,11 @@
 		               $("input[name='checkitem']:checked").each(function() { 
 		                   checkedList.push($(this).val()); 
 		               });
-		               // alert("checkedList: " + checkedList);
+		               //alert("checkedList: " + checkedList);
 		           }
 		            $.ajax({ 
 		                type: "POST", 
-		                url: "BackstagePageCtrl?str=ajaxDeleteBatches", 
+		                url: "${pageContext.request.contextPath}/BackstagePageCtrl?str=ajaxDeleteBatches", 
 		                data: {'tids':checkedList.toString()}, 
 		                success: function(result) { 
 		                    ///alert("回调成功:" + result);
@@ -210,6 +230,19 @@
 		            }); 
 		       }
 		   });
+		   //分页点击焦点
+		   $(".pages a").click(function(){
+			    $(this).addClass(" item_active");
+			    var item = $(".side-menu a");
+			    var index = $(this).index();
+			    for(var i = 1; i < item.length; i++){
+			        if(i != index){
+			            if($(item[i]).hasClass("item_active")){
+			                $(item[i]).removeClass("item_active");
+			            }
+			        }
+			    }
+			});
 		});
 	</script>
 	<%
