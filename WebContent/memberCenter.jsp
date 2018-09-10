@@ -40,13 +40,13 @@
 					for(String[] user : usersList){
 				%>
 				<li class="list">
-					<div class="headPortrait"><img src="${pageContext.request.contextPath}/img/<%=user[4] %>" alt="头像" style="font-size: 6px;"></div>
-					<div class="userName"><%=user[1] %></div>
-					<div class="registrationName">@<%=user[2] %></div>
-					<div class="loginTime">最近登录时间：<%=user[5] %></div>
+					<div class="headPortrait"><img src="${pageContext.request.contextPath}/img/<%=user[1]%>/<%=user[5] %>" alt="头像" style="font-size: 6px;"></div>
+					<div class="userName"><%=user[2] %></div>
+					<div class="registrationName">@<%=user[3] %></div>
+					<div class="loginTime">最近登录时间：<%=user[6] %></div>
 					<div class="shutdown">
-						<input type="button" value="<%=user[3] %>" class="shutdownBtn" style="background-color:<%=user[6] %>"
-							onclick="javascript:window.location.href='BackstagePageCtrl?str=memberCenter&shutdown=shutdown&uid=<%=user[0] %>&ustate=<%=user[3] %>'"/>
+						<input type="button" value="<%=user[4] %>" class="shutdownBtn" style="background-color:<%=user[7] %>"
+							onclick="javascript:window.location.href='BackstagePageCtrl?str=memberCenter&shutdown=shutdown&uid=<%=user[0] %>&ustate=<%=user[4] %>'"/>
 					</div>
 				</li>
 				<%
