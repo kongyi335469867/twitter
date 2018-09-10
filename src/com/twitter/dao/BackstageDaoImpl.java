@@ -142,17 +142,18 @@ public class BackstageDaoImpl {
 	 * (包括用户真实名urealname，用户登录名uatie，用户状态ustate；用户头像ulogo)
 	 */
 	public String[] queryUserall(int uid){
-		String sql = "select urealname, uaite, ustate, ulogo from usersall where uid = ?";
+		String sql = "select uname, urealname, uaite, ustate, ulogo from usersall where uid = ?";
 		Object[] os = { uid };
 		String[] userall = null;
 		try {
 			ResultSet rs = BackstageDBUtil.executeQuery(sql, os);
 			if(rs.next()){
+				String uname = rs.getString("uname");
 				String urealname = rs.getString("urealname");
 				String uaite = rs.getString("uaite");
 				String ustate = String.valueOf(rs.getInt("ustate"));
 				String ulogo = rs.getString("ulogo");
-				userall = new String[]{urealname, uaite, ustate, ulogo};
+				userall = new String[]{uname, urealname, uaite, ustate, ulogo};
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -180,19 +181,20 @@ public class BackstageDaoImpl {
 	public List<String[]> queryUsersall(){
 		List<String[]> usersall = new ArrayList<String[]>();
 		String[] userall = null;
-		String sql = "select uid, urealname, uaite, ustate, ulogo from usersall";
+		String sql = "select uid, uname, urealname, uaite, ustate, ulogo from usersall";
 		Object[] os = null;
 		try {
 			ResultSet rs = BackstageDBUtil.executeQuery(sql, os);
 			if(rs.next()){
 				int uidInt = rs.getInt("uid");
 				String uid = String.valueOf(uidInt);
+				String uname = rs.getString("uname");
 				String lastSignin = getLastSignin(uidInt).toString();
 				String urealname = rs.getString("urealname");
 				String uaite = rs.getString("uaite");
 				String ustate = String.valueOf(rs.getInt("ustate"));
 				String ulogo = rs.getString("ulogo");
-				userall = new String[]{uid, urealname, uaite, ustate, ulogo, lastSignin};
+				userall = new String[]{uid, uname, urealname, uaite, ustate, ulogo, lastSignin};
 				usersall.add(userall);
 			}
 		} catch (SQLException e) {
@@ -211,18 +213,19 @@ public class BackstageDaoImpl {
 			}else{
 				usersPageCount = usersRowCount/pageSize + 1;
 			}
-			String sqlPage = "select uid, urealname, uaite, ustate, ulogo from usersall limit " + pageSize*(currentPage-1) + "," + (pageSize+1) + "";
+			String sqlPage = "select uid, uname, urealname, uaite, ustate, ulogo from usersall limit " + pageSize*(currentPage-1) + "," + (pageSize+1) + "";
 			Object[] osPage = null;
 			ResultSet rsPage = BackstageDBUtil.executeQuery(sqlPage, osPage);
 			while(rsPage.next()){
-				String[] str = new String[]{null,null,null,null,null,null,null};
+				String[] str = new String[]{null, null, null, null, null, null, null, null};
 				str[0] = String.valueOf(rsPage.getInt("uid"));  //用户id
-				str[1] = rsPage.getString("urealname");  //用户真实姓名
-				str[2] = rsPage.getString("uaite");  //用户登录名
-				str[3] = String.valueOf(rsPage.getInt("ustate"));  //用户账户状态
-				str[4] = rsPage.getString("ulogo");  //用户头像
-				str[5] = getLastSignin(rsPage.getInt("uid")).toString();  //用户最近登录时间
-				str[6] = null;  //预留空间，解封按钮背景颜色
+				str[1] = rsPage.getString("uname");   //用户名（邮箱）
+				str[2] = rsPage.getString("urealname");  //用户真实姓名
+				str[3] = rsPage.getString("uaite");  //用户登录名
+				str[4] = String.valueOf(rsPage.getInt("ustate"));  //用户账户状态
+				str[5] = rsPage.getString("ulogo");  //用户头像
+				str[6] = getLastSignin(rsPage.getInt("uid")).toString();  //用户最近登录时间
+				str[7] = null;  //预留空间，解封按钮背景颜色
 				usersallList.add(str);
 			}
 		} catch (SQLException e) {
@@ -241,20 +244,21 @@ public class BackstageDaoImpl {
 			}else{
 				usersPageCount = usersRowCount/pageSize + 1;
 			}
-			String sql = "select usersall.uid, urealname, uaite, ustate, ulogo, stime from usersall, signin "
+			String sql = "select usersall.uid, uname, urealname, uaite, ustate, ulogo, stime from usersall, signin "
 					+ "where usersall.uid = signin.uid GROUP BY usersall.uid order by stime desc "
 					+ "limit " + pageSize*(currentPage-1) + "," + (pageSize+1) + "";
 			Object[] os = null;
 			ResultSet rs = BackstageDBUtil.executeQuery(sql, os);
 			while(rs.next()){
-				String[] str = {null, null, null, null, null, null, null};
+				String[] str = {null, null, null, null, null, null, null, null};
 				str[0] = String.valueOf(rs.getInt("usersall.uid"));  //用户id
-				str[1] = rs.getString("urealname");  //用户真实姓名
-				str[2] = rs.getString("uaite");  //用户登录名
-				str[3] = String.valueOf(rs.getInt("ustate"));  //用户账户状态
-				str[4] = rs.getString("ulogo");  //用户头像
-				str[5] = rs.getTimestamp("stime").toString();  //用户最近登录时间
-				str[6] = null;  //预留空间，解封按钮背景颜色
+				str[1] = rs.getString("uname");   //用户名（邮箱）
+				str[2] = rs.getString("urealname");  //用户真实姓名
+				str[3] = rs.getString("uaite");  //用户登录名
+				str[4] = String.valueOf(rs.getInt("ustate"));  //用户账户状态
+				str[5] = rs.getString("ulogo");  //用户头像
+				str[6] = rs.getTimestamp("stime").toString();  //用户最近登录时间
+				str[7] = null;  //预留空间，解封按钮背景颜色
 				userallList.add(str);
 			}
 		} catch (SQLException e) {
@@ -266,23 +270,24 @@ public class BackstageDaoImpl {
 	/*Dao层实现根据用户名查询后台页面“用户中心”所需的 用户信息 */
 	public List<String[]> queryUserall(String urealname){
 		List<String[]> userInfoList = new ArrayList<String[]>();
-		//String sql = "select uid, urealname, uaite, ustate, ulogo from usersall where urealname = ?";
+		//String sql = "select uid, uname, urealname, uaite, ustate, ulogo from usersall where urealname = ?";
 		//模糊搜索方式1：
-		String fuzzySearchSQL = "select uid, urealname, uaite, ustate, ulogo from usersall where urealname like '%" + urealname + "%'";
+		String fuzzySearchSQL = "select uid, uname, urealname, uaite, ustate, ulogo from usersall where urealname like '%" + urealname + "%'";
 		//模糊搜索方式2：
-		//String fuzzySearchSQL = "select uid, urealname, uaite, ustate, ulogo from usersall where urealname >= '"+urealname+"' and urealname < CONCAT('"+urealname+"', x'EFBFBF')"; 
+		//String fuzzySearchSQL = "select uid, uname, urealname, uaite, ustate, ulogo from usersall where urealname >= '"+urealname+"' and urealname < CONCAT('"+urealname+"', x'EFBFBF')"; 
 		Object[] os = null;
 		try {
 			ResultSet rs = BackstageDBUtil.executeQuery(fuzzySearchSQL, os);
 			while(rs.next()){
-				String[] str = {null, null, null, null, null, null, null};
+				String[] str = {null, null, null, null, null, null, null, null};
 				str[0] = String.valueOf(rs.getInt("uid"));   //用户id
-				str[1] = rs.getString("urealname");   //用户真实姓名
-				str[2] = rs.getString("uaite");   //用户登录名
-				str[3] = String.valueOf(rs.getInt("ustate"));    //用户账户状态
-				str[4] = rs.getString("ulogo");   //用户头像
-				str[5] = getLastSignin(rs.getInt("uid")).toString(); //用户最近登录时间
-				str[6] = null;  //预留空间，解封按钮背景颜色
+				str[1] = rs.getString("uname");   //用户名（邮箱）
+				str[2] = rs.getString("urealname");   //用户真实姓名
+				str[3] = rs.getString("uaite");   //用户登录名
+				str[4] = String.valueOf(rs.getInt("ustate"));    //用户账户状态
+				str[5] = rs.getString("ulogo");   //用户头像
+				str[6] = getLastSignin(rs.getInt("uid")).toString(); //用户最近登录时间
+				str[7] = null;  //预留空间，解封按钮背景颜色
 				userInfoList.add(str);
 			}
 		} catch (SQLException e) {
@@ -308,19 +313,22 @@ public class BackstageDaoImpl {
 	public List<String[]> queryUTweets(){
 		List<String[]> utweetsList = new ArrayList<String[]>(); /*集合，所有推文内容*/
 		String[] tweets = null;  /*一条推文内容*/
-		String sql = "select uid, urealname, uaite, ulogo, tid, tcontent, ttime from utweets";
+		String sql = "select uid, uname, urealname, uaite, ulogo, tid, tcontent, tpic, tvideo, ttime from utweets";
 		Object[] os = null;
 		try {
 			ResultSet rs = BackstageDBUtil.executeQuery(sql, os);
 			while(rs.next()){
-				String uid = String.valueOf(rs.getInt("uid"));
-				String urealname = rs.getString("urealname");
-				String uatie = rs.getString("uaite");
-				String ulogo = rs.getString("ulogo");
-				String tid = String.valueOf(rs.getInt("tid"));
-				String tcontent = rs.getString("tcontent");
-				String ttime = rs.getTimestamp("ttime").toString();
-				tweets = new String[]{uid,urealname, uatie, ulogo, tid, tcontent, ttime};
+				String uid = String.valueOf(rs.getInt("uid"));  //用户id
+				String uname = rs.getString("uname");  //用户名（邮箱）
+				String urealname = rs.getString("urealname");   //用户真实姓名
+				String uatie = rs.getString("uaite");    //用户登录名
+				String ulogo = rs.getString("ulogo");   //用户头像
+				String tid = String.valueOf(rs.getInt("tid"));  //推文id
+				String tcontent = rs.getString("tcontent");   //推文内容
+				String tpic = rs.getString("tpic");   //推文发表图片
+				String tvideo = rs.getString("tvideo");  //推文发表视频
+				String ttime = rs.getTimestamp("ttime").toString();   //推文发布时间
+				tweets = new String[]{uid, uname, urealname, uatie, ulogo, tid, tcontent, tpic, tvideo, ttime};
 				utweetsList.add(tweets);
 			}
 		} catch (SQLException e) {
@@ -339,18 +347,21 @@ public class BackstageDaoImpl {
 			}else{
 				tweetsPageCount = tweetsRowCount/pageSize + 1;
 			}
-			String sqlPage = "select uid, urealname, uaite, ulogo, tid, tcontent, ttime from utweets limit " + pageSize*(currentPage-1) + "," + pageSize + "";
+			String sqlPage = "select uid, uname, urealname, uaite, ulogo, tid, tcontent, tpic, tvideo, ttime from utweets limit " + pageSize*(currentPage-1) + "," + pageSize + "";
 			Object[] osPage = null;
 			ResultSet rsPage = BackstageDBUtil.executeQuery(sqlPage, osPage);
 			while(rsPage.next()){
-				String[] str = new String[]{null,null,null,null,null,null,null};
+				String[] str = new String[]{null, null, null, null, null, null, null, null, null, null};
 				str[0] = String.valueOf(rsPage.getInt("uid"));  //用户id
-				str[1] = rsPage.getString("urealname");   //用户真实姓名
-				str[2] = rsPage.getString("uaite");   //用户登录名
-				str[3] = rsPage.getString("ulogo");   //用户头像
-				str[4] = String.valueOf(rsPage.getInt("tid"));  //推文id
-				str[5] = rsPage.getString("tcontent");  //推文内容
-				str[6] = rsPage.getTimestamp("ttime").toString();  //推文发布时间
+				str[1] = rsPage.getString("uname");    //用户名（邮箱）
+				str[2] = rsPage.getString("urealname");   //用户真实姓名
+				str[3] = rsPage.getString("uaite");   //用户登录名
+				str[4] = rsPage.getString("ulogo");   //用户头像
+				str[5] = String.valueOf(rsPage.getInt("tid"));  //推文id
+				str[6] = rsPage.getString("tcontent");  //推文发布内容
+				str[7] = rsPage.getString("tpic");  //推文发布图片
+				str[8] = rsPage.getString("tvideo");   //推文发布视频
+				str[9] = rsPage.getTimestamp("ttime").toString();  //推文发布时间
 				utweetsList.add(str);
 			}
 		} catch (SQLException e) {
@@ -378,22 +389,22 @@ public class BackstageDaoImpl {
 			}else{
 				tweetsPageCount = tweetsRowCount/pageSize + 1;
 			}
-			String sqlPage = "select uid, uaite, ulogo, tid, tcontent, ttime from utweets where urealname like '%" + urealname + "%' limit " + pageSize*(currentPage-1) + "," + pageSize + "";
+			String sqlPage = "select uid, uname, urealname, uaite, ulogo, tid, tcontent, tpic, tvideo, ttime from utweets where urealname like '%" + urealname + "%' limit " + pageSize*(currentPage-1) + "," + pageSize + "";
 			Object[] osPage = null;
 			ResultSet rsPage = BackstageDBUtil.executeQuery(sqlPage, osPage);
 			while(rsPage.next()){
-				String[] str = new String[]{null,null,null,null,null,null,null};
+				String[] str = new String[]{null, null, null, null, null, null, null, null, null, null};
 				str[0] = String.valueOf(rsPage.getInt("uid"));  //用户id
-				str[1] = urealname;   //用户真实姓名
-				str[2] = rsPage.getString("uaite");   //用户登录名
-				str[3] = rsPage.getString("ulogo");   //用户头像
-				str[4] = String.valueOf(rsPage.getInt("tid"));  //推文id
-				str[5] = rsPage.getString("tcontent");  //推文内容
-				str[6] = rsPage.getTimestamp("ttime").toString();  //推文发布时间
+				str[1] = rsPage.getString("uname");    //用户名（邮箱）
+				str[2] = rsPage.getString("urealname");   //用户真实姓名
+				str[3] = rsPage.getString("uaite");   //用户登录名
+				str[4] = rsPage.getString("ulogo");   //用户头像
+				str[5] = String.valueOf(rsPage.getInt("tid"));  //推文id
+				str[6] = rsPage.getString("tcontent");  //推文发布内容
+				str[7] = rsPage.getString("tpic");  //推文发布图片
+				str[8] = rsPage.getString("tvedio");   //推文发布视频
+				str[9] = rsPage.getTimestamp("ttime").toString();  //推文发布时间
 				userTweetsList.add(str);
-			}
-			for(String[] tweet : userTweetsList){
-				System.out.println(tweet[0] + "  "+tweet[1] + "  "+tweet[2] + "  "+tweet[3] + "  "+tweet[4] + "  "+tweet[5] + "  "+tweet[6] + "  ");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
