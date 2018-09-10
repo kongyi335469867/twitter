@@ -34,6 +34,10 @@ public class BackstageExitCtrl extends HttpServlet {
 		
 		BackstageDaoImpl.getBackstageDaoImpl().addAdminTime(aid, aditime, adotime);  //将管理员登入登出记录写至数据库表adlogin
 		
+		System.out.println("----------------------------------------");
+		System.out.println("--------- 管理员账号已经退出登录！--------");
+		System.out.println("----------------------------------------");
+		
 		//移除session标志位
 		session.removeAttribute("ALLOW");   //移除：仅允许管理员成功登录后访问其他子页面
 		session.removeAttribute("LOGIN_ALLOW");  
@@ -41,7 +45,7 @@ public class BackstageExitCtrl extends HttpServlet {
 		session.removeAttribute("ADITIME");  //移除：登入时间
 		session.invalidate();
 		//session.setMaxInactiveInterval(0);
-		System.out.println("---- 账号已经退出登录！----");
+		
 		response.sendRedirect("./backstageLogin.jsp");
 	}
 
