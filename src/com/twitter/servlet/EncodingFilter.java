@@ -13,7 +13,7 @@ public class EncodingFilter implements Filter{
 
 	@Override
 	public void destroy() {
-		System.out.println(">>销毁过滤器 EncoderFilter 对象的信息");
+		System.out.println(" > > 销毁过滤器 EncoderFilter 对象的信息");
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class EncodingFilter implements Filter{
 
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
-		System.out.println(">>初始化过滤器 EncodingFilter 对象的信息");
+		System.out.println(" > > 初始化过滤器 EncodingFilter 对象的信息");
 	}
 
 }
