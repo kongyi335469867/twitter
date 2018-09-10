@@ -1753,7 +1753,7 @@ textarea {
 					<li>广告</li>
 					<li>企业</li>
 					<li>开发者</li>
-					<li>&copy;2017Twitter</li>
+					<li>&copy;2018Twitter</li>
 				</ul>
 			</div>
 		</div>
