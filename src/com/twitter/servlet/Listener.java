@@ -2,9 +2,8 @@ package com.twitter.servlet;
 
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
-import javax.servlet.annotation.WebListener;
 
-@WebListener
+//@WebListener
 public class Listener implements ServletRequestListener{
 
 	@Override
